@@ -209,44 +209,6 @@
 	)
 )
 
-(define "NoCastling"
-	(forEach Piece)
-)
-
-(define "StandardCastling"
-	(or
-		(forEach Piece)
-		(if
-			(and
-				("HasNeverMoved" "KingSite")
-				(not ("IsInCheck" "King" Mover))
-			)
-			(or {
-				("CastleMove" 3 "E" "W" 2)
-				("CastleMove" 4 "W" "E" 3)
-			})
-		)
-	)
-)
-
-(define "ExtendedCastling"
-	(or
-		(forEach Piece)
-		(if
-			(and
-				("HasNeverMoved" "KingSite")
-				(not ("IsInCheck" "King" Mover))
-			)
-			(or {
-				("CastleMove" 3 "E" "W" 2)
-				("CastleMove" 4 "W" "E" 3)
-				("CastleMove" 4 "E" "W" 3)
-				("CastleMove" 3 "W" "E" 4)
-			})
-		)
-	)
-)
-
 (game "Cylinder chess (circular ranks)"
 	(players 2)
 	(equipment {
