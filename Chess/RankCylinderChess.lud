@@ -434,7 +434,7 @@
 		{
 			(description "Cylinder chess (or cylindrical chess) is a chess variant. The game is played as if the board were a cylinder, with the left side of the board joined to the right side.")
 			(rules "Pieces move as in standard chess, but the board is wrapped around a cylinder such that the ranks become circular.")
-			(source "<a href=\"httpa://en.wikipedia.org/wiki/Cylinder_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+			(source "<a href=\"http://en.wikipedia.org/wiki/Cylinder_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
 			(credit "Manuel Hohmann")
 			(origin "Cylinder chess is one of six chess variants described by the Arabic historian Ali al-Masudi in 947.")
 		}
