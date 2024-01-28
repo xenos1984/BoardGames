@@ -321,14 +321,14 @@
 		)
 		(piece "King" Each
 			(or {
-				("StepByMath" 1 0)
-				("StepByMath" -1 0)
-				("StepByMath" 0 1)
-				("StepByMath" 0 -1)
-				("StepByMath" 1 1)
-				("StepByMath" 1 -1)
-				("StepByMath" -1 1)
-				("StepByMath" -1 -1)
+				("StepByMathRemember" 1 0)
+				("StepByMathRemember" -1 0)
+				("StepByMathRemember" 0 1)
+				("StepByMathRemember" 0 -1)
+				("StepByMathRemember" 1 1)
+				("StepByMathRemember" 1 -1)
+				("StepByMathRemember" -1 1)
+				("StepByMathRemember" -1 -1)
 			})
 		)
 		(piece "Queen" Each
