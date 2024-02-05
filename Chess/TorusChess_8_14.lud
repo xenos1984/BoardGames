@@ -404,7 +404,7 @@
 			("CastleMove" 3 "E" "W" 2)
 			("CastleMove" 4 "W" "E" 3)
 		>
-		"Castling is allowed if the rook passes in front of the cylinder."
+		"Castling is allowed if the rook passes in front of the torus."
 	)
 	(item "Extended castling"
 		<
@@ -413,7 +413,7 @@
 			("CastleMove" 4 "E" "W" 3)
 			("CastleMove" 3 "W" "E" 4)
 		>
-		"Castling is allowed if the rook passes on either side of the cylinder."
+		"Castling is allowed if the rook passes on either side of the torus."
 	)*
 })
 
