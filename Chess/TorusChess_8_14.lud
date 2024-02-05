@@ -420,7 +420,7 @@
 (metadata
 	(info
 		{
-			(description "Toros chess is a chess variant. The game is played as if the board were a torus, with the left side of the board joined to the right side and the top joined to the bottom. In this version the two ranks filled with pawns and the ranks between them are doubled to give 14 ranks in total.")
+			(description "Torus chess is a chess variant. The game is played as if the board were a torus, with the left side of the board joined to the right side and the top joined to the bottom. In this version the two ranks filled with pawns and the ranks between them are doubled to give 14 ranks in total.")
 			(rules "Pieces move as in standard chess, but the board is wrapped around a torus such that the ranks and files become circular.")
 			(credit "Manuel Hohmann")
 			(origin "This is the author's own creation.")
