@@ -1,0 +1,301 @@
+(define pile (
+		$1
+		(while not-empty? n)
+		add
+	)
+)
+
+(define common-grid-stuff
+	(start-rectangle 1 1 30 30)
+	(directions
+		(n 0 -1)
+		(e 1 0)
+		(ne 1 -1)
+		(nw -1 -1)
+		(s 0 1)
+	)
+)
+
+(define common-piece-stuff
+	(image
+		Red "images\Vertical_TicTacToe\red.bmp"
+		Black "images\Vertical_TicTacToe\black.bmp")
+	(name checker)
+	(help "Checker: drops to bottom of any column")
+)
+
+(game
+	(title "Cylinder Vertical TicTacToe 6x5")
+	(description "Object: Be the first player to get 4 of your pieces in a row, horizontally, vertically, or diagonally. Moves are made by dropping pieces to the lowest unoccupied space in a column. The left and right sides are connected to form a cylinder.")
+	(history "Also known as Gravitational TicTacToe and 4-in-a-row, this game has been marketed in a 7x6 version under the name Connect-4.")
+	(strategy "Try to position your checkers to get as many `potential` 4-in-a-rows as possible, and use these threats to prevent your opponent from dropping into as as many columns as you can.")
+	(players Red Black)
+	(turn-order Red Black)
+	(allow-flipping false)
+	(pass-turn false)
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT6x5.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f" (30 0))
+				("5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (f1 a1) (f2 a2) (f3 a3) (f4 a4) (f5 a5))
+		(links ne (f1 a2) (f2 a3) (f3 a4) (f4 a5))
+		(links nw (a1 f2) (a2 f3) (a3 f4) (a4 f5))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+		)
+	)
+	(board-setup
+		(Red (checker off 99))
+		(Black (checker off 99))
+	)
+	(win-condition (Red Black)
+		(or
+			(relative-config checker n checker n checker n checker)
+			(relative-config checker e checker e checker e checker)
+			(relative-config checker ne checker ne checker ne checker)
+			(relative-config checker nw checker nw checker nw checker)
+		)
+	)
+)
+
+(variant
+	(title "Cylinder Vertical TicTacToe 6x6")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT6x6.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f" (30 0))
+				("6/5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (f1 a1) (f2 a2) (f3 a3) (f4 a4) (f5 a5) (f6 a6))
+		(links ne (f1 a2) (f2 a3) (f3 a4) (f4 a5) (f5 a6))
+		(links nw (a1 f2) (a2 f3) (a3 f4) (a4 f5) (a5 f6))
+	)
+)
+
+(variant (title "-")) ; -----------------------------------------------
+
+(variant
+	(title "Cylinder Vertical TicTacToe 7x5")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT7x5.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g" (30 0))
+				("5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (g1 a1) (g2 a2) (g3 a3) (g4 a4) (g5 a5))
+		(links ne (g1 a2) (g2 a3) (g3 a4) (g4 a5))
+		(links nw (a1 g2) (a2 g3) (a3 g4) (a4 g5))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+		)
+	)
+)
+
+(variant
+	(title "Cylinder Vertical TicTacToe 7x6")
+	(default)
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT7x6.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g" (30 0))
+				("6/5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (g1 a1) (g2 a2) (g3 a3) (g4 a4) (g5 a5) (g6 a6))
+		(links ne (g1 a2) (g2 a3) (g3 a4) (g4 a5) (g5 a6))
+		(links nw (a1 g2) (a2 g3) (a3 g4) (a4 g5) (a5 g6))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+		)
+	)
+)
+
+(variant
+	(title "Cylinder Vertical TicTacToe 7x7")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT7x7.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g" (30 0))
+				("7/6/5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (g1 a1) (g2 a2) (g3 a3) (g4 a4) (g5 a5) (g6 a6) (g7 a7))
+		(links ne (g1 a2) (g2 a3) (g3 a4) (g4 a5) (g5 a6) (g6 a7))
+		(links nw (a1 g2) (a2 g3) (a3 g4) (a4 g5) (a5 g6) (a6 g7))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+		)
+	)
+)
+
+(variant (title "-")) ; -----------------------------------------------
+
+(variant
+	(title "Cylinder Vertical TicTacToe 8x5")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT8x5.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g/h" (30 0))
+				("5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (h1 a1) (h2 a2) (h3 a3) (h4 a4) (h5 a5))
+		(links ne (h1 a2) (h2 a3) (h3 a4) (h4 a5))
+		(links nw (a1 h2) (a2 h3) (a3 h4) (a4 h5))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+			(pile h1)
+		)
+	)
+)
+
+(variant
+	(title "Cylinder Vertical TicTacToe 8x6")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT8x6.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g/h" (30 0))
+				("6/5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (h1 a1) (h2 a2) (h3 a3) (h4 a4) (h5 a5) (h6 a6))
+		(links ne (h1 a2) (h2 a3) (h3 a4) (h4 a5) (h5 a6))
+		(links nw (a1 h2) (a2 h3) (a3 h4) (a4 h5) (a5 h6))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+			(pile h1)
+		)
+	)
+)
+
+(variant
+	(title "Cylinder Vertical TicTacToe 8x7")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT8x7.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g/h" (30 0))
+				("7/6/5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (h1 a1) (h2 a2) (h3 a3) (h4 a4) (h5 a5) (h6 a6) (h7 a7))
+		(links ne (h1 a2) (h2 a3) (h3 a4) (h4 a5) (h5 a6) (h6 a7))
+		(links nw (a1 h2) (a2 h3) (a3 h4) (a4 h5) (a5 h6) (a6 h7))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+			(pile h1)
+		)
+	)
+)
+
+(variant
+	(title "Cylinder Vertical TicTacToe 8x8")
+	(board
+		(image "images\Vertical_TicTacToe\VerticalTTT8x8.bmp")
+		(grid
+			(common-grid-stuff)
+			(dimensions
+				("a/b/c/d/e/f/g/h" (30 0))
+				("8/7/6/5/4/3/2/1" (0 30))
+			)
+		)
+		(links e (h1 a1) (h2 a2) (h3 a3) (h4 a4) (h5 a5) (h6 a6) (h7 a7) (h8 a8))
+		(links ne (h1 a2) (h2 a3) (h3 a4) (h4 a5) (h5 a6) (h6 a7) (h7 a8))
+		(links nw (a1 h2) (a2 h3) (a3 h4) (a4 h5) (a5 h6) (a6 h7) (a7 h8))
+	)
+	(piece
+		(common-piece-stuff)
+		(drops
+			(pile a1)
+			(pile b1)
+			(pile c1)
+			(pile d1)
+			(pile e1)
+			(pile f1)
+			(pile g1)
+			(pile h1)
+		)
+	)
+)
