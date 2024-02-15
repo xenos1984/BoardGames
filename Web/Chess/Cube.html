@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Cube</title>
+		<!--<link rel='stylesheet' type='text/css' href='x3dom.css'></link>
+		<script type='text/javascript' src='x3dom.js'></script>-->
+	</head>
+	<body>
+		<svg version="1.1" height="0px" width="0px" viewBox="-300 -300 600 600">
+			<defs>
+				<marker id="rarrow" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+					<path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
+				</marker>
+				<marker id="barrow" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+					<path d="M 0 0 L 10 5 L 0 10 z" fill="blue"/>
+				</marker>
+				<polygon id="tile" points="0,0 86.6,-50 86.6,50 0,100" stroke="black" stroke-width="2" fill="currentColor"/>
+				<polygon id="wtile" points="0,0 86.6,-50 86.6,50 0,100" stroke="black" stroke-width="2" fill="none"/>
+				<g id="cube" font-size="72" text-anchor="middle" dominant-baseline="central">
+					<use xlink:href="#tile" color="red"/>
+					<use xlink:href="#tile" color="lime" transform="rotate(120)"/>
+					<use xlink:href="#tile" color="blue" transform="rotate(240)"/>
+					<use xlink:href="#tile" color="cyan" transform="rotate(180) translate(0,100)"/>
+					<use xlink:href="#tile" color="yellow" transform="rotate(60) translate(0,100)"/>
+					<use xlink:href="#tile" color="magenta" transform="rotate(300) translate(0,100)"/>
+					<text transform="translate(43.3,25) skewY(-30)">R</text>
+					<text transform="rotate(120) translate(43.3,25) skewY(-30)">G</text>
+					<text transform="rotate(240) translate(43.3,25) skewY(-30)">B</text>
+					<text transform="rotate(180) translate(43.3,125) skewY(-30)">C</text>
+					<text transform="rotate(60) translate(43.3,125) skewY(-30)">Y</text>
+					<text transform="rotate(300) translate(43.3,125) skewY(-30)">M</text>
+				</g>
+				<g id="pcube" font-size="72" text-anchor="middle" dominant-baseline="central">
+					<use xlink:href="#tile" color="red"/>
+					<use xlink:href="#tile" color="lime" transform="rotate(120)"/>
+					<use xlink:href="#tile" color="blue" transform="rotate(240)"/>
+					<use xlink:href="#tile" color="red" transform="rotate(180) translate(0,100)"/>
+					<use xlink:href="#tile" color="blue" transform="rotate(60) translate(0,100)"/>
+					<use xlink:href="#tile" color="lime" transform="rotate(300) translate(0,100)"/>
+					<text transform="translate(43.3,25) skewY(-30)">r</text>
+					<text transform="rotate(120) translate(43.3,25) skewY(-30)">g</text>
+					<text transform="rotate(240) translate(43.3,25) skewY(-30)">b</text>
+					<text transform="rotate(180) translate(43.3,125) skewY(-30) scale(1, -1)">r</text>
+					<text transform="rotate(60) translate(43.3,125) skewY(-30) scale(1, -1)">b</text>
+					<text transform="rotate(300) translate(43.3,125) skewY(-30) scale(1, -1)">g</text>
+				</g>
+				<g id="pcube2" font-size="72" text-anchor="middle" dominant-baseline="central">
+					<use xlink:href="#tile" color="red"/>
+					<use xlink:href="#tile" color="lime" transform="rotate(120)"/>
+					<use xlink:href="#tile" color="blue" transform="rotate(240)"/>
+					<text transform="translate(43.3,25) skewY(-30)">r</text>
+					<text transform="rotate(120) translate(43.3,25) skewY(-30)">g</text>
+					<text transform="rotate(240) translate(43.3,25) skewY(-30)">b</text>
+				</g>
+				<g id="wcube">
+					<use xlink:href="#wtile"/>
+					<use xlink:href="#wtile" transform="rotate(120)"/>
+					<use xlink:href="#wtile" transform="rotate(240)"/>
+					<use xlink:href="#wtile" transform="rotate(180) translate(0,100)"/>
+					<use xlink:href="#wtile" transform="rotate(60) translate(0,100)"/>
+					<use xlink:href="#wtile" transform="rotate(300) translate(0,100)"/>
+				</g>
+				<g id="btile">
+					<use xlink:href="#tile"/>
+					<g stroke="black" stroke-width="1">
+						<line x1="0" x2="86.6" y1="25" y2="-25"/>
+						<line x1="0" x2="86.6" y1="50" y2="0"/>
+						<line x1="0" x2="86.6" y1="75" y2="25"/>
+						<line x1="21.65" x2="21.65" y1="-12.5" y2="87.5"/>
+						<line x1="43.3" x2="43.3" y1="-25" y2="75"/>
+						<line x1="64.95" x2="64.95" y1="-37.5" y2="62.5"/>
+					</g>
+				</g>
+				<g id="bcube">
+					<use xlink:href="#btile" color="red"/>
+					<use xlink:href="#btile" color="lime" transform="rotate(120)"/>
+					<use xlink:href="#btile" color="blue" transform="rotate(240)"/>
+					<use xlink:href="#btile" color="cyan" transform="rotate(180) translate(0,100)"/>
+					<use xlink:href="#btile" color="yellow" transform="rotate(60) translate(0,100)"/>
+					<use xlink:href="#btile" color="magenta" transform="rotate(300) translate(0,100)"/>
+				</g>
+				<polygon id="center2" points="0,5 8.66,0 0,-5 -8.66,0" stroke="black" stroke-width="1" fill="currentColor"/>
+				<polygon id="center3" points="0,-10 -8.66,5 8.66,5" stroke="black" stroke-width="1" fill="currentColor"/>
+				<polygon id="center6" points="0,-10 -8.66,-5 -8.66,5 0,10 8.66,5 8.66,-5" stroke="black" stroke-width="1" fill="currentColor"/>
+				<line id="reflect1" x1="0" x2="0" y1="-1000" y2="1000" stroke="#80ffff" stroke-width="6"/>
+				<line id="reflect2" x1="-1000" x2="1000" y1="-50" y2="-50" stroke="#ff80ff" stroke-width="6"/>
+				<line id="greflect1" x1="0" x2="0" y1="-1000" y2="1000" stroke="#800000" stroke-width="3" stroke-dasharray="10,5" stroke-dashoffset="-5" transform="translate(0,-50) rotate(120)"/>
+				<line id="greflect2" x1="-1000" x2="1000" y1="25" y2="25" stroke="#000080" stroke-width="3" stroke-dasharray="10,5" stroke-dashoffset="-5"/>
+				<g id="scube">
+					<use xlink:href="#center2" color="orange" transform="translate(0,-50)"/>
+					<use xlink:href="#center2" color="orange" transform="rotate(120) translate(0,-50)"/>
+					<use xlink:href="#center2" color="orange" transform="rotate(240) translate(0,-50)"/>
+					<use xlink:href="#center2" color="orange" transform="rotate(180) translate(0,100) rotate(120) translate(0,-50)"/>
+					<use xlink:href="#center2" color="orange" transform="rotate(60) translate(0,100) rotate(120) translate(0,-50)"/>
+					<use xlink:href="#center2" color="orange" transform="rotate(300) translate(0,100) rotate(120) translate(0,-50)"/>
+					<use xlink:href="#center3" color="green"/>
+					<use xlink:href="#center3" color="green" transform="rotate(180) translate(0,100)"/>
+					<use xlink:href="#center3" color="green" transform="rotate(60) translate(0,100)"/>
+					<use xlink:href="#center3" color="green" transform="rotate(300) translate(0,100)"/>
+					<use xlink:href="#center6" color="purple" transform="translate(0,-200)"/>
+					<use xlink:href="#center6" color="purple" transform="translate(0,100)"/>
+					<use xlink:href="#center6" color="purple" transform="rotate(120) translate(0,100)"/>
+					<use xlink:href="#center6" color="purple" transform="rotate(240) translate(0,100)"/>
+				</g>
+				<g id="cscube">
+					<use xlink:href="#center2" color="gray" transform="translate(0,-200)"/>
+					<use xlink:href="#center2" color="purple" transform="translate(0,100)"/>
+					<use xlink:href="#center2" color="orange" transform="rotate(120) translate(0,100)"/>
+					<use xlink:href="#center2" color="turquoise" transform="rotate(240) translate(0,100)"/>
+				</g>
+			</defs>
+		</svg>
+		<h1>Cube and projected cube</h1>
+		<p>We start with a <a href="http://en.wikipedia.org/wiki/Rhombille_tiling">rhombille tiling</a> of the plane:</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<g id="wpattern">
+				<use xlink:href="#wcube"/>
+				<use xlink:href="#wcube" transform="rotate(180) translate(0,-200)"/>
+				<use xlink:href="#wcube" transform="rotate(60) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#wcube" transform="rotate(300) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#wcube" transform="rotate(180) translate(0,400)"/>
+				<use xlink:href="#wcube" transform="rotate(60) translate(0,400) rotate(120)"/>
+				<use xlink:href="#wcube" transform="rotate(300) translate(0,400) rotate(240)"/>
+				<use xlink:href="#wcube" transform="rotate(60) translate(0,-200) rotate(300) translate(0,-200)"/>
+				<use xlink:href="#wcube" transform="rotate(300) translate(0,-200) rotate(300) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#wcube" transform="rotate(180) translate(0,-200) rotate(300) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#wcube" transform="rotate(300) translate(0,-200) rotate(60) translate(0,-200)"/>
+				<use xlink:href="#wcube" transform="rotate(180) translate(0,-200) rotate(60) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#wcube" transform="rotate(60) translate(0,-200) rotate(60) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#wcube" transform="translate(0,-600) rotate(60) translate(0,400) rotate(120)"/>
+			</g>
+		</svg>
+		<p>These are the symmetries (glide reflections, reflections, rotations and translations) for wallpaper group <a href="http://en.wikipedia.org/wiki/Wallpaper_group#Group_p6m_(*632)">p6m</a>:</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<g id="wreflect">
+				<use xlink:href="#reflect1"/>
+				<use xlink:href="#reflect1" transform="rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,-100) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,-200) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,-300) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,-400) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,100) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,200) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,300) rotate(120)"/>
+				<use xlink:href="#reflect1" transform="translate(0,400) rotate(120)"/>
+				<use xlink:href="#reflect2"/>
+				<use xlink:href="#reflect2" transform="translate(0,-150)"/>
+				<use xlink:href="#reflect2" transform="translate(0,-300)"/>
+				<use xlink:href="#reflect2" transform="translate(0,150)"/>
+				<use xlink:href="#reflect2" transform="translate(0,300)"/>
+				<use xlink:href="#greflect1"/>
+				<use xlink:href="#greflect1"transform="translate(0,-100)"/>
+				<use xlink:href="#greflect1"transform="translate(0,-200)"/>
+				<use xlink:href="#greflect1"transform="translate(0,-300)"/>
+				<use xlink:href="#greflect1"transform="translate(0,-400)"/>
+				<use xlink:href="#greflect1"transform="translate(0,100)"/>
+				<use xlink:href="#greflect1"transform="translate(0,200)"/>
+				<use xlink:href="#greflect1"transform="translate(0,300)"/>
+				<use xlink:href="#greflect1"transform="translate(0,400)"/>
+				<use xlink:href="#greflect2"/>
+				<use xlink:href="#greflect2" transform="translate(0,-150)"/>
+				<use xlink:href="#greflect2" transform="translate(0,-300)"/>
+				<use xlink:href="#greflect2" transform="translate(0,150)"/>
+				<use xlink:href="#greflect2" transform="translate(0,300)"/>
+			</g>
+			<use xlink:href="#wreflect" transform="rotate(120)"/>
+			<use xlink:href="#wreflect" transform="rotate(240)"/>
+			<use xlink:href="#wpattern"/>
+			<use xlink:href="#scube"/>
+			<use xlink:href="#scube" transform="rotate(180) translate(0,-200)"/>
+			<use xlink:href="#scube" transform="rotate(60) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#scube" transform="rotate(300) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#scube" transform="rotate(180) translate(0,400)"/>
+			<use xlink:href="#scube" transform="rotate(60) translate(0,400) rotate(120)"/>
+			<use xlink:href="#scube" transform="rotate(300) translate(0,400) rotate(240)"/>
+			<use xlink:href="#scube" transform="rotate(60) translate(0,-200) rotate(300) translate(0,-200)"/>
+			<use xlink:href="#scube" transform="rotate(300) translate(0,-200) rotate(300) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#scube" transform="rotate(180) translate(0,-200) rotate(300) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#scube" transform="rotate(300) translate(0,-200) rotate(60) translate(0,-200)"/>
+			<use xlink:href="#scube" transform="rotate(180) translate(0,-200) rotate(60) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#scube" transform="rotate(60) translate(0,-200) rotate(60) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#scube" transform="translate(0,-600) rotate(60) translate(0,400) rotate(120)"/>
+			<line x1="0" x2="86.6" y1="100" y2="-50" stroke="red" stroke-width="6" marker-end="url(#rarrow)"/>
+			<line x1="0" x2="-86.6" y1="100" y2="-50" stroke="blue" stroke-width="6" marker-end="url(#barrow)"/>
+		</svg>
+		<p>To wrap the tiling onto a cube, we identify the tiles with the faces of the cube:</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<g id="cpattern">
+				<use xlink:href="#cube"/>
+				<use xlink:href="#cube" transform="rotate(180) translate(0,-200)"/>
+				<use xlink:href="#cube" transform="rotate(60) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#cube" transform="rotate(300) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#cube" transform="rotate(180) translate(0,400)"/>
+				<use xlink:href="#cube" transform="rotate(60) translate(0,400) rotate(120)"/>
+				<use xlink:href="#cube" transform="rotate(300) translate(0,400) rotate(240)"/>
+				<use xlink:href="#cube" transform="rotate(60) translate(0,-200) rotate(300) translate(0,-200)"/>
+				<use xlink:href="#cube" transform="rotate(300) translate(0,-200) rotate(300) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#cube" transform="rotate(180) translate(0,-200) rotate(300) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#cube" transform="rotate(300) translate(0,-200) rotate(60) translate(0,-200)"/>
+				<use xlink:href="#cube" transform="rotate(180) translate(0,-200) rotate(60) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#cube" transform="rotate(60) translate(0,-200) rotate(60) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#cube" transform="translate(0,-600) rotate(60) translate(0,400) rotate(120)"/>
+			</g>
+		</svg>
+		<p>This is the unit cell, i.e., the smallest unit which makes up a cube, and the tile which appears in the colored tiling.</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<use xlink:href="#cpattern" opacity="0.2"/>
+			<use xlink:href="#cube"/>
+		</svg>
+		<p>This is the remaining wallpaper group of the colored pattern is <a href="http://en.wikipedia.org/wiki/Wallpaper_group#Group_p2_(2222)">p2</a>. Reflections and glide reflections are gone, translations take a larger step, only centers of order 2 remain. The cube is obtained by dividing out this group.</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<use xlink:href="#cpattern" opacity="0.2"/>
+			<line x1="0" x2="173.2" y1="100" y2="-200" stroke="red" stroke-width="6" marker-end="url(#rarrow)"/>
+			<line x1="0" x2="-173.2" y1="100" y2="-200" stroke="blue" stroke-width="6" marker-end="url(#barrow)"/>
+			<use xlink:href="#cscube"/>
+			<use xlink:href="#cscube" transform="rotate(180) translate(0,-200)"/>
+			<use xlink:href="#cscube" transform="rotate(60) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#cscube" transform="rotate(300) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#cscube" transform="rotate(180) translate(0,400)"/>
+			<use xlink:href="#cscube" transform="rotate(60) translate(0,400) rotate(120)"/>
+			<use xlink:href="#cscube" transform="rotate(300) translate(0,400) rotate(240)"/>
+			<use xlink:href="#cscube" transform="rotate(60) translate(0,-200) rotate(300) translate(0,-200)"/>
+			<use xlink:href="#cscube" transform="rotate(300) translate(0,-200) rotate(300) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#cscube" transform="rotate(180) translate(0,-200) rotate(300) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#cscube" transform="rotate(300) translate(0,-200) rotate(60) translate(0,-200)"/>
+			<use xlink:href="#cscube" transform="rotate(180) translate(0,-200) rotate(60) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#cscube" transform="rotate(60) translate(0,-200) rotate(60) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#cscube" transform="translate(0,-600) rotate(60) translate(0,400) rotate(120)"/>
+		</svg>
+		<p>Finally, the board is obtained by dividing every face of the cube into smaller cells, using an rectangular grid.</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<use xlink:href="#bcube"/>
+			<use xlink:href="#bcube" transform="rotate(180) translate(0,-200)"/>
+			<use xlink:href="#bcube" transform="rotate(60) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#bcube" transform="rotate(300) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#bcube" transform="rotate(180) translate(0,400)"/>
+			<use xlink:href="#bcube" transform="rotate(60) translate(0,400) rotate(120)"/>
+			<use xlink:href="#bcube" transform="rotate(300) translate(0,400) rotate(240)"/>
+			<use xlink:href="#bcube" transform="rotate(60) translate(0,-200) rotate(300) translate(0,-200)"/>
+			<use xlink:href="#bcube" transform="rotate(300) translate(0,-200) rotate(300) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#bcube" transform="rotate(180) translate(0,-200) rotate(300) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#bcube" transform="rotate(300) translate(0,-200) rotate(60) translate(0,-200)"/>
+			<use xlink:href="#bcube" transform="rotate(180) translate(0,-200) rotate(60) translate(0,-200) rotate(120)"/>
+			<use xlink:href="#bcube" transform="rotate(60) translate(0,-200) rotate(60) translate(0,-200) rotate(240)"/>
+			<use xlink:href="#bcube" transform="translate(0,-600) rotate(60) translate(0,400) rotate(120)"/>
+		</svg>
+		<p>Another board type is the projected cube. It is constructed from the cube by identifying opposite points.</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<g id="ppattern">
+				<use xlink:href="#pcube"/>
+				<use xlink:href="#pcube" transform="rotate(180) translate(0,-200)"/>
+				<use xlink:href="#pcube" transform="rotate(60) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#pcube" transform="rotate(300) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#pcube" transform="rotate(180) translate(0,400)"/>
+				<use xlink:href="#pcube" transform="rotate(60) translate(0,400) rotate(120)"/>
+				<use xlink:href="#pcube" transform="rotate(300) translate(0,400) rotate(240)"/>
+				<use xlink:href="#pcube" transform="rotate(60) translate(0,-200) rotate(300) translate(0,-200)"/>
+				<use xlink:href="#pcube" transform="rotate(300) translate(0,-200) rotate(300) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#pcube" transform="rotate(180) translate(0,-200) rotate(300) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#pcube" transform="rotate(300) translate(0,-200) rotate(60) translate(0,-200)"/>
+				<use xlink:href="#pcube" transform="rotate(180) translate(0,-200) rotate(60) translate(0,-200) rotate(120)"/>
+				<use xlink:href="#pcube" transform="rotate(60) translate(0,-200) rotate(60) translate(0,-200) rotate(240)"/>
+				<use xlink:href="#pcube" transform="translate(0,-600) rotate(60) translate(0,400) rotate(120)"/>
+			</g>
+		</svg>
+		<p>In this case we only have three faces, but their orientation changes.</p>
+		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<use xlink:href="#ppattern" opacity="0.2"/>
+			<use xlink:href="#pcube2"/>
+		</svg>
+		<!--<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600">
+			<use xlink:href="#ppattern" opacity="0.2"/>
+		</svg>
+		<x3d id='cube3d' showStat='false' showLog='false' x='0px' y='0px' width='600px' height='600px'>
+			<scene DEF='scene'>
+			<worldInfo title='Cube'></worldInfo>
+			<background skyColor='0.8 0.8 0.8'></background>
+			<viewpoint description='White' orientation='0 1 0 -1.5708' position='-6 0 0'></viewpoint>
+			<viewpoint description='Black' orientation='0 1 0 1.5708' position='6 0 0'></viewpoint>
+				<shape>
+					<indexedFaceSet solid='false' colorPerVertex='false' coordIndex='0 1 3 2 -1 4 5 7 6 -1 0 1 5 4 -1 2 3 7 6 -1 1 3 7 5 -1 0 2 6 4 -1' texCoordIndex='0 1 8 7 -1 1 2 9 8 -1 2 3 10 9 -1 3 4 11 10 -1 4 5 12 11 -1 5 6 13 12 -1'>
+					<coordinate point='-1 -1 -1 -1 -1 1 -1 1 -1 -1 1 1 1 -1 -1 1 -1 1 1 1 -1 1 1 1'></coordinate>
+					<color color='1 0 0 0 1 1 0 0 1 1 1 0 0 1 0 1 0 1'></color>
+					</indexedFaceSet>
+				</shape>
+			</scene>
+		</x3d>-->
+	</body>
+</html>

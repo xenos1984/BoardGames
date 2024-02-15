@@ -1,0 +1,57 @@
+* {
+	font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	text-align: justify;
+}
+
+pre, pre > a {
+	font-family: "Liberation Mono", "Courier New", Courier, monospace;
+}
+
+h1 {
+	font-size: 20pt;
+	text-decoration: underline;
+	font-weight: 600;
+	text-align: center;
+}
+
+h2 {
+	font-size: 16pt;
+	text-decoration: underline;
+	text-align: center;
+}
+
+h3 {
+	font-size: 12pt;
+	text-decoration: underline;
+	text-align: center;
+}
+
+h4 {
+	font-size: 10pt;
+	text-decoration: underline;
+	text-align: left;
+}
+
+dt {
+	font-weight: bold;
+}
+
+img {
+	border: 0;
+}
+
+a:link {color:#0000ff}
+a:visited {color:#8080ff}
+a:hover {color:#000080}
+a:active {color:#000080}
+
+a:link[href^="http"] {color:#008000}
+a:visited[href^="http"] {color:#40c040}
+a:hover[href^="http"] {color:#004000}
+a:active[href^="http"] {color:#004000}
+
+a:link[href="#"] {color:#ff0000}
+a:visited[href="#"] {color:#ff8080}
+a:hover[href="#"] {color:#800000}
+a:active[href="#"] {color:#800000}
