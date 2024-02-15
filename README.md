@@ -5,4 +5,4 @@ This repository contains game descriptions for board games, in particular for pl
 * [Ludii](http://ludii.games/)
 * [Zillions of games](http://zillions-of-games.com/)
 * [GDL](http://en.wikipedia.org/wiki/Game_Description_Language) (for use with [general game playing](http://en.wikipedia.org/wiki/General_Game_Playing))
-* web documentation
+* [web documentation](http://xenos1984.github.io/BoardGames/)
