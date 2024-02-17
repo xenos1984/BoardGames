@@ -1,0 +1,226 @@
+(define "Step1"
+	(%
+		(+
+			(%
+				(+
+					{
+						#1
+						#2
+						(*
+							(-
+								(/
+									(+
+										{
+											(/ #1 <Width:width>)
+											#3
+											<Height:height>
+										}
+									)
+									<Height:height>
+								)
+								1
+							)
+							<Twist:twist>
+						)
+						<Width:width>
+					}
+				)
+				<Width:width>
+			)
+			(*
+				<Width:width>
+				(+
+					{
+						(/ #1 <Width:width>)
+						#3
+						<Height:height>
+					}
+				)
+			)
+		)
+		(* <Width:width> <Height:height>)
+	)
+)
+
+(define "Step2"
+	("Step1"
+		("Step1" #1 #2 #3)
+		#2
+		#3
+	)
+)
+
+(define "Jump"
+	(move
+		(from)
+		(to
+			("Step2" (from) #1 #2)
+			if:(and
+				(is Empty (to))
+				(not (is Empty ("Step1" (from) #1 #2)))
+			)
+			(apply
+				(remove ("Step1" (from) #1 #2))
+			)
+		)
+	)
+)
+
+(game "Torus Solitaire"
+	(players 1)
+	(equipment
+		{
+			(board
+				(rectangle <Height:height> <Width:width>)
+			)
+			(piece "Marker" P1
+				(or
+					{
+						("Jump" 0 1)
+						("Jump" 0 -1)
+						("Jump" 1 0)
+						("Jump" -1 0)
+					}
+				)
+			)
+		}
+	)
+	(rules
+		(start
+			{
+				(place "Marker"
+					(difference
+						(sites Board)
+						(sites {"A1"})
+					)
+				)
+			}
+		)
+		(play (forEach Piece))
+		(end
+			(if
+				<End:end>
+				(result P1 Win)
+			)
+		)
+	)
+)
+
+(option "Board width" <Width> args:{ <width> }
+	{
+		(item "3"
+			<3>
+			"3"
+		)
+		(item "4"
+			<4>
+			"4"
+		)
+		(item "5"
+			<5>
+			"5"
+		)
+		(item "6"
+			<6>
+			"6"
+		)
+		(item "7"
+			<7>
+			"7"
+		)
+		(item "8"
+			<8>
+			"8"
+		)
+	}
+)
+
+(option "Board height" <Height> args:{ <height> }
+	{
+		(item "3"
+			<3>
+			"3"
+		)
+		(item "4"
+			<4>
+			"4"
+		)
+		(item "5"
+			<5>
+			"5"
+		)
+		(item "6"
+			<6>
+			"6"
+		)
+		(item "7"
+			<7>
+			"7"
+		)
+		(item "8"
+			<8>
+			"8"
+		)
+	}
+)
+
+(option "Board twist" <Twist> args:{ <twist> }
+	{
+		(item "0"
+			<0>
+			"0"
+		)
+		(item "1"
+			<1>
+			"1"
+		)
+		(item "2"
+			<2>
+			"2"
+		)
+		(item "3"
+			<3>
+			"3"
+		)
+		(item "4"
+			<4>
+			"4"
+		)
+		(item "5"
+			<5>
+			"5"
+		)
+		(item "6"
+			<6>
+			"6"
+		)
+		(item "7"
+			<7>
+			"7"
+		)
+	}
+)
+
+(option "End rule" <End> args:{ <end> }
+	{
+		(item "anywhere"
+			<(= 1 (count Pieces All))>
+			"The last marker may be anywhere."
+		)
+		(item "starting point"
+			<(and (= 1 (count Pieces All)) (not (is Empty 0)))>
+			"The last marker must be at the starting point."
+		)
+	}
+)
+
+(metadata
+	(info
+		{
+			(description "Torus solitaire is a solitaire variant. The game is played as if the board were a torus, with the left side of the board joined to the right side and the top joined to the bottom. In addition, the torus may be twisted, such that each file is joined to another file instead of its own.")
+			(rules "Pieces jump over any orthogonally adjacent piece and capture it, as in standard peg solitaire, but the board is wrapped around a torus such that the ranks and files become circular.")
+			(credit "Manuel Hohmann")
+			(origin "This is the author's own creation.")
+		}
+	)
+)
