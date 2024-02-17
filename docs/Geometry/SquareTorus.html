@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Square grid on a torus</title>
+		<link rel="stylesheet" type="text/css" href="../games.css">
+<style>
+table#content td input[type="text"], datalist option {
+	font-size: 16pt;
+}
+
+table.board {
+	border-collapse: collapse;
+	overflow: scroll;
+}
+
+table.board td {
+	border: 1px solid gray;
+	text-align: center;
+	vertical-align: middle;
+}
+
+table#unit td {
+	width: 24px;
+	height: 24px;
+	font-size: 12pt;
+}
+
+table#infinite td {
+	width: 48px;
+	height: 48px;
+	font-size: 24pt;
+}
+
+table.board td.off {
+	background-color: lightgray;
+}
+</style>
+		<script type="text/javascript">
+			function calculate()
+			{
+				var ax = document.getElementById('ax').value;
+				var ay = document.getElementById('ay').value;
+				var bx = document.getElementById('bx').value;
+				var by = document.getElementById('by').value;
+
+				if(ax * by == bx * ay)
+				{
+					document.getElementById('error').style.display = 'block';
+					document.getElementById('error').innerHTML = "Translations are collinear.";
+					return;
+				}
+
+				document.getElementById('error').style.display = 'none';
+
+				var cx0 = 0;
+				var cx1 = 0;
+				var cy1 = 0;
+
+				if(ay == 0)
+				{
+					cx0 = Math.abs(ax);
+					cy1 = Math.abs(by);
+					cx1 = (((bx * Math.sign(by)) % cx0) + cx0) % cx0;
+				}
+				else if(by == 0)
+				{
+					cx0 = Math.abs(bx);
+					cy1 = Math.abs(ay);
+					cx1 = (((ax * Math.sign(ay)) % cx0) + cx0) % cx0;
+				}
+				else
+				{
+					var aa = 1;
+					var ab = 0;
+					var ba = 0;
+					var bb = 1;
+					var ca = 0;
+					var cb = 0;
+
+					var a = Math.max(Math.abs(ay), Math.abs(by));
+					var b = Math.min(Math.abs(ay), Math.abs(by));
+					var gcd = 0;
+
+					while(true)
+					{
+						if(b == 0)
+						{
+							ca = aa;
+							cb = ab;
+							gcd = a;
+							break;
+						}
+						aa -= Math.floor(a / b) * ba;
+						ab -= Math.floor(a / b) * bb;
+						a %= b;
+						if(a == 0)
+						{
+							ca = ba;
+							cb = bb;
+							gcd = b;
+							break;
+						}
+						ba -= Math.floor(b / a) * aa;
+						bb -= Math.floor(b / a) * ab;
+						b %= a;
+					}
+
+					var lcm = Math.abs(ay * by / gcd);
+
+					if(Math.abs(by) > Math.abs(ay))
+						[ca, cb] = [cb, ca];
+
+					cx0 = Math.abs(ax * lcm / ay - bx * lcm / by);
+					cx1 = (((ax * ca * Math.sign(ay) + bx * cb * Math.sign(by)) % cx0) + cx0) % cx0;
+					cy1 = gcd;
+				}
+
+				var au = ay / cy1;
+				var bu = by / cy1;
+				var ar = (ax - au * cx1) / cx0;
+				var br = (bx - bu * cx1) / cx0;
+
+				var det = ar * bu - br * au;
+
+				var ra = bu / det;
+				var ua = -br / det;
+				var rb = -au / det;
+				var ub = ar / det;
+
+				document.getElementById('rx').innerHTML = cx0;
+				document.getElementById('ry').innerHTML = 0;
+				document.getElementById('ux').innerHTML = cx1;
+				document.getElementById('uy').innerHTML = cy1;
+
+				document.getElementById('ra').innerHTML = ra;
+				document.getElementById('rb').innerHTML = rb;
+				document.getElementById('ua').innerHTML = ua;
+				document.getElementById('ub').innerHTML = ub;
+
+				document.getElementById('ar').innerHTML = ar;
+				document.getElementById('br').innerHTML = br;
+				document.getElementById('au').innerHTML = au;
+				document.getElementById('bu').innerHTML = bu;
+
+				document.getElementById('npos').innerHTML = cx0 * cy1;
+
+				document.getElementById('unit').innerHTML = "";
+				for(r = cy1; r >= -1; r--)
+				{
+					r0 = ((r % cy1) + cy1) % cy1;
+					var tr = document.createElement("tr");
+					for(c = -1; c <= cx0; c++)
+					{
+						c0 = (((c - cx1 * (r - r0) / cy1) % cx0) + cx0) % cx0;
+						var td = document.createElement("td");
+						td.innerHTML = r0 + "/" + c0;
+						if(c0 != c || r0 != r)
+							td.className = "off";
+						tr.appendChild(td);
+					}
+					document.getElementById('unit').appendChild(tr);
+				}
+
+				while(document.getElementById('content').children.length > 1)
+					document.getElementById('content').lastChild.remove();
+
+				for(r = 0; r < cy1; r++)
+				{
+					for(c = 0; c < cx0; c++)
+					{
+						var tr = document.createElement("tr");
+						var tdx = document.createElement("td");
+						var tdy = document.createElement("td");
+						var tdt = document.createElement("td");
+						var tdc = document.createElement("td");
+						var tdr = document.createElement("td");
+						var tdm = document.createElement("td");
+						var it = document.createElement("input");
+						var ic = document.createElement("input");
+						var ir = document.createElement("input");
+						var im = document.createElement("input");
+
+						tdx.innerHTML = r;
+						tdy.innerHTML = c;
+
+						it.type = "text";
+						it.setAttribute('list', "symbols");
+						it.setAttribute('maxlength', 1);
+						it.onchange = function(e) { settext(e.target.dataset.r, e.target.dataset.c, e.target.value) };
+						it.dataset.r = r;
+						it.dataset.c = c;
+
+						ic.type = "color";
+						ic.onchange = function(e) { setcolor(e.target.dataset.r, e.target.dataset.c, e.target.value) };
+						ic.dataset.r = r;
+						ic.dataset.c = c;
+
+						ir.type = "number";
+						ir.min = 0;
+						ir.max = 345;
+						ir.step = 15;
+						ir.value = 0;
+						ir.onchange = function(e) { setrotate(e.target.dataset.r, e.target.dataset.c, e.target.value) };
+						ir.dataset.r = r;
+						ir.dataset.c = c;
+
+						im.type = "checkbox";
+						im.onchange = function(e) { setmirror(e.target.dataset.r, e.target.dataset.c, e.target.checked) };
+						im.dataset.r = r;
+						im.dataset.c = c;
+
+
+						tdt.appendChild(it);
+						tdc.appendChild(ic);
+						tdr.appendChild(ir);
+						tdm.appendChild(im);
+
+						tr.appendChild(tdx);
+						tr.appendChild(tdy);
+						tr.appendChild(tdt);
+						tr.appendChild(tdc);
+						tr.appendChild(tdr);
+						tr.appendChild(tdm);
+
+						document.getElementById('content').appendChild(tr);
+					}
+				}
+
+				document.getElementById('infinite').innerHTML = "";
+				for(r = 4 * cy1 - 1; r >= 0; r--)
+				{
+					var tr = document.createElement("tr");
+					for(c = 0; c < 4 * cx0; c++)
+					{
+						var td = document.createElement("td");
+						td.dataset.x = r;
+						td.dataset.y = c;
+						td.dataset.r = ((r % cy1) + cy1) % cy1;
+						td.dataset.c = (((c - cx1 * (r - td.dataset.r) / cy1) % cx0) + cx0) % cx0;
+
+						tr.appendChild(td);
+					}
+					document.getElementById('infinite').appendChild(tr);
+				}
+			}
+
+			function settext(r, c, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('td');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c)
+						cell.innerHTML = v;
+				}
+			}
+
+			function setcolor(r, c, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('td');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c)
+						cell.style.color = v;
+				}
+			}
+
+			function setrotate(r, c, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('td');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c)
+						cell.style.rotate = v + "deg";
+				}
+			}
+
+			function setmirror(r, c, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('td');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c)
+						cell.style.scale = (v ? "-1 1" : "1 1");
+				}
+			}
+		</script>
+	</head>
+	<body onload="calculate()">
+		<h1>Square grid on a torus</h1>
+		<h2>Translation generators</h2>
+		<table>
+			<tr>
+				<th>Generator</th>
+				<th>x</th>
+				<th>y</th>
+			</tr>
+			<tr>
+				<td>A</td>
+				<td><input type="number" id="ax" value="1" step="1" onchange="calculate()"/></td>
+				<td><input type="number" id="ay" value="0" step="1" onchange="calculate()"/></td>
+			</tr>
+			<tr>
+				<td>B</td>
+				<td><input type="number" id="bx" value="0" step="1" onchange="calculate()"/></td>
+				<td><input type="number" id="by" value="1" step="1" onchange="calculate()"/></td>
+			</tr>
+		</table>
+		<p id="error"></p>
+		<h2>Canonical form</h2>
+		<table>
+			<tr>
+				<th>Generator</th>
+				<th>x</th>
+				<th>y</th>
+				<th>A</th>
+				<th>B</th>
+			</tr>
+			<tr>
+				<td>R</td>
+				<td id="rx">0</td>
+				<td id="ry">0</td>
+				<td id="ra">0</td>
+				<td id="rb">0</td>
+			</tr>
+			<tr>
+				<td>U</td>
+				<td id="ux">0</td>
+				<td id="uy">0</td>
+				<td id="ua">0</td>
+				<td id="ub">0</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<th>Generator</th>
+				<th>R</th>
+				<th>U</th>
+			</tr>
+			<tr>
+				<td>A</td>
+				<td id="ar">0</td>
+				<td id="au">0</td>
+			</tr>
+			<tr>
+				<td>B</td>
+				<td id="br">0</td>
+				<td id="bu">0</td>
+			</tr>
+		</table>
+		<h2>Unit cell</h2>
+		<p>Number of positions: <span id="npos"></span>.</p>
+		<table id="unit" class="board">
+		</table>
+		<h2>Infinite grid of cells</h2>
+		<table id="content">
+			<tr>
+				<th>x</th>
+				<th>y</th>
+				<th>content</th>
+				<th>color</th>
+				<th>rotation</th>
+				<th>mirror</th>
+			</tr>
+		</table>
+		<table id="infinite" class="board">
+		</table>
+		<datalist id="symbols">
+			<option value="&#x2654;"/>
+			<option value="&#x2655;"/>
+			<option value="&#x2656;"/>
+			<option value="&#x2657;"/>
+			<option value="&#x2658;"/>
+			<option value="&#x2659;"/>
+			<option value="&#x265a;"/>
+			<option value="&#x265b;"/>
+			<option value="&#x265c;"/>
+			<option value="&#x265d;"/>
+			<option value="&#x265e;"/>
+			<option value="&#x265f;"/>
+			<option value="&#x1fa00;"/>
+			<option value="&#x1fa01;"/>
+			<option value="&#x1fa02;"/>
+			<option value="&#x1fa03;"/>
+			<option value="&#x1fa04;"/>
+			<option value="&#x1fa05;"/>
+			<option value="&#x1fa06;"/>
+			<option value="&#x1fa07;"/>
+			<option value="&#x1fa08;"/>
+			<option value="&#x1fa09;"/>
+			<option value="&#x1fa0a;"/>
+			<option value="&#x1fa0b;"/>
+			<option value="&#x1fa0c;"/>
+			<option value="&#x1fa0d;"/>
+			<option value="&#x1fa0e;"/>
+			<option value="&#x1fa0f;"/>
+			<option value="&#x1fa10;"/>
+			<option value="&#x1fa11;"/>
+			<option value="&#x1fa12;"/>
+			<option value="&#x1fa13;"/>
+			<option value="&#x1fa14;"/>
+			<option value="&#x1fa15;"/>
+			<option value="&#x1fa16;"/>
+			<option value="&#x1fa17;"/>
+			<option value="&#x1fa18;"/>
+			<option value="&#x1fa19;"/>
+			<option value="&#x1fa1a;"/>
+			<option value="&#x1fa1b;"/>
+			<option value="&#x1fa1c;"/>
+			<option value="&#x1fa1d;"/>
+			<option value="&#x1fa1e;"/>
+			<option value="&#x1fa1f;"/>
+			<option value="&#x1fa20;"/>
+			<option value="&#x1fa21;"/>
+			<option value="&#x1fa22;"/>
+			<option value="&#x1fa23;"/>
+			<option value="&#x1fa24;"/>
+			<option value="&#x1fa25;"/>
+			<option value="&#x1fa26;"/>
+			<option value="&#x1fa27;"/>
+			<option value="&#x1fa28;"/>
+			<option value="&#x1fa29;"/>
+			<option value="&#x1fa2a;"/>
+			<option value="&#x1fa2b;"/>
+			<option value="&#x1fa2c;"/>
+			<option value="&#x1fa2d;"/>
+			<option value="&#x1fa2e;"/>
+			<option value="&#x1fa2f;"/>
+			<option value="&#x1fa30;"/>
+			<option value="&#x1fa31;"/>
+			<option value="&#x1fa32;"/>
+			<option value="&#x1fa33;"/>
+			<option value="&#x1fa34;"/>
+			<option value="&#x1fa35;"/>
+			<option value="&#x1fa36;"/>
+			<option value="&#x1fa37;"/>
+			<option value="&#x1fa38;"/>
+			<option value="&#x1fa39;"/>
+			<option value="&#x1fa3a;"/>
+			<option value="&#x1fa3b;"/>
+			<option value="&#x1fa3c;"/>
+			<option value="&#x1fa3d;"/>
+			<option value="&#x1fa3e;"/>
+			<option value="&#x1fa3f;"/>
+			<option value="&#x1fa40;"/>
+			<option value="&#x1fa41;"/>
+			<option value="&#x1fa42;"/>
+			<option value="&#x1fa43;"/>
+			<option value="&#x1fa44;"/>
+			<option value="&#x1fa45;"/>
+			<option value="&#x1fa46;"/>
+			<option value="&#x1fa47;"/>
+			<option value="&#x1fa48;"/>
+			<option value="&#x1fa49;"/>
+			<option value="&#x1fa4a;"/>
+			<option value="&#x1fa4b;"/>
+			<option value="&#x1fa4c;"/>
+			<option value="&#x1fa4d;"/>
+			<option value="&#x1fa4e;"/>
+			<option value="&#x1fa4f;"/>
+			<option value="&#x1fa50;"/>
+			<option value="&#x1fa51;"/>
+			<option value="&#x1fa52;"/>
+			<option value="&#x1fa53;"/>
+			<option value="&#x1fa60;"/>
+			<option value="&#x1fa61;"/>
+			<option value="&#x1fa62;"/>
+			<option value="&#x1fa63;"/>
+			<option value="&#x1fa64;"/>
+			<option value="&#x1fa65;"/>
+			<option value="&#x1fa66;"/>
+			<option value="&#x1fa67;"/>
+			<option value="&#x1fa68;"/>
+			<option value="&#x1fa69;"/>
+			<option value="&#x1fa6a;"/>
+			<option value="&#x1fa6b;"/>
+			<option value="&#x1fa6c;"/>
+			<option value="&#x1fa6d;"/>
+			<option value="&#x25a0;"/>
+			<option value="&#x25a1;"/>
+			<option value="&#x25a2;"/>
+			<option value="&#x25a3;"/>
+			<option value="&#x25a4;"/>
+			<option value="&#x25a5;"/>
+			<option value="&#x25a6;"/>
+			<option value="&#x25a7;"/>
+			<option value="&#x25a8;"/>
+			<option value="&#x25a9;"/>
+			<option value="&#x25aa;"/>
+			<option value="&#x25ab;"/>
+			<option value="&#x25ac;"/>
+			<option value="&#x25ad;"/>
+			<option value="&#x25ae;"/>
+			<option value="&#x25af;"/>
+			<option value="&#x25b0;"/>
+			<option value="&#x25b1;"/>
+			<option value="&#x25b2;"/>
+			<option value="&#x25b3;"/>
+			<option value="&#x25b4;"/>
+			<option value="&#x25b5;"/>
+			<option value="&#x25b6;"/>
+			<option value="&#x25b7;"/>
+			<option value="&#x25b8;"/>
+			<option value="&#x25b9;"/>
+			<option value="&#x25ba;"/>
+			<option value="&#x25bb;"/>
+			<option value="&#x25bc;"/>
+			<option value="&#x25bd;"/>
+			<option value="&#x25be;"/>
+			<option value="&#x25bf;"/>
+			<option value="&#x25c0;"/>
+			<option value="&#x25c1;"/>
+			<option value="&#x25c2;"/>
+			<option value="&#x25c3;"/>
+			<option value="&#x25c4;"/>
+			<option value="&#x25c5;"/>
+			<option value="&#x25c6;"/>
+			<option value="&#x25c7;"/>
+			<option value="&#x25c8;"/>
+			<option value="&#x25c9;"/>
+			<option value="&#x25ca;"/>
+			<option value="&#x25cb;"/>
+			<option value="&#x25cc;"/>
+			<option value="&#x25cd;"/>
+			<option value="&#x25ce;"/>
+			<option value="&#x25cf;"/>
+			<option value="&#x25d0;"/>
+			<option value="&#x25d1;"/>
+			<option value="&#x25d2;"/>
+			<option value="&#x25d3;"/>
+			<option value="&#x25d4;"/>
+			<option value="&#x25d5;"/>
+			<option value="&#x25d6;"/>
+			<option value="&#x25d7;"/>
+			<option value="&#x25d8;"/>
+			<option value="&#x25d9;"/>
+			<option value="&#x25da;"/>
+			<option value="&#x25db;"/>
+			<option value="&#x25dc;"/>
+			<option value="&#x25dd;"/>
+			<option value="&#x25de;"/>
+			<option value="&#x25df;"/>
+			<option value="&#x25e0;"/>
+			<option value="&#x25e1;"/>
+			<option value="&#x25e2;"/>
+			<option value="&#x25e3;"/>
+			<option value="&#x25e4;"/>
+			<option value="&#x25e5;"/>
+			<option value="&#x25e6;"/>
+			<option value="&#x25e7;"/>
+			<option value="&#x25e8;"/>
+			<option value="&#x25e9;"/>
+			<option value="&#x25ea;"/>
+			<option value="&#x25eb;"/>
+			<option value="&#x25ec;"/>
+			<option value="&#x25ed;"/>
+			<option value="&#x25ee;"/>
+			<option value="&#x25ef;"/>
+			<option value="&#x25f0;"/>
+			<option value="&#x25f1;"/>
+			<option value="&#x25f2;"/>
+			<option value="&#x25f3;"/>
+			<option value="&#x25f4;"/>
+			<option value="&#x25f5;"/>
+			<option value="&#x25f6;"/>
+			<option value="&#x25f7;"/>
+			<option value="&#x25f8;"/>
+			<option value="&#x25f9;"/>
+			<option value="&#x25fa;"/>
+			<option value="&#x25fb;"/>
+			<option value="&#x25fc;"/>
+			<option value="&#x25fd;"/>
+			<option value="&#x25fe;"/>
+			<option value="&#x25ff;"/>
+			<option value="&#x2b00;"/>
+			<option value="&#x2b01;"/>
+			<option value="&#x2b02;"/>
+			<option value="&#x2b03;"/>
+			<option value="&#x2b04;"/>
+			<option value="&#x2b05;"/>
+			<option value="&#x2b06;"/>
+			<option value="&#x2b07;"/>
+			<option value="&#x2b08;"/>
+			<option value="&#x2b09;"/>
+			<option value="&#x2b0a;"/>
+			<option value="&#x2b0b;"/>
+			<option value="&#x2b0c;"/>
+			<option value="&#x2b0d;"/>
+			<option value="&#x2b0e;"/>
+			<option value="&#x2b0f;"/>
+			<option value="&#x2b10;"/>
+			<option value="&#x2b11;"/>
+			<option value="&#x2b12;"/>
+			<option value="&#x2b13;"/>
+			<option value="&#x2b14;"/>
+			<option value="&#x2b15;"/>
+			<option value="&#x2b16;"/>
+			<option value="&#x2b17;"/>
+			<option value="&#x2b18;"/>
+			<option value="&#x2b19;"/>
+			<option value="&#x2b1a;"/>
+			<option value="&#x2b1b;"/>
+			<option value="&#x2b1c;"/>
+			<option value="&#x2b1d;"/>
+			<option value="&#x2b1e;"/>
+			<option value="&#x2b1f;"/>
+			<option value="&#x2b20;"/>
+			<option value="&#x2b21;"/>
+			<option value="&#x2b22;"/>
+			<option value="&#x2b23;"/>
+			<option value="&#x2b24;"/>
+			<option value="&#x2b25;"/>
+			<option value="&#x2b26;"/>
+			<option value="&#x2b27;"/>
+			<option value="&#x2b28;"/>
+			<option value="&#x2b29;"/>
+			<option value="&#x2b2a;"/>
+			<option value="&#x2b2b;"/>
+			<option value="&#x2b2c;"/>
+			<option value="&#x2b2d;"/>
+			<option value="&#x2b2e;"/>
+			<option value="&#x2b2f;"/>
+			<option value="&#x1f780;"/>
+			<option value="&#x1f781;"/>
+			<option value="&#x1f782;"/>
+			<option value="&#x1f783;"/>
+			<option value="&#x1f784;"/>
+			<option value="&#x1f785;"/>
+			<option value="&#x1f786;"/>
+			<option value="&#x1f787;"/>
+			<option value="&#x1f788;"/>
+			<option value="&#x1f789;"/>
+			<option value="&#x1f78a;"/>
+			<option value="&#x1f78b;"/>
+			<option value="&#x1f78c;"/>
+			<option value="&#x1f78d;"/>
+			<option value="&#x1f78e;"/>
+			<option value="&#x1f78f;"/>
+			<option value="&#x1f790;"/>
+			<option value="&#x1f791;"/>
+			<option value="&#x1f792;"/>
+			<option value="&#x1f793;"/>
+			<option value="&#x1f794;"/>
+			<option value="&#x1f795;"/>
+			<option value="&#x1f796;"/>
+			<option value="&#x1f797;"/>
+			<option value="&#x1f798;"/>
+			<option value="&#x1f799;"/>
+			<option value="&#x1f79a;"/>
+			<option value="&#x1f79b;"/>
+			<option value="&#x1f79c;"/>
+			<option value="&#x1f79d;"/>
+			<option value="&#x1f79e;"/>
+			<option value="&#x1f79f;"/>
+			<option value="&#x1f7a0;"/>
+			<option value="&#x1f7a1;"/>
+			<option value="&#x1f7a2;"/>
+			<option value="&#x1f7a3;"/>
+			<option value="&#x1f7a4;"/>
+			<option value="&#x1f7a5;"/>
+			<option value="&#x1f7a6;"/>
+			<option value="&#x1f7a7;"/>
+			<option value="&#x1f7a8;"/>
+			<option value="&#x1f7a9;"/>
+			<option value="&#x1f7aa;"/>
+			<option value="&#x1f7ab;"/>
+			<option value="&#x1f7ac;"/>
+			<option value="&#x1f7ad;"/>
+			<option value="&#x1f7ae;"/>
+			<option value="&#x1f7af;"/>
+			<option value="&#x1f7b0;"/>
+			<option value="&#x1f7b1;"/>
+			<option value="&#x1f7b2;"/>
+			<option value="&#x1f7b3;"/>
+			<option value="&#x1f7b4;"/>
+			<option value="&#x1f7b5;"/>
+			<option value="&#x1f7b6;"/>
+			<option value="&#x1f7b7;"/>
+			<option value="&#x1f7b8;"/>
+			<option value="&#x1f7b9;"/>
+			<option value="&#x1f7ba;"/>
+			<option value="&#x1f7bb;"/>
+			<option value="&#x1f7bc;"/>
+			<option value="&#x1f7bd;"/>
+			<option value="&#x1f7be;"/>
+			<option value="&#x1f7bf;"/>
+			<option value="&#x1f7c0;"/>
+			<option value="&#x1f7c1;"/>
+			<option value="&#x1f7c2;"/>
+			<option value="&#x1f7c3;"/>
+			<option value="&#x1f7c4;"/>
+			<option value="&#x1f7c5;"/>
+			<option value="&#x1f7c6;"/>
+			<option value="&#x1f7c7;"/>
+			<option value="&#x1f7c8;"/>
+			<option value="&#x1f7c9;"/>
+			<option value="&#x1f7ca;"/>
+			<option value="&#x1f7cb;"/>
+			<option value="&#x1f7cc;"/>
+			<option value="&#x1f7cd;"/>
+			<option value="&#x1f7ce;"/>
+			<option value="&#x1f7cf;"/>
+		</datalist>
+	</body>
+</html>
