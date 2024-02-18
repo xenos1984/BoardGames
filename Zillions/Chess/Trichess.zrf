@@ -1,0 +1,1159 @@
+(define leap
+	(
+		$1
+		$2
+		$1
+		(verify not-friend?)
+		add
+	)
+)
+
+(define king-shift
+	(
+		$1
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define slide
+	(
+		$1
+		(while empty? add $1)
+		(verify not-friend?)
+		add
+	)
+)
+
+(define slide2
+	(
+		(gostep $1 $2 $3)
+		(while empty? add (gostep $1 $2 $3))
+		(verify not-friend?)
+		add
+	)
+)
+
+(define rook-slide
+	(
+		$1
+		(while empty? (set-attribute never-moved? false) add $1)
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define gostep
+	(if (on-board? $1) $1 else (if (on-board? $2) $2 else $3))
+)
+
+(define rook-slide2
+	(
+		(gostep $1 $2 $3)
+		(while empty? (set-attribute never-moved? false) add (gostep $1 $2 $3))
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define Pawn-add
+	(if (in-zone? promotion-zone) (add Knight Bishop Rook Queen) else add)
+)
+
+(define Pawn-move
+	(
+		$1
+		(verify empty?)
+		(Pawn-add)
+		(verify (in-zone? third-rank))
+		$1
+		(verify empty?)
+		add
+	)
+)
+
+(define Pawn-capture
+	(
+		$1
+		$2
+		(verify enemy?)
+		(Pawn-add)
+	)
+)
+
+(define Pawn-move2
+	(
+		(if (in-zone? left-side) rl else (verify (in-zone? right-side)) rr)
+		(verify empty?)
+		(Pawn-add)
+	)
+)
+
+(define Pawn-move3
+	(
+		(if (in-zone? left-side) rr else (verify (in-zone? right-side)) rl)
+		(verify empty?)
+		(Pawn-add)
+	)
+)
+
+(define Pawn-capture2
+	(
+		(if (in-zone? left-side) rl else (verify (in-zone? right-side)) rr)
+		$1
+		(verify enemy?)
+		(Pawn-add)
+	)
+)
+
+(define Pawn-capture3
+	(
+		(if (in-zone? left-side) rr else (verify (in-zone? right-side)) rl)
+		$1
+		(verify enemy?)
+		(Pawn-add)
+	)
+)
+
+(define En-Passant
+	(
+		$1
+		(verify enemy?)
+		(verify last-to?)
+		(verify (piece? Pawn))
+		capture
+		$2
+		to
+		$2
+		(verify last-from?)
+		add
+	)
+)
+
+(define O-O-S
+	(
+		(verify never-moved?)
+		re
+		(verify empty?)
+		re
+		(verify empty?)
+		cascade
+		re
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		re
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		re
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-L
+	(
+		(verify never-moved?)
+		re
+		(verify empty?)
+		re
+		(verify empty?)
+		cascade
+		re
+		(verify empty?)
+		re
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		re
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		re
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-O-S
+	(
+		(verify never-moved?)
+		rw
+		(verify empty?)
+		rw
+		(verify empty?)
+		cascade
+		rw
+		(verify empty?)
+		rw
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		rw
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		rw
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-O-L
+	(
+		(verify never-moved?)
+		rw
+		(verify empty?)
+		rw
+		(verify empty?)
+		cascade
+		rw
+		(verify empty?)
+		rw
+		(verify empty?)
+		rw
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		rw
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		rw
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define triboard
+	(positions
+		(l8 136 16 167 47) (l7 170 19 201 50) (l6 204 22 235 53) (l5 238 25 269 56)
+		(l4 274 25 305 56) (l3 308 22 339 53) (l2 342 19 373 50) (l1 376 16 407 48)
+		(k8 124 49 155 80) (k7 162 58 193 89) (k6 200 67 231 98) (k5 238 75 269 106)
+		(k4 274 75 305 106) (k3 312 67 343 98) (k2 350 58 381 89) (k1 388 49 419 80)
+		(j8 112 82 143 113) (j7 153 97 184 128) (j6 194 113 225 144) (j5 235 128 266 159)
+		(j4 277 128 308 159) (j3 318 113 349 144) (j2 359 97 390 128) (j1 400 82 431 113)
+		(i8 100 115 131 146) (i7 145 137 176 168) (i6 190 159 221 190) (i5 235 181 266 212)
+		(i4 277 181 308 212) (i3 322 159 353 190) (i2 367 137 398 168) (i1 412 115 443 146)
+		(d1 18 222 49 253) (d2 39 249 70 280) (d3 60 276 91 307) (d4 78 303 109 334)
+		(d5 100 329 131 360) (d6 112 362 143 393) (d7 124 395 155 426) (d8 136 428 167 459)
+		(c1 39 195 70 226) (c2 66 222 97 253) (c3 94 249 125 280) (c4 122 276 153 307)
+		(c5 145 307 176 338) (c6 153 347 184 378) (c7 162 386 193 417) (c8 170 425 201 456)
+		(b1 60 168 91 199) (b2 94 195 125 226) (b3 128 222 159 253) (b4 166 249 197 280)
+		(b5 190 285 221 316) (b6 194 331 225 362) (b7 200 377 231 408) (b8 204 422 235 453)
+		(a1 78 141 109 172) (a2 122 168 153 199) (a3 166 195 197 226) (a4 210 222 241 253)
+		(a5 235 263 266 294) (a6 235 316 266 347) (a7 238 369 269 400) (a8 238 419 269 450)
+		(e1 274 419 305 450) (e2 274 369 305 400) (e3 277 316 308 347) (e4 277 263 308 294)
+		(e5 302 222 333 253) (e6 346 195 377 226) (e7 390 168 421 199) (e8 434 141 465 172)
+		(f1 308 422 339 453) (f2 312 377 343 408) (f3 318 331 349 362) (f4 322 285 353 316)
+		(f5 346 249 377 280) (f6 384 222 415 253) (f7 418 195 449 226) (f8 452 168 483 199)
+		(g1 342 425 373 456) (g2 350 386 381 417) (g3 359 347 390 378) (g4 367 307 398 338)
+		(g5 390 276 421 307) (g6 418 249 449 280) (g7 446 222 477 253) (g8 473 195 504 226)
+		(h1 376 428 407 459) (h2 388 395 419 426) (h3 400 362 431 393) (h4 412 329 443 360)
+		(h5 434 303 465 334) (h6 452 276 483 307) (h7 473 249 504 280) (h8 494 222 525 253)
+	)
+	(links re
+		(d5 c5) (c5 b5) (b5 a5) (a5 e4) (e4 f4) (f4 g4) (g4 h4)
+		(d6 c6) (c6 b6) (b6 a6) (a6 e3) (e3 f3) (f3 g3) (g3 h3)
+		(d7 c7) (c7 b7) (b7 a7) (a7 e2) (e2 f2) (f2 g2) (g2 h2)
+		(d8 c8) (c8 b8) (b8 a8) (a8 e1) (e1 f1) (f1 g1) (g1 h1)
+	)
+	(links rw
+		(h4 g4) (g4 f4) (f4 e4) (e4 a5) (a5 b5) (b5 c5) (c5 d5)
+		(h3 g3) (g3 f3) (f3 e3) (e3 a6) (a6 b6) (b6 c6) (c6 d6)
+		(h2 g2) (g2 f2) (f2 e2) (e2 a7) (a7 b7) (b7 c7) (c7 d7)
+		(h1 g1) (g1 f1) (f1 e1) (e1 a8) (a8 b8) (b8 c8) (c8 d8)
+	)
+	(links rr
+		(l8 l7) (l7 l6) (l6 l5) (l5 l4) (l4 l3) (l3 l2) (l2 l1)
+		(k8 k7) (k7 k6) (k6 k5) (k5 k4) (k4 k3) (k3 k2) (k2 k1)
+		(j8 j7) (j7 j6) (j6 j5) (j5 j4) (j4 j3) (j3 j2) (j2 j1)
+		(i8 i7) (i7 i6) (i6 i5) (i5 i4) (i4 i3) (i3 i2) (i2 i1)
+	)
+	(links rl
+		(l1 l2) (l2 l3) (l3 l4) (l4 l5) (l5 l6) (l6 l7) (l7 l8)
+		(k1 k2) (k2 k3) (k3 k4) (k4 k5) (k5 k6) (k6 k7) (k7 k8)
+		(j1 j2) (j2 j3) (j3 j4) (j4 j5) (j5 j6) (j6 j7) (j7 j8)
+		(i1 i2) (i2 i3) (i3 i4) (i4 i5) (i5 i6) (i6 i7) (i7 i8)
+	)
+	(links ge
+		(h5 g5) (g5 f5) (f5 e5) (e5 i4) (i4 j4) (j4 k4) (k4 l4)
+		(h6 g6) (g6 f6) (f6 e6) (e6 i3) (i3 j3) (j3 k3) (k3 l3)
+		(h7 g7) (g7 f7) (f7 e7) (e7 i2) (i2 j2) (j2 k2) (k2 l2)
+		(h8 g8) (g8 f8) (f8 e8) (e8 i1) (i1 j1) (j1 k1) (k1 l1)
+	)
+	(links gw
+		(l4 k4) (k4 j4) (j4 i4) (i4 e5) (e5 f5) (f5 g5) (g5 h5)
+		(l3 k3) (k3 j3) (j3 i3) (i3 e6) (e6 f6) (f6 g6) (g6 h6)
+		(l2 k2) (k2 j2) (j2 i2) (i2 e7) (e7 f7) (f7 g7) (g7 h7)
+		(l1 k1) (k1 j1) (j1 i1) (i1 e8) (e8 f8) (f8 g8) (g8 h8)
+	)
+	(links gr
+		(d8 d7) (d7 d6) (d6 d5) (d5 d4) (d4 d3) (d3 d2) (d2 d1)
+		(c8 c7) (c7 c6) (c6 c5) (c5 c4) (c4 c3) (c3 c2) (c2 c1)
+		(b8 b7) (b7 b6) (b6 b5) (b5 b4) (b4 b3) (b3 b2) (b2 b1)
+		(a8 a7) (a7 a6) (a6 a5) (a5 a4) (a4 a3) (a3 a2) (a2 a1)
+	)
+	(links gl
+		(d1 d2) (d2 d3) (d3 d4) (d4 d5) (d5 d6) (d6 d7) (d7 d8)
+		(c1 c2) (c2 c3) (c3 c4) (c4 c5) (c5 c6) (c6 c7) (c7 c8)
+		(b1 b2) (b2 b3) (b3 b4) (b4 b5) (b5 b6) (b6 b7) (b7 b8)
+		(a1 a2) (a2 a3) (a3 a4) (a4 a5) (a5 a6) (a6 a7) (a7 a8)
+	)
+	(links be
+		(l5 k5) (k5 j5) (j5 i5) (i5 a4) (a4 b4) (b4 c4) (c4 d4)
+		(l6 k6) (k6 j6) (j6 i6) (i6 a3) (a3 b3) (b3 c3) (c3 d3)
+		(l7 k7) (k7 j7) (j7 i7) (i7 a2) (a2 b2) (b2 c2) (c2 d2)
+		(l8 k8) (k8 j8) (j8 i8) (i8 a1) (a1 b1) (b1 c1) (c1 d1)
+	)
+	(links bw
+		(d4 c4) (c4 b4) (b4 a4) (a4 i5) (i5 j5) (j5 k5) (k5 l5)
+		(d3 c3) (c3 b3) (b3 a3) (a3 i6) (i6 j6) (j6 k6) (k6 l6)
+		(d2 c2) (c2 b2) (b2 a2) (a2 i7) (i7 j7) (j7 k7) (k7 l7)
+		(d1 c1) (c1 b1) (b1 a1) (a1 i8) (i8 j8) (j8 k8) (k8 l8)
+	)
+	(links br
+		(h8 h7) (h7 h6) (h6 h5) (h5 h4) (h4 h3) (h3 h2) (h2 h1)
+		(g8 g7) (g7 g6) (g6 g5) (g5 g4) (g4 g3) (g3 g2) (g2 g1)
+		(f8 f7) (f7 f6) (f6 f5) (f5 f4) (f4 f3) (f3 f2) (f2 f1)
+		(e8 e7) (e7 e6) (e6 e5) (e5 e4) (e4 e3) (e3 e2) (e2 e1)
+	)
+	(links bl
+		(h1 h2) (h2 h3) (h3 h4) (h4 h5) (h5 h6) (h6 h7) (h7 h8)
+		(g1 g2) (g2 g3) (g3 g4) (g4 g5) (g5 g6) (g6 g7) (g7 g8)
+		(f1 f2) (f2 f3) (f3 f4) (f4 f5) (f5 f6) (f6 f7) (f7 f8)
+		(e1 e2) (e2 e3) (e3 e4) (e4 e5) (e5 e6) (e6 e7) (e7 e8)
+	)
+	(links da
+		(h2 g1) (g2 f1) (h3 g2) (a8 e2)
+		(e2 f3) (f3 g4) (g4 h5) (b8 a7) (a7 e3) (e3 f4) (f4 g5)
+		(g5 h6) (c8 b7) (b7 a6) (a6 e4) (e4 f5) (f5 g6) (g6 h7)
+		(l2 k1) (k2 j1) (l3 k2) (e8 i2)
+		(i2 j3) (j3 k4) (k4 l5) (f8 e7) (e7 i3) (i3 j4) (j4 k5)
+		(k5 l6) (g8 f7) (f7 e6) (e6 i4) (i4 j5) (j5 k6) (k6 l7)
+		(d2 c1) (c2 b1) (d3 c2) (i8 a2)
+		(a2 b3) (b3 c4) (c4 d5) (j8 i7) (i7 a3) (a3 b4) (b4 c5)
+		(c5 d6) (k8 j7) (j7 i6) (i6 a4) (a4 b5) (b5 c6) (c6 d7)
+		(a5 b6) (b6 c7) (c7 d8) (e5 f6) (f6 g7) (g7 h8) (i5 j6) (j6 k7) (k7 l8)
+		(f2 e1) (g3 f2) (h4 g3) (j2 i1) (k3 j2) (l4 k3) (b2 a1) (c3 b2) (d4 c3)
+	)
+	(links db
+		(g1 h2) (f1 g2) (g2 h3) (e2 a8)
+		(f3 e2) (g4 f3) (h5 g4) (a7 b8) (e3 a7) (f4 e3) (g5 f4)
+		(h6 g5) (b7 c8) (a6 b7) (e4 a6) (f5 e4) (g6 f5) (h7 g6)
+		(k1 l2) (j1 k2) (k2 l3) (i2 e8)
+		(j3 i2) (k4 j3) (l5 k4) (e7 f8) (i3 e7) (j4 i3) (k5 j4)
+		(l6 k5) (f7 g8) (e6 f7) (i4 e6) (j5 i4) (k6 j5) (l7 k6)
+		(c1 d2) (b1 c2) (c2 d3) (a2 i8)
+		(b3 a2) (c4 b3) (d5 c4) (i7 j8) (a3 i7) (b4 a3) (c5 b4)
+		(d6 c5) (j7 k8) (i6 j7) (a4 i6) (b5 a4) (c6 b5) (d7 c6)
+		(l8 k7) (k7 j6) (j6 i5) (h8 g7) (g7 f6) (f6 e5) (d8 c7) (c7 b6) (b6 a5)
+		(e1 f2) (f2 g3) (g3 h4) (i1 j2) (j2 k3) (k3 l4) (a1 b2) (b2 c3) (c3 d4)
+	)
+	(links dc
+		(c8 d7) (c7 d6) (b8 c7) (d4 c5)
+		(c5 b6) (b6 a7) (a7 e1) (d3 c4) (c4 b5) (b5 a6) (a6 e2)
+		(e2 f1) (d2 c3) (c3 b4) (b4 a5) (a5 e3) (e3 f2) (f2 g1)
+		(g8 h7) (g7 h6) (f8 g7) (h4 g5)
+		(g5 f6) (f6 e7) (e7 i1) (h3 g4) (g4 f5) (f5 e6) (e6 i2)
+		(i2 j1) (h2 g3) (g3 f4) (f4 e5) (e5 i3) (i3 j2) (j2 k1)
+		(k8 l7) (k7 l6) (j8 k7) (l4 k5)
+		(k5 j6) (j6 i7) (i7 a1) (l3 k4) (k4 j5) (j5 i6) (i6 a2)
+		(a2 b1) (l2 k3) (k3 j4) (j4 i5) (i5 a3) (a3 b2) (b2 c1)
+		(e4 f3) (f3 g2) (g2 h1) (i4 j3) (j3 k2) (k2 l1) (a4 b3) (b3 c2) (c2 d1)
+		(d5 c6) (c6 b7) (b7 a8) (h5 g6) (g6 f7) (f7 e8) (l5 k6) (k6 j7) (j7 i8)
+	)
+	(links dd
+		(d7 c8) (d6 c7) (c7 b8) (c5 d4)
+		(b6 c5) (a7 b6) (e1 a7) (c4 d3) (b5 c4) (a6 b5) (e2 a6)
+		(f1 e2) (c3 d2) (b4 c3) (a5 b4) (e3 a5) (f2 e3) (g1 f2)
+		(h7 g8) (h6 g7) (g7 f8) (g5 h4)
+		(f6 g5) (e7 f6) (i1 e7) (g4 h3) (f5 g4) (e6 f5) (i2 e6)
+		(j1 i2) (g3 h2) (f4 g3) (e5 f4) (i3 e5) (j2 i3) (k1 j2)
+		(l7 k8) (l6 k7) (k7 j8) (k5 l4)
+		(j6 k5) (i7 j6) (a1 i7) (k4 l3) (j5 k4) (i6 j5) (a2 i6)
+		(b1 a2) (k3 l2) (j4 k3) (i5 j4) (a3 i5) (b2 a3) (c1 b2)
+		(d1 c2) (c2 b3) (b3 a4) (l1 k2) (k2 j3) (j3 i4) (h1 g2) (g2 f3) (f3 e4)
+		(c6 d5) (b7 c6) (a8 b7) (g6 h5) (f7 g6) (e8 f7) (k6 l5) (j7 k6) (i8 j7)
+	)
+	(symmetry Green (re ge) (rw gw) (rr gr) (rl gl) (ge be) (gw bw) (gr br) (gl bl) (be re) (bw rw) (br rr) (bl rl))
+	(symmetry Blue (re be) (rw bw) (rr br) (rl bl) (be ge) (bw gw) (br gr) (bl gl) (ge re) (gw rw) (gr rr) (gl rl))
+	(zone
+		(name promotion-zone)
+		(players Red Green Blue)
+		(positions a1 b1 c1 d1 e1 f1 g1 h1 i1 j1 k1 l1 a8 b8 c8 d8 e8 f8 g8 h8 i8 j8 k8 l8)
+	)
+	(zone
+		(name third-rank)
+		(players Red)
+		(positions a6 b6 c6 d6 e3 f3 g3 h3)
+	)
+	(zone
+		(name third-rank)
+		(players Green)
+		(positions e6 f6 g6 h6 i3 j3 k3 l3)
+	)
+	(zone
+		(name third-rank)
+		(players Blue)
+		(positions i6 j6 k6 l6 a3 b3 c3 d3)
+	)
+	(zone
+		(name left-side)
+		(players Red)
+		(positions i8 i7 i6 i5 j8 j7 j6 j5 k8 k7 k6 k5 l8 l7 l6 l5)
+	)
+	(zone
+		(name left-side)
+		(players Green)
+		(positions a8 a7 a6 a5 b8 b7 b6 b5 c8 c7 c6 c5 d8 d7 d6 d5)
+	)
+	(zone
+		(name left-side)
+		(players Blue)
+		(positions e8 e7 e6 e5 f8 f7 f6 f5 g8 g7 g6 g5 h8 h7 h6 h5)
+	)
+	(zone
+		(name right-side)
+		(players Red)
+		(positions i1 i2 i3 i4 j1 j2 j3 j4 k1 k2 k3 k4 l1 l2 l3 l4)
+	)
+	(zone
+		(name right-side)
+		(players Green)
+		(positions a1 a2 a3 a4 b1 b2 b3 b4 c1 c2 c3 c4 d1 d2 d3 d4)
+	)
+	(zone
+		(name right-side)
+		(players Blue)
+		(positions e1 e2 e3 e4 f1 f2 f3 f4 g1 g2 g3 g4 h1 h2 h3 h4)
+	)
+)
+
+(define triboard2
+	(positions
+		(l11 220 64 251 95) (l10 254 67 285 98) (l9 288 70 319 101) (l8 322 73 353 104)
+		(l7 358 73 389 104) (l6 392 70 423 101) (l5 426 67 457 98) (l4 460 64 491 96)
+		(k11 208 97 239 128) (k10 246 106 277 137) (k9 284 115 315 146) (k8 322 123 353 154)
+		(k7 358 123 389 154) (k6 396 115 427 146) (k5 434 106 465 137) (k4 472 97 503 128)
+		(j11 196 130 227 161) (j10 237 145 268 176) (j9 278 161 309 192) (j8 319 176 350 207)
+		(j7 361 176 392 207) (j6 402 161 433 192) (j5 443 145 474 176) (j4 484 130 515 161)
+		(i11 184 163 215 194) (i10 229 185 260 216) (i9 274 207 305 238) (i8 319 229 350 260)
+		(i7 361 229 392 260) (i6 406 207 437 238) (i5 451 185 482 216) (i4 496 163 527 194)
+		(d4 102 270 133 301) (d5 123 297 154 328) (d6 144 324 175 355) (d7 162 351 193 382)
+		(d8 184 377 215 408) (d9 196 410 227 441) (d10 208 443 239 474) (d11 220 476 251 507)
+		(c4 123 243 154 274) (c5 150 270 181 301) (c6 178 297 209 328) (c7 206 324 237 355)
+		(c8 229 355 260 386) (c9 237 395 268 426) (c10 246 434 277 465) (c11 254 473 285 504)
+		(b4 144 216 175 247) (b5 178 243 209 274) (b6 212 270 243 301) (b7 250 297 281 328)
+		(b8 274 333 305 364) (b9 278 379 309 410) (b10 284 425 315 456) (b11 288 470 319 501)
+		(a4 162 189 193 220) (a5 206 216 237 247) (a6 250 243 281 274) (a7 294 270 325 301)
+		(a8 319 311 350 342) (a9 319 364 350 395) (a10 322 417 353 448) (a11 322 467 353 498)
+		(e4 358 467 389 498) (e5 358 417 389 448) (e6 361 364 392 395) (e7 361 311 392 342)
+		(e8 386 270 417 301) (e9 430 243 461 274) (e10 474 216 505 247) (e11 518 189 549 220)
+		(f4 392 470 423 501) (f5 396 425 427 456) (f6 402 379 433 410) (f7 406 333 437 364)
+		(f8 430 297 461 328) (f9 468 270 499 301) (f10 502 243 533 274) (f11 536 216 567 247)
+		(g4 426 473 457 504) (g5 434 434 465 465) (g6 443 395 474 426) (g7 451 355 482 386)
+		(g8 474 324 505 355) (g9 502 297 533 328) (g10 530 270 561 301) (g11 557 243 588 274)
+		(h4 460 476 491 507) (h5 472 443 503 474) (h6 484 410 515 441) (h7 496 377 527 408)
+		(h8 518 351 549 382) (h9 536 324 567 355) (h10 557 297 588 328) (h11 578 270 609 301)
+		(d12 228 508 259 539) (c12 260 508 291 539) (b12 292 508 323 539) (a12 324 508 355 539)
+		(e3 356 508 387 539) (f3 388 508 419 539) (g3 420 508 451 539) (h3 452 508 483 539)
+		(d13 228 540 259 571) (c13 260 540 291 571) (b13 292 540 323 571) (a13 324 540 355 571)
+		(e2 356 540 387 571) (f2 388 540 419 571) (g2 420 540 451 571) (h2 452 540 483 571)
+		(d14 228 572 259 603) (c14 260 572 291 603) (b14 292 572 323 603) (a14 324 572 355 603)
+		(e1 356 572 387 603) (f1 388 572 419 603) (g1 420 572 451 603) (h1 452 572 483 603)
+		(d1 22 220 53 251) (c1 38 192 69 223) (b1 54 164 85 195) (a1 70 136 101 167)
+		(i14 86 108 117 139) (j14 102 80 133 111) (k14 118 52 149 83) (l14 134 24 165 55)
+		(d2 50 236 81 267) (c2 66 208 97 239) (b2 82 180 113 211) (a2 98 152 129 183)
+		(i13 114 124 145 155) (j13 130 96 161 127) (k13 146 68 177 99) (l13 162 40 193 71)
+		(d3 78 252 109 283) (c3 94 224 125 255) (b3 110 196 141 227) (a3 126 168 157 199)
+		(i12 142 140 173 171) (j12 158 112 189 143) (k12 174 84 205 115) (l12 190 56 221 87)
+		(l3 490 56 521 87) (k3 506 84 537 115) (j3 522 112 553 143) (i3 538 140 569 171)
+		(e12 554 168 585 199) (f12 570 196 601 227) (g12 586 224 617 255) (h12 602 252 633 283)
+		(l2 518 40 549 71) (k2 534 68 565 99) (j2 550 96 581 127) (i2 566 124 597 155)
+		(e13 582 152 613 183) (f13 598 180 629 211) (g13 614 208 645 239) (h13 630 236 661 267)
+		(l1 546 24 577 55) (k1 562 52 593 83) (j1 578 80 609 111) (i1 594 108 625 139)
+		(e14 610 136 641 167) (f14 626 164 657 195) (g14 642 192 673 223) (h14 658 220 689 251)
+	)
+	(links re
+		(d8 c8) (c8 b8) (b8 a8) (a8 e7) (e7 f7) (f7 g7) (g7 h7)
+		(d9 c9) (c9 b9) (b9 a9) (a9 e6) (e6 f6) (f6 g6) (g6 h6)
+		(d10 c10) (c10 b10) (b10 a10) (a10 e5) (e5 f5) (f5 g5) (g5 h5)
+		(d11 c11) (c11 b11) (b11 a11) (a11 e4) (e4 f4) (f4 g4) (g4 h4)
+		(d12 c12) (c12 b12) (b12 a12) (a12 e3) (e3 f3) (f3 g3) (g3 h3)
+		(d13 c13) (c13 b13) (b13 a13) (a13 e2) (e2 f2) (f2 g2) (g2 h2)
+		(d14 c14) (c14 b14) (b14 a14) (a14 e1) (e1 f1) (f1 g1) (g1 h1)
+	)
+	(links rw
+		(c8 d8) (b8 c8) (a8 b8) (e7 a8) (f7 e7) (g7 f7) (h7 g7)
+		(c9 d9) (b9 c9) (a9 b9) (e6 a9) (f6 e6) (g6 f6) (h6 g6)
+		(c10 d10) (b10 c10) (a10 b10) (e5 a10) (f5 e5) (g5 f5) (h5 g5)
+		(c11 d11) (b11 c11) (a11 b11) (e4 a11) (f4 e4) (g4 f4) (h4 g4)
+		(c12 d12) (b12 c12) (a12 b12) (e3 a12) (f3 e3) (g3 f3) (h3 g3)
+		(c13 d13) (b13 c13) (a13 b13) (e2 a13) (f2 e2) (g2 f2) (h2 g2)
+		(c14 d14) (b14 c14) (a14 b14) (e1 a14) (f1 e1) (g1 f1) (h1 g1)
+	)
+	(links rr
+		(l14 l13) (l13 l12) (l12 l11) (l11 l10) (l10 l9) (l9 l8)
+		(l8 l7) (l7 l6) (l6 l5) (l5 l4) (l4 l3) (l3 l2) (l2 l1)
+		(k14 k13) (k13 k12) (k12 k11) (k11 k10) (k10 k9) (k9 k8)
+		(k8 k7) (k7 k6) (k6 k5) (k5 k4) (k4 k3) (k3 k2) (k2 k1)
+		(j14 j13) (j13 j12) (j12 j11) (j11 j10) (j10 j9) (j9 j8)
+		(j8 j7) (j7 j6) (j6 j5) (j5 j4) (j4 j3) (j3 j2) (j2 j1)
+		(i14 i13) (i13 i12) (i12 i11) (i11 i10) (i10 i9) (i9 i8)
+		(i8 i7) (i7 i6) (i6 i5) (i5 i4) (i4 i3) (i3 i2) (i2 i1)
+	)
+	(links rl
+		(l13 l14) (l12 l13) (l11 l12) (l10 l11) (l9 l10) (l8 l9)
+		(l7 l8) (l6 l7) (l5 l6) (l4 l5) (l3 l4) (l2 l3) (l1 l2)
+		(k13 k14) (k12 k13) (k11 k12) (k10 k11) (k9 k10) (k8 k9)
+		(k7 k8) (k6 k7) (k5 k6) (k4 k5) (k3 k4) (k2 k3) (k1 k2)
+		(j13 j14) (j12 j13) (j11 j12) (j10 j11) (j9 j10) (j8 j9)
+		(j7 j8) (j6 j7) (j5 j6) (j4 j5) (j3 j4) (j2 j3) (j1 j2)
+		(i13 i14) (i12 i13) (i11 i12) (i10 i11) (i9 i10) (i8 i9)
+		(i7 i8) (i6 i7) (i5 i6) (i4 i5) (i3 i4) (i2 i3) (i1 i2)
+	)
+	(links ge
+		(h8 g8) (g8 f8) (f8 e8) (e8 i7) (i7 j7) (j7 k7) (k7 l7)
+		(h9 g9) (g9 f9) (f9 e9) (e9 i6) (i6 j6) (j6 k6) (k6 l6)
+		(h10 g10) (g10 f10) (f10 e10) (e10 i5) (i5 j5) (j5 k5) (k5 l5)
+		(h11 g11) (g11 f11) (f11 e11) (e11 i4) (i4 j4) (j4 k4) (k4 l4)
+		(h12 g12) (g12 f12) (f12 e12) (e12 i3) (i3 j3) (j3 k3) (k3 l3)
+		(h13 g13) (g13 f13) (f13 e13) (e13 i2) (i2 j2) (j2 k2) (k2 l2)
+		(h14 g14) (g14 f14) (f14 e14) (e14 i1) (i1 j1) (j1 k1) (k1 l1)
+	)
+	(links gw
+		(g8 h8) (f8 g8) (e8 f8) (i7 e8) (j7 i7) (k7 j7) (l7 k7)
+		(g9 h9) (f9 g9) (e9 f9) (i6 e9) (j6 i6) (k6 j6) (l6 k6)
+		(g10 h10) (f10 g10) (e10 f10) (i5 e10) (j5 i5) (k5 j5) (l5 k5)
+		(g11 h11) (f11 g11) (e11 f11) (i4 e11) (j4 i4) (k4 j4) (l4 k4)
+		(g12 h12) (f12 g12) (e12 f12) (i3 e12) (j3 i3) (k3 j3) (l3 k3)
+		(g13 h13) (f13 g13) (e13 f13) (i2 e13) (j2 i2) (k2 j2) (l2 k2)
+		(g14 h14) (f14 g14) (e14 f14) (i1 e14) (j1 i1) (k1 j1) (l1 k1)
+	)
+	(links gr
+		(d14 d13) (d13 d12) (d12 d11) (d11 d10) (d10 d9) (d9 d8)
+		(d8 d7) (d7 d6) (d6 d5) (d5 d4) (d4 d3) (d3 d2) (d2 d1)
+		(c14 c13) (c13 c12) (c12 c11) (c11 c10) (c10 c9) (c9 c8)
+		(c8 c7) (c7 c6) (c6 c5) (c5 c4) (c4 c3) (c3 c2) (c2 c1)
+		(b14 b13) (b13 b12) (b12 b11) (b11 b10) (b10 b9) (b9 b8)
+		(b8 b7) (b7 b6) (b6 b5) (b5 b4) (b4 b3) (b3 b2) (b2 b1)
+		(a14 a13) (a13 a12) (a12 a11) (a11 a10) (a10 a9) (a9 a8)
+		(a8 a7) (a7 a6) (a6 a5) (a5 a4) (a4 a3) (a3 a2) (a2 a1)
+	)
+	(links gl
+		(d13 d14) (d12 d13) (d11 d12) (d10 d11) (d9 d10) (d8 d9)
+		(d7 d8) (d6 d7) (d5 d6) (d4 d5) (d3 d4) (d2 d3) (d1 d2)
+		(c13 c14) (c12 c13) (c11 c12) (c10 c11) (c9 c10) (c8 c9)
+		(c7 c8) (c6 c7) (c5 c6) (c4 c5) (c3 c4) (c2 c3) (c1 c2)
+		(b13 b14) (b12 b13) (b11 b12) (b10 b11) (b9 b10) (b8 b9)
+		(b7 b8) (b6 b7) (b5 b6) (b4 b5) (b3 b4) (b2 b3) (b1 b2)
+		(a13 a14) (a12 a13) (a11 a12) (a10 a11) (a9 a10) (a8 a9)
+		(a7 a8) (a6 a7) (a5 a6) (a4 a5) (a3 a4) (a2 a3) (a1 a2)
+	)
+	(links be
+		(l8 k8) (k8 j8) (j8 i8) (i8 a7) (a7 b7) (b7 c7) (c7 d7)
+		(l9 k9) (k9 j9) (j9 i9) (i9 a6) (a6 b6) (b6 c6) (c6 d6)
+		(l10 k10) (k10 j10) (j10 i10) (i10 a5) (a5 b5) (b5 c5) (c5 d5)
+		(l11 k11) (k11 j11) (j11 i11) (i11 a4) (a4 b4) (b4 c4) (c4 d4)
+		(l12 k12) (k12 j12) (j12 i12) (i12 a3) (a3 b3) (b3 c3) (c3 d3)
+		(l13 k13) (k13 j13) (j13 i13) (i13 a2) (a2 b2) (b2 c2) (c2 d2)
+		(l14 k14) (k14 j14) (j14 i14) (i14 a1) (a1 b1) (b1 c1) (c1 d1)
+	)
+	(links bw
+		(k8 l8) (j8 k8) (i8 j8) (a7 i8) (b7 a7) (c7 b7) (d7 c7)
+		(k9 l9) (j9 k9) (i9 j9) (a6 i9) (b6 a6) (c6 b6) (d6 c6)
+		(k10 l10) (j10 k10) (i10 j10) (a5 i10) (b5 a5) (c5 b5) (d5 c5)
+		(k11 l11) (j11 k11) (i11 j11) (a4 i11) (b4 a4) (c4 b4) (d4 c4)
+		(k12 l12) (j12 k12) (i12 j12) (a3 i12) (b3 a3) (c3 b3) (d3 c3)
+		(k13 l13) (j13 k13) (i13 j13) (a2 i13) (b2 a2) (c2 b2) (d2 c2)
+		(k14 l14) (j14 k14) (i14 j14) (a1 i14) (b1 a1) (c1 b1) (d1 c1)
+	)
+	(links br
+		(h14 h13) (h13 h12) (h12 h11) (h11 h10) (h10 h9) (h9 h8)
+		(h8 h7) (h7 h6) (h6 h5) (h5 h4) (h4 h3) (h3 h2) (h2 h1)
+		(g14 g13) (g13 g12) (g12 g11) (g11 g10) (g10 g9) (g9 g8)
+		(g8 g7) (g7 g6) (g6 g5) (g5 g4) (g4 g3) (g3 g2) (g2 g1)
+		(f14 f13) (f13 f12) (f12 f11) (f11 f10) (f10 f9) (f9 f8)
+		(f8 f7) (f7 f6) (f6 f5) (f5 f4) (f4 f3) (f3 f2) (f2 f1)
+		(e14 e13) (e13 e12) (e12 e11) (e11 e10) (e10 e9) (e9 e8)
+		(e8 e7) (e7 e6) (e6 e5) (e5 e4) (e4 e3) (e3 e2) (e2 e1)
+	)
+	(links bl
+		(h13 h14) (h12 h13) (h11 h12) (h10 h11) (h9 h10) (h8 h9)
+		(h7 h8) (h6 h7) (h5 h6) (h4 h5) (h3 h4) (h2 h3) (h1 h2)
+		(g13 g14) (g12 g13) (g11 g12) (g10 g11) (g9 g10) (g8 g9)
+		(g7 g8) (g6 g7) (g5 g6) (g4 g5) (g3 g4) (g2 g3) (g1 g2)
+		(f13 f14) (f12 f13) (f11 f12) (f10 f11) (f9 f10) (f8 f9)
+		(f7 f8) (f6 f7) (f5 f6) (f4 f5) (f3 f4) (f2 f3) (f1 f2)
+		(e13 e14) (e12 e13) (e11 e12) (e10 e11) (e9 e10) (e8 e9)
+		(e7 e8) (e6 e7) (e5 e6) (e4 e5) (e3 e4) (e2 e3) (e1 e2)
+	)
+	(links da
+		(a8 b9) (b9 c10) (c10 d11) (h3 g2) (g2 f1) (e14 i2) (i2 j3) (j3 k4) (k4 l5) (h9 g8) (g8 f7)
+		(f7 e6) (e6 a10) (a10 b11) (b11 c12) (c12 d13) (g14 f13) (f13 e12) (e12 i4) (i4 j5) (j5 k6) (k6 l7)
+		(i8 j9) (j9 k10) (k10 l11) (d3 c2) (c2 b1) (a14 e2) (e2 f3) (f3 g4) (g4 h5) (d9 c8) (c8 b7)
+		(b7 a6) (a6 i10) (i10 j11) (j11 k12) (k12 l13) (c14 b13) (b13 a12) (a12 e4) (e4 f5) (f5 g6) (g6 h7)
+		(e8 f9) (f9 g10) (g10 h11) (l3 k2) (k2 j1) (i14 a2) (a2 b3) (b3 c4) (c4 d5) (l9 k8) (k8 j7)
+		(j7 i6) (i6 e10) (e10 f11) (f11 g12) (g12 h13) (k14 j13) (j13 i12) (i12 a4) (a4 b5) (b5 c6) (c6 d7)
+		(e1 f2) (f2 g3) (g3 h4) (d10 c9) (c9 b8) (b8 a7) (a7 i9) (i9 j10) (j10 k11) (k11 l12) (d2 c1)
+		(b14 a13) (a13 e3) (e3 f4) (f4 g5) (g5 h6) (d8 c7) (c7 b6) (b6 a5) (a5 i11) (i11 j12) (j12 k13) (k13 l14)
+		(a1 b2) (b2 c3) (c3 d4) (l10 k9) (k9 j8) (j8 i7) (i7 e9) (e9 f10) (f10 g11) (g11 h12) (l2 k1)
+		(j14 i13) (i13 a3) (a3 b4) (b4 c5) (c5 d6) (l8 k7) (k7 j6) (j6 i5) (i5 e11) (e11 f12) (f12 g13) (g13 h14)
+		(i1 j2) (j2 k3) (k3 l4) (h10 g9) (g9 f8) (f8 e7) (e7 a9) (a9 b10) (b10 c11) (c11 d12) (h2 g1)
+		(f14 e13) (e13 i3) (i3 j4) (j4 k5) (k5 l6) (h8 g7) (g7 f6) (f6 e5) (e5 a11) (a11 b12) (b12 c13) (c13 d14)
+	)
+	(links db
+		(b9 a8) (c10 b9) (d11 c10) (g2 h3) (f1 g2) (i2 e14) (j3 i2) (k4 j3) (l5 k4) (g8 h9) (f7 g8)
+		(e6 f7) (a10 e6) (b11 a10) (c12 b11) (d13 c12) (f13 g14) (e12 f13) (i4 e12) (j5 i4) (k6 j5) (l7 k6)
+		(j9 i8) (k10 j9) (l11 k10) (c2 d3) (b1 c2) (e2 a14) (f3 e2) (g4 f3) (h5 g4) (c8 d9) (b7 c8)
+		(a6 b7) (i10 a6) (j11 i10) (k12 j11) (l13 k12) (b13 c14) (a12 b13) (e4 a12) (f5 e4) (g6 f5) (h7 g6)
+		(f9 e8) (g10 f9) (h11 g10) (k2 l3) (j1 k2) (a2 i14) (b3 a2) (c4 b3) (d5 c4) (k8 l9) (j7 k8)
+		(i6 j7) (e10 i6) (f11 e10) (g12 f11) (h13 g12) (j13 k14) (i12 j13) (a4 i12) (b5 a4) (c6 b5) (d7 c6)
+		(f2 e1) (g3 f2) (h4 g3) (c9 d10) (b8 c9) (a7 b8) (i9 a7) (j10 i9) (k11 j10) (l12 k11) (c1 d2)
+		(a13 b14) (e3 a13) (f4 e3) (g5 f4) (h6 g5) (c7 d8) (b6 c7) (a5 b6) (i11 a5) (j12 i11) (k13 j12) (l14 k13)
+		(b2 a1) (c3 b2) (d4 c3) (k9 l10) (j8 k9) (i7 j8) (e9 i7) (f10 e9) (g11 f10) (h12 g11) (k1 l2)
+		(i13 j14) (a3 i13) (b4 a3) (c5 b4) (d6 c5) (k7 l8) (j6 k7) (i5 j6) (e11 i5) (f12 e11) (g13 f12) (h14 g13)
+		(j2 i1) (k3 j2) (l4 k3) (g9 h10) (f8 g9) (e7 f8) (a9 e7) (b10 a9) (c11 b10) (d12 c11) (g1 h2)
+		(e13 f14) (i3 e13) (j4 i3) (k5 j4) (l6 k5) (g7 h8) (f6 g7) (e5 f6) (a11 e5) (b12 a11) (c13 b12) (d14 c13)
+	)
+	(links dc
+		(e7 f6) (f6 g5) (g5 h4) (d12 c13) (c13 b14) (a1 i13) (i13 j12) (j12 k11) (k11 l10) (d6 c7) (c7 b8)
+		(b8 a9) (a9 e5) (e5 f4) (f4 g3) (g3 h2) (c1 b2) (b2 a3) (a3 i11) (i11 j10) (j10 k9) (k9 l8)
+		(a7 b6) (b6 c5) (c5 d4) (l12 k13) (k13 j14) (i1 e13) (e13 f12) (f12 g11) (g11 h10) (l6 k7) (k7 j8)
+		(j8 i9) (i9 a5) (a5 b4) (b4 c3) (c3 d2) (k1 j2) (j2 i3) (i3 e11) (e11 f10) (f10 g9) (g9 h8)
+		(i7 j6) (j6 k5) (k5 l4) (h12 g13) (g13 f14) (e1 a13) (a13 b12) (b12 c11) (c11 d10) (h6 g7) (g7 f8)
+		(f8 e9) (e9 i5) (i5 j4) (j4 k3) (k3 l2) (g1 f2) (f2 e3) (e3 a11) (a11 b10) (b10 c9) (c9 d8)
+		(a14 b13) (b13 c12) (c12 d11) (h5 g6) (g6 f7) (f7 e8) (e8 i6) (i6 j5) (j5 k4) (k4 l3) (h13 g14)
+		(f1 e2) (e2 a12) (a12 b11) (b11 c10) (c10 d9) (h7 g8) (g8 f9) (f9 e10) (e10 i4) (i4 j3) (j3 k2) (k2 l1)
+		(i14 j13) (j13 k12) (k12 l11) (d5 c6) (c6 b7) (b7 a8) (a8 e6) (e6 f5) (f5 g4) (g4 h3) (d13 c14)
+		(b1 a2) (a2 i12) (i12 j11) (j11 k10) (k10 l9) (d7 c8) (c8 b9) (b9 a10) (a10 e4) (e4 f3) (f3 g2) (g2 h1)
+		(e14 f13) (f13 g12) (g12 h11) (l5 k6) (k6 j7) (j7 i8) (i8 a6) (a6 b5) (b5 c4) (c4 d3) (l13 k14)
+		(j1 i2) (i2 e12) (e12 f11) (f11 g10) (g10 h9) (l7 k8) (k8 j9) (j9 i10) (i10 a4) (a4 b3) (b3 c2) (c2 d1)
+	)
+	(links dd
+		(f6 e7) (g5 f6) (h4 g5) (c13 d12) (b14 c13) (i13 a1) (j12 i13) (k11 j12) (l10 k11) (c7 d6) (b8 c7)
+		(a9 b8) (e5 a9) (f4 e5) (g3 f4) (h2 g3) (b2 c1) (a3 b2) (i11 a3) (j10 i11) (k9 j10) (l8 k9)
+		(b6 a7) (c5 b6) (d4 c5) (k13 l12) (j14 k13) (e13 i1) (f12 e13) (g11 f12) (h10 g11) (k7 l6) (j8 k7)
+		(i9 j8) (a5 i9) (b4 a5) (c3 b4) (d2 c3) (j2 k1) (i3 j2) (e11 i3) (f10 e11) (g9 f10) (h8 g9)
+		(j6 i7) (k5 j6) (l4 k5) (g13 h12) (f14 g13) (a13 e1) (b12 a13) (c11 b12) (d10 c11) (g7 h6) (f8 g7)
+		(e9 f8) (i5 e9) (j4 i5) (k3 j4) (l2 k3) (f2 g1) (e3 f2) (a11 e3) (b10 a11) (c9 b10) (d8 c9)
+		(b13 a14) (c12 b13) (d11 c12) (g6 h5) (f7 g6) (e8 f7) (i6 e8) (j5 i6) (k4 j5) (l3 k4) (g14 h13)
+		(e2 f1) (a12 e2) (b11 a12) (c10 b11) (d9 c10) (g8 h7) (f9 g8) (e10 f9) (i4 e10) (j3 i4) (k2 j3) (l1 k2)
+		(j13 i14) (k12 j13) (l11 k12) (c6 d5) (b7 c6) (a8 b7) (e6 a8) (f5 e6) (g4 f5) (h3 g4) (c14 d13)
+		(a2 b1) (i12 a2) (j11 i12) (k10 j11) (l9 k10) (c8 d7) (b9 c8) (a10 b9) (e4 a10) (f3 e4) (g2 f3) (h1 g2)
+		(f13 e14) (g12 f13) (h11 g12) (k6 l5) (j7 k6) (i8 j7) (a6 i8) (b5 a6) (c4 b5) (d3 c4) (k14 l13)
+		(i2 j1) (e12 i2) (f11 e12) (g10 f11) (h9 g10) (k8 l7) (j9 k8) (i10 j9) (a4 i10) (b3 a4) (c2 b3) (d1 c2)
+	)
+	(symmetry Green (re ge) (rw gw) (rr gr) (rl gl) (ge be) (gw bw) (gr br) (gl bl) (be re) (bw rw) (br rr) (bl rl))
+	(symmetry Blue (re be) (rw bw) (rr br) (rl bl) (be ge) (bw gw) (br gr) (bl gl) (ge re) (gw rw) (gr rr) (gl rl))
+	(zone
+		(name promotion-zone)
+		(players Red Green Blue)
+		(positions a11 b11 c11 d11 e11 f11 g11 h11 i11 j11 k11 l11 a4 b4 c4 d4 e4 f4 g4 h4 i4 j4 k4 l4)
+	)
+	(zone
+		(name third-rank)
+		(players Red)
+		(positions a9 b9 c9 d9 e6 f6 g6 h6 a13 b13 c13 d13 e2 f2 g2 h2)
+	)
+	(zone
+		(name third-rank)
+		(players Green)
+		(positions e9 f9 g9 h9 i6 j6 k6 l6 e13 f13 g13 h13 i2 j2 k2 l2)
+	)
+	(zone
+		(name third-rank)
+		(players Blue)
+		(positions i9 j9 k9 l9 a6 b6 c6 d6 i13 j13 k13 l13 a2 b2 c2 d2)
+	)
+	(zone
+		(name left-side)
+		(players Red)
+		(positions i8 i9 i10 i11 i12 i13 i14 j8 j9 j10 j11 j12 j13 j14
+			k8 k9 k10 k11 k12 k13 k14 l8 l9 l10 l11 l12 l13 l14)
+	)
+	(zone
+		(name right-side)
+		(players Red)
+		(positions i1 i2 i3 i4 i5 i6 i7 j1 j2 j3 j4 j5 j6 j7
+			k1 k2 k3 k4 k5 k6 k7 l1 l2 l3 l4 l5 l6 l7)
+	)
+	(zone
+		(name left-side)
+		(players Green)
+		(positions a8 a9 a10 a11 a12 a13 a14 b8 b9 b10 b11 b12 b13 b14
+			c8 c9 c10 c11 c12 c13 c14 d8 d9 d10 d11 d12 d13 d14)
+	)
+	(zone
+		(name right-side)
+		(players Green)
+		(positions a1 a2 a3 a4 a5 a6 a7 b1 b2 b3 b4 b5 b6 b7
+			c1 c2 c3 c4 c5 c6 c7 d1 d2 d3 d4 d5 d6 d7)
+	)
+	(zone
+		(name left-side)
+		(players Blue)
+		(positions e8 e9 e10 e11 e12 e13 e14 f8 f9 f10 f11 f12 f13 f14
+			g8 g9 g10 g11 g12 g13 g14 h8 h9 h10 h11 h12 h13 h14)
+	)
+	(zone
+		(name right-side)
+		(players Blue)
+		(positions e1 e2 e3 e4 e5 e6 e7 f1 f2 f3 f4 f5 f6 f7
+			g1 g2 g3 g4 g5 g6 g7 h1 h2 h3 h4 h5 h6 h7)
+	)
+)
+
+(define Up-Pawn
+	(help "Up-Pawn: moves forward, captures forward-diagonally")
+	(description "Up-Pawn:\Moves forward by one step, can also move forward two steps from its starting position. It captures by moving one step forward and one step sideward. When it arrives at the starting position of the opponents non-pawns (marked by a thin frame), it promotes to anything except a king.")
+	(image Red "images\Chess\RPawn.bmp" Green "images\Chess\GPawn.bmp" Blue "images\Chess\BPawn.bmp")
+	(moves
+		(Pawn-move gr)
+		(Pawn-move bl)
+		(Pawn-move2)
+		(Pawn-capture gr re)
+		(Pawn-capture gr rw)
+		(Pawn-capture bl re)
+		(Pawn-capture bl rw)
+		(Pawn-capture gr be)
+		(Pawn-capture gr bw)
+		(Pawn-capture bl ge)
+		(Pawn-capture bl gw)
+		(Pawn-capture2 be)
+		(Pawn-capture2 bw)
+		(Pawn-capture2 ge)
+		(Pawn-capture2 gw)
+		(En-Passant be rl)
+		(En-Passant bw rl)
+		(En-Passant be gr)
+		(En-Passant bw gr)
+		(En-Passant ge rr)
+		(En-Passant gw rr)
+		(En-Passant ge bl)
+		(En-Passant gw bl)
+	)
+)
+
+(define Down-Pawn
+	(help "Down-Pawn: moves backward, captures backward-diagonally")
+	(description "Down-Pawn:\Moves backward by one step, can also move backward two steps from its starting position. It captures by moving one stepd backward and one step sideward. When it arrives at the starting position of the opponents non-pawns (marked by a thin frame), it promotes to anything except a king.")
+	(image Red "images\Chess\RPawn2.bmp" Green "images\Chess\GPawn2.bmp" Blue "images\Chess\BPawn2.bmp")
+	(moves
+		(Pawn-move gl)
+		(Pawn-move br)
+		(Pawn-move3)
+		(Pawn-capture gl re)
+		(Pawn-capture gl rw)
+		(Pawn-capture br re)
+		(Pawn-capture br rw)
+		(Pawn-capture gl be)
+		(Pawn-capture gl bw)
+		(Pawn-capture br ge)
+		(Pawn-capture br gw)
+		(Pawn-capture3 be)
+		(Pawn-capture3 bw)
+		(Pawn-capture3 ge)
+		(Pawn-capture3 gw)
+		(En-Passant be rr)
+		(En-Passant bw rr)
+		(En-Passant be gl)
+		(En-Passant bw gl)
+		(En-Passant ge rl)
+		(En-Passant gw rl)
+		(En-Passant ge br)
+		(En-Passant gw br)
+	)
+)
+
+(define RealPieces
+	(piece
+		(name Knight)
+		(help "Knight: moves like 'L'")
+		(description "Knight:\The only piece that leaps over other pieces. It moves like an 'L', two steps in one direction and one orthogonally. That makes it a short range piece. It is less powerful at the edge of the board.")
+		(image Red "images\Chess\RKnight.bmp" Green "images\Chess\GKnight.bmp" Blue "images\Chess\BKnight.bmp")
+		(moves
+			(leap gr re)
+			(leap gr rw)
+			(leap gl re)
+			(leap gl rw)
+			(leap gr be)
+			(leap gr bw)
+			(leap gl be)
+			(leap gl bw)
+			(leap br re)
+			(leap br rw)
+			(leap bl re)
+			(leap bl rw)
+			(leap br ge)
+			(leap br gw)
+			(leap bl ge)
+			(leap bl gw)
+			(leap rr ge)
+			(leap rr gw)
+			(leap rl ge)
+			(leap rl gw)
+			(leap rr be)
+			(leap rr bw)
+			(leap rl be)
+			(leap rl bw)
+			(leap ge rr)
+			(leap ge rl)
+			(leap gw rr)
+			(leap gw rl)
+			(leap ge br)
+			(leap ge bl)
+			(leap gw br)
+			(leap gw bl)
+			(leap be rr)
+			(leap be rl)
+			(leap bw rr)
+			(leap bw rl)
+			(leap be gr)
+			(leap be gl)
+			(leap bw gr)
+			(leap bw gl)
+			(leap re gr)
+			(leap re gl)
+			(leap rw gr)
+			(leap rw gl)
+			(leap re br)
+			(leap re bl)
+			(leap rw br)
+			(leap rw bl)
+		)
+	)
+	(piece
+		(name Bishop)
+		(help "Bishop: slides diagonally")
+		(description "Bishop:\A Bishop moves any number of squares on a diagonal. It may not leap over other pieces.")
+		(image Red "images\Chess\RBishop.bmp" Green "images\Chess\GBishop.bmp" Blue "images\Chess\BBishop.bmp")
+		(moves
+			(slide da)
+			(slide db)
+			(slide dc)
+			(slide dd)
+		)
+	)
+	(piece
+		(name Rook)
+		(help "Rook: slides orthogonally")
+		(description "Rook:\A Rook moves any number of squares orthogonally on a rank or a file. It may not leap over other pieces.")
+		(image Red "images\Chess\RRook.bmp" Green "images\Chess\GRook.bmp" Blue "images\Chess\BRook.bmp")
+		(attribute never-moved? true)
+		(moves
+			(rook-slide re)
+			(rook-slide rw)
+			(rook-slide ge)
+			(rook-slide gw)
+			(rook-slide be)
+			(rook-slide bw)
+			(rook-slide2 rl gl bl)
+			(rook-slide2 rr gr br)
+		)
+	)
+	(piece
+		(name Queen)
+		(help "Queen: moves like Bishop or Rook")
+		(description "Queen:\A Queen moves like a Bishop or a Rook.")
+		(image Red "images\Chess\RQueen.bmp" Green "images\Chess\GQueen.bmp" Blue "images\Chess\BQueen.bmp")
+		(moves
+			(slide re)
+			(slide rw)
+			(slide ge)
+			(slide gw)
+			(slide be)
+			(slide bw)
+			(slide da)
+			(slide db)
+			(slide dc)
+			(slide dd)
+			(slide2 rl gl bl)
+			(slide2 rr gr br)
+		)
+	)
+	(piece
+		(name King)
+		(help "King: moves one step in any direction, not into check, may castle")
+		(description "King:\A king moves one step in any direction, but never into check. A king that has not moved yet may castle with a rook that has not moved either. The rook moves next to the king and the king leaps over the rook. The king may not castle through or out of check.")
+		(image Red "images\Chess\RKing.bmp" Green "images\Chess\GKing.bmp" Blue "images\Chess\BKing.bmp")
+		(attribute never-moved? true)
+		(moves
+			(king-shift re)
+			(king-shift rw)
+			(king-shift rl)
+			(king-shift rr)
+			(king-shift ge)
+			(king-shift gw)
+			(king-shift gl)
+			(king-shift gr)
+			(king-shift be)
+			(king-shift bw)
+			(king-shift bl)
+			(king-shift br)
+			(king-shift da)
+			(king-shift db)
+			(king-shift dc)
+			(king-shift dd)
+			(O-O-S)
+			(O-O-L)
+			(O-O-O-S)
+			(O-O-O-L)
+		)
+	)
+)
+
+(define Pieces
+	(piece
+		(name Pawn)
+		(Up-Pawn)
+	)
+	(piece
+		(name UpPawn)
+		(Up-Pawn)
+	)
+	(piece
+		(name DownPawn)
+		(Down-Pawn)
+	)
+	(RealPieces)
+)
+
+(define BoardSetup
+	(board-setup
+		(Red
+			(Pawn a7 b7 c7 d7 e2 f2 g2 h2)
+			(Knight c8 g1)
+			(Bishop b8 f1)
+			(Rook d8 h1)
+			(Queen a8)
+			(King e1)
+		)
+		(Green
+			(Pawn i2 j2 k2 l2 e7 f7 g7 h7)
+			(Knight g8 k1)
+			(Bishop f8 j1)
+			(Rook h8 l1)
+			(Queen e8)
+			(King i1)
+		)
+		(Blue
+			(Pawn i7 j7 k7 l7 a2 b2 c2 d2)
+			(Knight k8 c1)
+			(Bishop j8 b1)
+			(Rook l8 d1)
+			(Queen i8)
+			(King a1)
+		)
+	)
+)
+
+(define BoardSetup2
+	(board-setup
+		(Red
+			(UpPawn a10 b10 c10 d10 e5 f5 g5 h5)
+			(DownPawn a12 b12 c12 d12 e3 f3 g3 h3)
+			(Knight c11 g4)
+			(Bishop b11 f4)
+			(Rook d11 h4)
+			(Queen a11)
+			(King e4)
+		)
+		(Green
+			(UpPawn e10 f10 g10 h10 i5 j5 k5 l5)
+			(DownPawn e12 f12 g12 h12 i3 j3 k3 l3)
+			(Knight g11 k4)
+			(Bishop f11 j4)
+			(Rook h11 l4)
+			(Queen e11)
+			(King i4)
+		)
+		(Blue
+			(UpPawn i10 j10 k10 l10 a5 b5 c5 d5)
+			(DownPawn i12 j12 k12 l12 a3 b3 c3 d3)
+			(Knight k11 c4)
+			(Bishop j11 b4)
+			(Rook l11 d4)
+			(Queen i11)
+			(King a4)
+		)
+	)
+)
+
+(game
+	(title "Trichess")
+	(description "Trichess contains of three half chess boards. They are glued together around a central point such that each half board is glued to its neighbours. Note that the central point is a singularity because it is not crossed by diagonals.")
+	(history "This variant was invented by Robert Zubrin in 1971.")
+	(players Red Green Blue)
+	(turn-order Red Green Blue)
+	(pass-turn false)
+	(board
+		(image "images\Chess\Trichess.bmp")
+		(triboard)
+	)
+	(BoardSetup)
+	(Pieces)
+	(win-condition (Red Green Blue) (and (total-piece-count 2 King) (pieces-remaining 1 King)))
+	(draw-condition (Red Green Blue) stalemated)
+)
+
+(variant
+	(title "Trirankcylinder")
+	(description "In the case of the rank cylinder the three half boards are wrapped around a cylinder before being glued together. The colors indicate how the edges are connected. This board has two singularities, one in the center and one on 'the other side', i.e. where all three colored edges meet.")
+	(board
+		(image "images\Chess\TriRCyl.bmp")
+		(triboard)
+		(links re (h1 d8) (h2 d7) (h3 d6) (h4 d5))
+		(links rw (d8 h1) (d7 h2) (d6 h3) (d5 h4))
+		(links ge (l1 h8) (l2 h7) (l3 h6) (l4 h5))
+		(links gw (h8 l1) (h7 l2) (h6 l3) (h5 l4))
+		(links be (d1 l8) (d2 l7) (d3 l6) (d4 l5))
+		(links bw (l8 d1) (l7 d2) (l6 d3) (l5 d4))
+		(links da (d5 h3) (d6 h2) (d7 h1) (h5 l3) (h6 l2) (h7 l1) (l5 d3) (l6 d2) (l7 d1))
+		(links db (h3 d5) (h2 d6) (h1 d7) (l3 h5) (l2 h6) (l1 h7) (d3 l5) (d2 l6) (d1 l7))
+		(links dc (d8 h2) (d7 h3) (d6 h4) (h8 l2) (h7 l3) (h6 l4) (l8 d2) (l7 d3) (l6 d4))
+		(links dd (h2 d8) (h3 d7) (h4 d6) (l2 h8) (l3 h7) (l4 h6) (d2 l8) (d3 l7) (d4 l6))
+	)
+	(BoardSetup)
+)
+
+(variant
+	(title "Trifilecylinder")
+	(description "The file cylinder consists of three half boards which are extended to a mirror symmetry and glued together on both sides, as the colors indicate. Once again there are two singularities, the obvious one in the center and another one at the other meeting point.")
+	(board
+		(image "images\Chess\TriFCyl.bmp")
+		(triboard2)
+		(links rr (i1 i14) (j1 j14) (k1 k14) (l1 l14))
+		(links rl (i14 i1) (j14 j1) (k14 k1) (l14 l1))
+		(links gr (a1 a14) (b1 b14) (c1 c14) (d1 d14))
+		(links gl (a14 a1) (b14 b1) (c14 c1) (d14 d1))
+		(links br (e1 e14) (f1 f14) (g1 g14) (h1 h14))
+		(links bl (e14 e1) (f14 f1) (g14 g1) (h14 h1))
+		(links da (d1 c14) (c1 b14) (b1 a14) (h1 g14) (g1 f14) (f1 e14) (l1 k14) (k1 j14) (j1 i14))
+		(links db (c14 d1) (b14 c1) (a14 b1) (g14 h1) (f14 g1) (e14 f1) (k14 l1) (j14 k1) (i14 j1))
+		(links dc (d14 c1) (c14 b1) (b14 a1) (h14 g1) (g14 f1) (f14 e1) (l14 k1) (k14 j1) (j14 i1))
+		(links dd (c1 d14) (b1 c14) (a1 b14) (g1 h14) (f1 g14) (e1 f14) (k1 l14) (j1 k14) (i1 j14))
+	)
+	(BoardSetup2)
+)
+
+(variant
+	(title "Tritorus")
+	(description "The combination of a rank cylinder and a file cylinder yields a torus. The colors show its various connections. There are four singularities which can be seen by looking at the diagonals. Since the torus has no edges, every starting point of a diagonal is adjacent to a singularity.")
+	(board
+		(image "images\Chess\TriTorus.bmp")
+		(triboard2)
+		(links re (h7 d8) (h6 d9) (h5 d10) (h4 d11) (h3 d12) (h2 d13) (h1 d14))
+		(links rw (d8 h7) (d9 h6) (d10 h5) (d11 h4) (d12 h3) (d13 h2) (d14 h1))
+		(links ge (l7 h8) (l6 h9) (l5 h10) (l4 h11) (l3 h12) (l2 h13) (l1 h14))
+		(links gw (h8 l7) (h9 l6) (h10 l5) (h11 l4) (h12 l3) (h13 l2) (h14 l1))
+		(links be (d7 l8) (d6 l9) (d5 l10) (d4 l11) (d3 l12) (d2 l13) (d1 l14))
+		(links bw (l8 d7) (l9 d6) (l10 d5) (l11 d4) (l12 d3) (l13 d2) (l14 d1))
+		(links rr (i1 i14) (j1 j14) (k1 k14) (l1 l14))
+		(links rl (i14 i1) (j14 j1) (k14 k1) (l14 l1))
+		(links gr (a1 a14) (b1 b14) (c1 c14) (d1 d14))
+		(links gl (a14 a1) (b14 b1) (c14 c1) (d14 d1))
+		(links br (e1 e14) (f1 f14) (g1 g14) (h1 h14))
+		(links bl (e14 e1) (f14 f1) (g14 g1) (h14 h1))
+		(links da
+			(d1 c14) (c1 b14) (b1 a14) (h1 g14) (g1 f14) (f1 e14) (l1 k14) (k1 j14) (j1 i14)
+			(h6 d8) (h5 d9) (h4 d10) (d11 h3) (d12 h2) (d13 h1)
+			(l6 h8) (l5 h9) (l4 h10) (h11 l3) (h12 l2) (h13 l1)
+			(d6 l8) (d5 l9) (d4 l10) (l11 d3) (l12 d2) (l13 d1)
+		)
+		(links db
+			(c14 d1) (b14 c1) (a14 b1) (g14 h1) (f14 g1) (e14 f1) (k14 l1) (j14 k1) (i14 j1)
+			(d8 h6) (d9 h5) (d10 h4) (h3 d11) (h2 d12) (h1 d13)
+			(h8 l6) (h9 l5) (h10 l4) (l3 h11) (l2 h12) (l1 h13)
+			(l8 d6) (l9 d5) (l10 d4) (d3 l11) (d2 l12) (d1 l13)
+		)
+		(links dc
+			(d14 c1) (c14 b1) (b14 a1) (h14 g1) (g14 f1) (f14 e1) (l14 k1) (k14 j1) (j14 i1)
+			(d9 h7) (d10 h6) (d11 h5) (h4 d12) (h3 d13) (h2 d14)
+			(h9 l7) (h10 l6) (h11 l5) (l4 h12) (l3 h13) (l2 h14)
+			(l9 d7) (l10 d6) (l11 d5) (d4 l12) (d3 l13) (d2 l14)
+		)
+		(links dd
+			(c1 d14) (b1 c14) (a1 b14) (g1 h14) (f1 g14) (e1 f14) (k1 l14) (j1 k14) (i1 j14)
+			(h7 d9) (h6 d10) (h5 d11) (d12 h4) (d13 h3) (d14 h2)
+			(l7 h9) (l6 h10) (l5 h11) (h12 l4) (h13 l3) (h14 l2)
+			(d7 l9) (d6 l10) (d5 l11) (l12 d4) (l13 d3) (l14 d2)
+		)
+	)
+	(BoardSetup2)
+)
+
+(variant
+	(title "Trimöbius")
+	(description "The Möbius strip is constructed similar to the file cylinder, except that each extended half board is twisted by 180° before being glued together on both sides. The result is similar to the ordinary Möbius strip, but it is an orientable manifold.")
+	(board
+		(image "images\Chess\TriMobius.bmp")
+		(triboard2)
+		(links rr (l1 d14) (k1 c14) (j1 b14) (i1 a14))
+		(links rl (l14 h1) (k14 g1) (j14 f1) (i14 e1))
+		(links gr (d1 h14) (c1 g14) (b1 f14) (a1 e14))
+		(links gl (d14 l1) (c14 k1) (b14 j1) (a14 i1))
+		(links br (h1 l14) (g1 k14) (f1 j14) (e1 i14))
+		(links bl (h14 d1) (g14 c1) (f14 b1) (e14 a1))
+		(links da (f1 i14) (g1 j14) (h1 k14) (j1 a14) (k1 b14) (l1 c14) (b1 e14) (c1 f14) (d1 g14))
+		(links db (i14 f1) (j14 g1) (k14 h1) (a14 j1) (b14 k1) (c14 l1) (e14 b1) (f14 c1) (g14 d1))
+		(links dc (j14 e1) (k14 f1) (l14 g1) (b14 i1) (c14 j1) (d14 k1) (f14 a1) (g14 b1) (h14 c1))
+		(links dd (e1 j14) (f1 k14) (g1 l14) (i1 b14) (j1 c14) (k1 d14) (a1 f14) (b1 g14) (c1 h14))
+	)
+	(BoardSetup2)
+)
+
+(variant
+	(title "Triklein")
+	(description "The combination of a Möbius strip and a rank cylinder yields a Klein bottle. Its properties are similar to the ordinary Klein bottle, but it is orientable.")
+	(board
+		(image "images\Chess\TriKlein.bmp")
+		(triboard2)
+		(links re (h7 d8) (h6 d9) (h5 d10) (h4 d11) (h3 d12) (h2 d13) (h1 d14))
+		(links rw (d8 h7) (d9 h6) (d10 h5) (d11 h4) (d12 h3) (d13 h2) (d14 h1))
+		(links ge (l7 h8) (l6 h9) (l5 h10) (l4 h11) (l3 h12) (l2 h13) (l1 h14))
+		(links gw (h8 l7) (h9 l6) (h10 l5) (h11 l4) (h12 l3) (h13 l2) (h14 l1))
+		(links be (d7 l8) (d6 l9) (d5 l10) (d4 l11) (d3 l12) (d2 l13) (d1 l14))
+		(links bw (l8 d7) (l9 d6) (l10 d5) (l11 d4) (l12 d3) (l13 d2) (l14 d1))
+		(links rr (l1 d14) (k1 c14) (j1 b14) (i1 a14))
+		(links rl (l14 h1) (k14 g1) (j14 f1) (i14 e1))
+		(links gr (d1 h14) (c1 g14) (b1 f14) (a1 e14))
+		(links gl (d14 l1) (c14 k1) (b14 j1) (a14 i1))
+		(links br (h1 l14) (g1 k14) (f1 j14) (e1 i14))
+		(links bl (h14 d1) (g14 c1) (f14 b1) (e14 a1))
+		(links da
+			(f1 i14) (g1 j14) (h1 k14) (j1 a14) (k1 b14) (l1 c14) (b1 e14) (c1 f14) (d1 g14)
+			(h6 d8) (h5 d9) (h4 d10) (d11 h3) (d12 h2) (d13 h1)
+			(l6 h8) (l5 h9) (l4 h10) (h11 l3) (h12 l2) (h13 l1)
+			(d6 l8) (d5 l9) (d4 l10) (l11 d3) (l12 d2) (l13 d1)
+		)
+		(links db
+			(i14 f1) (j14 g1) (k14 h1) (a14 j1) (b14 k1) (c14 l1) (e14 b1) (f14 c1) (g14 d1)
+			(d8 h6) (d9 h5) (d10 h4) (h3 d11) (h2 d12) (h1 d13)
+			(h8 l6) (h9 l5) (h10 l4) (l3 h11) (l2 h12) (l1 h13)
+			(l8 d6) (l9 d5) (l10 d4) (d3 l11) (d2 l12) (d1 l13)
+		)
+		(links dc
+			(j14 e1) (k14 f1) (l14 g1) (b14 i1) (c14 j1) (d14 k1) (f14 a1) (g14 b1) (h14 c1)
+			(d9 h7) (d10 h6) (d11 h5) (h4 d12) (h3 d13) (h2 d14)
+			(h9 l7) (h10 l6) (h11 l5) (l4 h12) (l3 h13) (l2 h14)
+			(l9 d7) (l10 d6) (l11 d5) (d4 l12) (d3 l13) (d2 l14)
+		)
+		(links dd
+			(e1 j14) (f1 k14) (g1 l14) (i1 b14) (j1 c14) (k1 d14) (a1 f14) (b1 g14) (c1 h14)
+			(h7 d9) (h6 d10) (h5 d11) (d12 h4) (d13 h3) (d14 h2)
+			(l7 h9) (l6 h10) (l5 h11) (h12 l4) (h13 l3) (h14 l2)
+			(d7 l9) (d6 l10) (d5 l11) (l12 d4) (l13 d3) (l14 d2)
+		)
+	)
+	(BoardSetup2)
+)
