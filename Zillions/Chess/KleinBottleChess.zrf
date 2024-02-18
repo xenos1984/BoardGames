@@ -1,0 +1,404 @@
+(define leap
+	(
+		$1
+		$1
+		$2
+		(verify not-friend?)
+		add
+	)
+)
+
+(define king-shift
+	(
+		$1
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define king-shift2
+	(
+		$1
+		$2
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define slide
+	(
+		$1
+		(while empty? add $1)
+		(verify not-friend?)
+		add
+	)
+)
+
+(define rook-slide
+	(
+		$1
+		(while empty? (set-attribute never-moved? false) add $1)
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define gostep
+	(if (and (in-zone? glue-zone) (in-zone? glue-zone $1)) (set-flag invers (not-flag? invers)))
+	$1
+	(if (flag? invers) $2 else (opposite $2))
+)
+
+(define slide2
+	(
+		(set-flag invers false)
+		(gostep $1 $2)
+		(while empty? add (gostep $1 $2))
+		(verify not-friend?)
+		add
+	)
+)
+
+(define Pawn-add
+	(if (in-zone? promotion-zone) (add Knight Bishop Rook Queen) else add)
+)
+
+(define Pawn-move
+	(
+		$1
+		(verify empty?)
+		(Pawn-add)
+		(verify (in-zone? third-rank))
+		$1
+		(verify empty?)
+		add
+	)
+)
+
+(define Pawn-capture
+	(
+		$2
+		$1
+		(verify enemy?)
+		(if (and (in-zone? glue-zone) (in-zone? glue-zone (opposite $1))) (add $3) else (Pawn-add))
+	)
+)
+
+(define En-Passant
+	(
+		$1
+		(verify enemy?)
+		(verify last-to?)
+		(verify (or (piece? UpPawn) (piece? DownPawn)))
+		capture
+		(if (and (in-zone? glue-zone) (in-zone? glue-zone (opposite $1))) $2 else (opposite $2))
+		to
+		(if (and (in-zone? glue-zone) (in-zone? glue-zone (opposite $1))) $2 else (opposite $2))
+		(verify last-from?)
+		(if (and (in-zone? glue-zone) (in-zone? glue-zone (opposite $1))) (add $3) else add)
+	)
+)
+
+(define O-O-S
+	(
+		(verify never-moved?)
+		e
+		(verify empty?)
+		e
+		(verify empty?)
+		cascade
+		e
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		e
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		e
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-L
+	(
+		(verify never-moved?)
+		e
+		(verify empty?)
+		e
+		(verify empty?)
+		cascade
+		e
+		(verify empty?)
+		e
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		e
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		e
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-O-S
+	(
+		(verify never-moved?)
+		w
+		(verify empty?)
+		w
+		(verify empty?)
+		cascade
+		w
+		(verify empty?)
+		w
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		w
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		w
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-O-L
+	(
+		(verify never-moved?)
+		w
+		(verify empty?)
+		w
+		(verify empty?)
+		cascade
+		w
+		(verify empty?)
+		w
+		(verify empty?)
+		w
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		w
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		w
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define KleinBoard
+	(grid
+		(start-rectangle 16 16 47 47)
+		(dimensions
+			("a/b/c/d/e/f/g/h" (32 0))
+			("11/10/9/8/7/6/5/4/3/2/1/14/13/12" (0 32))
+		)
+		(directions (n 0 -1) (e 1 0) (s 0 1) (w -1 0))
+	)
+	(symmetry Black (n s)(s n))
+	(zone
+		(name promotion-zone)
+		(players White)
+		(positions a8 b8 c8 d8 e8 f8 g8 h8)
+	)
+	(zone
+		(name promotion-zone)
+		(players Black)
+		(positions a1 b1 c1 d1 e1 f1 g1 h1)
+	)
+	(zone
+		(name third-rank)
+		(players White)
+		(positions a3 b3 c3 d3 e3 f3 g3 h3 a13 b13 c13 d13 e13 f13 g13 h13)
+	)
+	(zone
+		(name third-rank)
+		(players Black)
+		(positions a6 b6 c6 d6 e6 f6 g6 h6 a10 b10 c10 d10 e10 f10 g10 h10)
+	)
+	(zone
+		(name glue-zone)
+		(players White Black)
+		(positions a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14)
+	)
+	(links e (h1 a1) (h2 a14) (h3 a13) (h4 a12) (h5 a11) (h6 a10) (h7 a9)
+		(h8 a8) (h9 a7) (h10 a6) (h11 a5) (h12 a4) (h13 a3) (h14 a2))
+	(links w (a1 h1) (a14 h2) (a13 h3) (a12 h4) (a11 h5) (a10 h6) (a9 h7)
+		(a8 h8) (a7 h9) (a6 h10) (a5 h11) (a4 h12) (a3 h13) (a2 h14))
+)
+
+(define Up-Pawn
+	(help "Up-Pawn: moves forward, captures forward-diagonally")
+	(description "Up-Pawn:\Moves forward by one step, can also move forward two steps from its starting position. It captures by moving one step forward and one step sideward. When it arrives at the starting position of the opponents non-pawns (marked by a thin frame), it promotes to anything except a king.")
+	(image White "images\Chess\WPawn.bmp" Black "images\Chess\KPawn.bmp")
+	(moves
+		(Pawn-capture e n DownPawn)
+		(Pawn-capture w n DownPawn)
+		(Pawn-move n)
+		(En-Passant e n DownPawn)
+		(En-Passant w n DownPawn)
+	)
+)
+(define Down-Pawn
+	(help "Down-Pawn: moves backward, captures backward-diagonally")
+	(description "Down-Pawn:\Moves backward by one step, can also move backward two steps from its starting position. It captures by moving one stepd backward and one step sideward. When it arrives at the starting position of the opponents non-pawns (marked by a thin frame), it promotes to anything except a king.")
+	(image White "images\Chess\WPawn2.bmp" Black "images\Chess\KPawn2.bmp")
+	(moves
+		(Pawn-capture e s UpPawn)
+		(Pawn-capture w s UpPawn)
+		(Pawn-move s)
+		(En-Passant e s UpPawn)
+		(En-Passant w s UpPawn)
+	)
+)
+
+(define RealPieces
+	(piece
+		(name Knight)
+		(help "Knight: moves like 'L'")
+		(description "Knight:\The only piece that leaps over other pieces. It moves like an 'L', two steps in one direction and one orthogonally. That makes it a short range piece. It is less powerful at the edge of the board.")
+		(image White "images\Chess\WKnight.bmp" Black "images\Chess\KKnight.bmp")
+		(moves
+			(leap n e)
+			(leap n w)
+			(leap s e)
+			(leap s w)
+			(leap e n)
+			(leap e s)
+			(leap w n)
+			(leap w s)
+		)
+	)
+
+	(piece
+		(name Bishop)
+		(help "Bishop: slides diagonally")
+		(description "Bishop:\A Bishop moves any number of squares on a diagonal. It may not leap over other pieces.")
+		(image White "images\Chess\WBishop.bmp" Black "images\Chess\KBishop.bmp")
+		(moves
+			(slide2 e n)
+			(slide2 e s)
+			(slide2 w n)
+			(slide2 w s)
+		)
+	)
+
+	(piece
+		(name Rook)
+		(help "Rook: slides orthogonally")
+		(description "Rook:\A Rook moves any number of squares orthogonally on a rank or a file. It may not leap over other pieces.")
+		(image White "images\Chess\WRook.bmp" Black "images\Chess\KRook.bmp")
+		(attribute never-moved? true)
+		(moves
+			(rook-slide n)
+			(rook-slide s)
+			(rook-slide e)
+			(rook-slide w)
+		)
+	)
+
+	(piece
+		(name Queen)
+		(help "Queen: moves like Bishop or Rook")
+		(description "Queen:\A Queen moves like a Bishop or a Rook.")
+		(image White "images\Chess\WQueen.bmp" Black "images\Chess\KQueen.bmp")
+		(moves
+			(slide n)
+			(slide s)
+			(slide e)
+			(slide w)
+			(slide2 e n)
+			(slide2 e s)
+			(slide2 w n)
+			(slide2 w s)
+		)
+	)
+
+	(piece
+		(name King)
+		(help "King: moves one step in any direction, not into check, may castle")
+		(description "King:\A king moves one step in any direction, but never into check. A king that has not moved yet may castle with a rook that has not moved either. The rook moves next to the king and the king leaps over the rook. The king may not castle through or out of check.")
+		(image White "images\Chess\WKing.bmp" Black "images\Chess\KKing.bmp")
+		(moves
+			(king-shift n)
+			(king-shift s)
+			(king-shift e)
+			(king-shift w)
+			(king-shift2 n e)
+			(king-shift2 n w)
+			(king-shift2 s e)
+			(king-shift2 s w)
+			(O-O-S)
+			(O-O-L)
+			(O-O-O-S)
+			(O-O-O-L)
+		)
+	)
+)
+
+(define Pieces
+	(piece
+		(name UpPawn)
+		(Up-Pawn)
+	)
+	(piece
+		(name DownPawn)
+		(Down-Pawn)
+	)
+	(RealPieces)
+)
+
+(define BoardSetup
+	(White
+		(UpPawn a2 b2 c2 d2 e2 f2 g2 h2)
+		(DownPawn a14 b14 c14 d14 e14 f14 g14 h14)
+		(Knight b1 g1)
+		(Bishop c1 f1)
+		(Rook a1 h1)
+		(Queen d1)
+		(King e1)
+	)
+	(Black
+		(UpPawn a7 b7 c7 d7 e7 f7 g7 h7)
+		(DownPawn a9 b9 c9 d9 e9 f9 g9 h9)
+		(Knight b8 g8)
+		(Bishop c8 f8)
+		(Rook a8 h8)
+		(Queen d8)
+		(King e8)
+	)
+)
+
+(game
+	(title "Klein Bottle Chess")
+	(description "This Klein bottle can be obtained by connecting the upper and lower edge of the board to form a cylinder and connecting its edges through a reflection leaving the real pieces of white and black stable. The colors indicate how the edges are connected.")
+	(history "Invented by Manuel Hohmann in 2002, programmed in May 2003 with the advise of Ingo Althöfer.")
+	(players White Black)
+	(turn-order White Black)
+	(pass-turn false)
+	(board
+		(image "images\Chess\KleinL8x14.bmp")
+		(KleinBoard)
+		(links n (a11 a12) (b11 b12) (c11 c12) (d11 d12) (e11 e12) (f11 f12) (g11 g12) (h11 h12))
+		(links s (a12 a11) (b12 b11) (c12 c11) (d12 d11) (e12 e11) (f12 f11) (g12 g11) (h12 h11))
+	)
+	(board-setup (BoardSetup))
+	(Pieces)
+	(loss-condition (White Black) (checkmated King))
+)
