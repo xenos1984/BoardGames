@@ -1,0 +1,674 @@
+(define leap
+	(
+		$1
+		$2
+		$1
+		(verify not-friend?)
+		add
+	)
+)
+
+(define king-shift
+	(
+		$1
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define slide
+	(
+		$1
+		(while empty? add $1)
+		(verify not-friend?)
+		add
+	)
+)
+
+(define rook-slide
+	(
+		$1
+		(while empty? (set-attribute never-moved? false) add $1)
+		(verify not-friend?)
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define Pawn-add
+	(if (in-zone? promotion-zone) (add Knight Bishop Rook Queen) else add)
+)
+
+(define Pawn-move
+	(
+		$1
+		(verify empty?)
+		(Pawn-add)
+		(verify (in-zone? third-rank))
+		$1
+		(verify empty?)
+		add
+	)
+)
+
+(define Pawn-capture
+	(
+		$1
+		(verify enemy?)
+		(Pawn-add)
+	)
+)
+
+(define En-Passant
+	(
+		$1
+		(verify enemy?)
+		(verify last-to?)
+		(verify (or (piece? UpPawn) (piece? DownPawn) (piece? Pawn)))
+		capture
+		$2
+		to
+		$2
+		(verify last-from?)
+		add
+	)
+)
+
+(define O-O-S
+	(
+		(verify never-moved?)
+		e
+		(verify empty?)
+		e
+		(verify empty?)
+		cascade
+		e
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		e
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		e
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-L
+	(
+		(verify never-moved?)
+		e
+		(verify empty?)
+		e
+		(verify empty?)
+		cascade
+		e
+		(verify empty?)
+		e
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		e
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		e
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-O-S
+	(
+		(verify never-moved?)
+		w
+		(verify empty?)
+		w
+		(verify empty?)
+		cascade
+		w
+		(verify empty?)
+		w
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		w
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		w
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define O-O-O-L
+	(
+		(verify never-moved?)
+		w
+		(verify empty?)
+		w
+		(verify empty?)
+		cascade
+		w
+		(verify empty?)
+		w
+		(verify empty?)
+		w
+		(verify (and friend? (piece? Rook) never-moved?))
+		from
+		back
+		(verify not-attacked?)
+		w
+		(verify not-attacked?)
+		to
+		(set-attribute never-moved? false)
+		w
+		(set-attribute never-moved? false)
+		add
+	)
+)
+
+(define boardflip (n s) (s n) (e w) (w e) (nw se) (se nw) (sw ne) (ne sw))
+
+(define tetraboard
+	(grid
+		(start-rectangle 16 16 47 47)
+		(dimensions
+			("d/c/b/a/m/n/o/p" (32 0))
+			("8/7/6/5" (0 32))
+		)
+		(directions (n 0 -1) (s 0 1) (e -1 0) (w 1 0) (se -1 1) (nw 1 -1) (sw 1 1) (ne -1 -1))
+	)
+	(grid
+		(start-rectangle 320 16 351 47)
+		(dimensions
+			("p/o/n/m/i/j/k/l" (32 0))
+			("1/2/3/4" (0 32))
+		)
+		(directions (n 0 1) (s 0 -1) (e 1 0) (w -1 0) (se 1 -1) (nw -1 1) (sw -1 -1) (ne 1 1))
+	)
+	(grid
+		(start-rectangle 320 192 351 223)
+		(dimensions
+			("h/g/f/e/i/j/k/l" (32 0))
+			("5/6/7/8" (0 32))
+		)
+		(directions (n 0 1) (s 0 -1) (e 1 0) (w -1 0) (se 1 -1) (nw -1 1) (sw -1 -1) (ne 1 1))
+	)
+	(grid
+		(start-rectangle 16 192 47 223)
+		(dimensions
+			("d/c/b/a/e/f/g/h" (32 0))
+			("4/3/2/1" (0 32))
+		)
+		(directions (n 0 -1) (s 0 1) (e -1 0) (w 1 0) (se -1 1) (nw 1 -1) (sw 1 1) (ne -1 -1))
+	)
+	(links n (a4 a5) (b4 b5) (c4 c5) (d4 d5) (e4 e5) (f4 f5) (g4 g5) (h4 h5)
+		(i4 i5) (j4 j5) (k4 k5) (l4 l5) (m4 m5) (n4 n5) (o4 o5) (p4 p5))
+	(links s (a5 a4) (b5 b4) (c5 c4) (d5 d4) (e5 e4) (f5 f4) (g5 g4) (h5 h4)
+		(i5 i4) (j5 j4) (k5 k4) (l5 l4) (m5 m4) (n5 n4) (o5 o4) (p5 p4))
+	(links se (n5 m4) (o5 n4) (p5 o4) (i5 j4) (j5 k4) (k5 l4) (f5 e4) (g5 f4) (h5 g4) (a5 b4) (b5 c4) (c5 d4))
+	(links nw (m4 n5) (n4 o5) (o4 p5) (j4 i5) (k4 j5) (l4 k5) (e4 f5) (f4 g5) (g4 h5) (b4 a5) (c4 b5) (d4 c5))
+	(links sw (m5 n4) (n5 o4) (o5 p4) (j5 i4) (k5 j4) (l5 k4) (e5 f4) (f5 g4) (g5 h4) (d5 c4) (c5 b4) (b5 a4))
+	(links ne (n4 m5) (o4 n5) (p4 o5) (i4 j5) (j4 k5) (k4 l5) (f4 e5) (g4 f5) (h4 g5) (c4 d5) (b4 c5) (a4 b5))
+	(symmetry Yellow (boardflip))
+	(symmetry Blue (boardflip))
+	(zone
+		(name promotion-zone)
+		(players Red Yellow Green Blue)
+		(positions a1 b1 c1 d1 e1 f1 g1 h1 i1 j1 k1 l1 m1 n1 o1 p1
+			a8 b8 c8 d8 e8 f8 g8 h8 i8 j8 k8 l8 m8 n8 o8 p8)
+	)
+	(zone
+		(name third-rank)
+		(players Red)
+		(positions a3 b3 c3 d3 e3 f3 g3 h3)
+	)
+	(zone
+		(name third-rank)
+		(players Yellow)
+		(positions e6 f6 g6 h6 i6 j6 k6 l6)
+	)
+	(zone
+		(name third-rank)
+		(players Green)
+		(positions i3 j3 k3 l3 m3 n3 o3 p3)
+	)
+	(zone
+		(name third-rank)
+		(players Blue)
+		(positions m6 n6 o6 p6 a6 b6 c6 d6)
+	)
+)
+
+(define tetraboard2
+	(grid
+		(start-rectangle 16 16 47 47)
+		(dimensions
+			("d/c/b/a/m/n/o/p" (32 0))
+			("14/13/12/11/10/9/8" (0 32))
+		)
+		(directions (n 0 -1) (s 0 1) (e -1 0) (w 1 0) (se -1 1) (nw 1 -1) (sw 1 1) (ne -1 -1))
+	)
+	(grid
+		(start-rectangle 320 16 351 47)
+		(dimensions
+			("p/o/n/m/i/j/k/l" (32 0))
+			("1/2/3/4/5/6/7" (0 32))
+		)
+		(directions (n 0 1) (s 0 -1) (e 1 0) (w -1 0) (se 1 -1) (nw -1 1) (sw -1 -1) (ne 1 1))
+	)
+	(grid
+		(start-rectangle 320 288 351 319)
+		(dimensions
+			("h/g/f/e/i/j/k/l" (32 0))
+			("8/9/10/11/12/13/14" (0 32))
+		)
+		(directions (n 0 1) (s 0 -1) (e 1 0) (w -1 0) (se 1 -1) (nw -1 1) (sw -1 -1) (ne 1 1))
+	)
+	(grid
+		(start-rectangle 16 288 47 319)
+		(dimensions
+			("d/c/b/a/e/f/g/h" (32 0))
+			("7/6/5/4/3/2/1" (0 32))
+		)
+		(directions (n 0 -1) (s 0 1) (e -1 0) (w 1 0) (se -1 1) (nw 1 -1) (sw 1 1) (ne -1 -1))
+	)
+	(links n (a7 a8) (b7 b8) (c7 c8) (d7 d8) (e7 e8) (f7 f8) (g7 g8) (h7 h8)
+		(i7 i8) (j7 j8) (k7 k8) (l7 l8) (m7 m8) (n7 n8) (o7 o8) (p7 p8))
+	(links s (a8 a7) (b8 b7) (c8 c7) (d8 d7) (e8 e7) (f8 f7) (g8 g7) (h8 h7)
+		(i8 i7) (j8 j7) (k8 k7) (l8 l7) (m8 m7) (n8 n7) (o8 o7) (p8 p7))
+	(links se (n8 m7) (o8 n7) (p8 o7) (i8 j7) (j8 k7) (k8 l7) (f8 e7) (g8 f7) (h8 g7) (a8 b7) (b8 c7) (c8 d7))
+	(links nw (m7 n8) (n7 o8) (o7 p8) (j7 i8) (k7 j8) (l7 k8) (e7 f8) (f7 g8) (g7 h8) (b7 a8) (c7 b8) (d7 c8))
+	(links sw (m8 n7) (n8 o7) (o8 p7) (j8 i7) (k8 j7) (l8 k7) (e8 f7) (f8 g7) (g8 h7) (d8 c7) (c8 b7) (b8 a7))
+	(links ne (n7 m8) (o7 n8) (p7 o8) (i7 j8) (j7 k8) (k7 l8) (f7 e8) (g7 f8) (h7 g8) (c7 d8) (b7 c8) (a7 b8))
+	(symmetry Yellow (boardflip))
+	(symmetry Blue (boardflip))
+	(zone
+		(name promotion-zone)
+		(players Red Yellow Green Blue)
+		(positions a4 b4 c4 d4 e4 f4 g4 h4 i4 j4 k4 l4 m4 n4 o4 p4
+			a11 b11 c11 d11 e11 f11 g11 h11 i11 j11 k11 l11 m11 n11 o11 p11)
+	)
+	(zone
+		(name third-rank)
+		(players Red)
+		(positions a6 b6 c6 d6 e6 f6 g6 h6 a2 b2 c2 d2 e2 f2 g2 h2)
+	)
+	(zone
+		(name third-rank)
+		(players Yellow)
+		(positions e9 f9 g9 h9 i9 j9 k9 l9 e13 f13 g13 h13 i13 j13 k13 l13)
+	)
+	(zone
+		(name third-rank)
+		(players Green)
+		(positions i6 j6 k6 l6 m6 n6 o6 p6 i2 j2 k2 l2 m2 n2 o2 p2)
+	)
+	(zone
+		(name third-rank)
+		(players Blue)
+		(positions m9 n9 o9 p9 a9 b9 c9 d9 m13 n13 o13 p13 a13 b13 c13 d13)
+	)
+)
+
+(define Up-Pawn
+	(help "Up-Pawn: moves forward, captures forward-diagonally")
+	(description "Up-Pawn:\Moves forward by one field, can also move forward two fields from its starting position. It captures by moving one field forward and one field sideward. When it arrives at the starting position of the opponents non-pawns (marked by a thin frame), it promotes to anything except a king.")
+	(image Red "images\Chess\RPawn.bmp" Yellow "images\Chess\YPawn.bmp" Green "images\Chess\GPawn.bmp" Blue "images\Chess\BPawn.bmp")
+	(moves
+		(Pawn-capture ne)
+		(Pawn-capture nw)
+		(Pawn-move n)
+		(En-Passant e n)
+		(En-Passant w n)
+	)
+)
+(define Down-Pawn
+	(help "Down-Pawn: moves backward, captures backward-diagonally")
+	(description "Down-Pawn:\Moves backward by one field, can also move backward two fields from its starting position. It captures by moving one field backward and one field sideward. When it arrives at the starting position of the opponents non-pawns (marked by a thin frame), it promotes to anything except a king.")
+	(image Red "images\Chess\RPawn2.bmp" Yellow "images\Chess\YPawn2.bmp" Green "images\Chess\GPawn2.bmp" Blue "images\Chess\BPawn2.bmp")
+	(moves
+		(Pawn-capture se)
+		(Pawn-capture sw)
+		(Pawn-move s)
+		(En-Passant e s)
+		(En-Passant w s)
+	)
+)
+
+(define RealPieces
+	(piece
+		(name Knight)
+		(help "Knight: moves like 'L'")
+		(description "Knight:\The only piece that leaps over other pieces. It moves like an 'L', two steps in one direction and one orthogonally. That makes it a short range piece. It is less powerful at the edge of the board.")
+		(image Red "images\Chess\RKnight.bmp" Yellow "images\Chess\YKnight.bmp" Green "images\Chess\GKnight.bmp" Blue "images\Chess\BKnight.bmp")
+		(moves
+			(leap n e)
+			(leap n w)
+			(leap s e)
+			(leap s w)
+			(leap e n)
+			(leap e s)
+			(leap w n)
+			(leap w s)
+		)
+	)
+
+	(piece
+		(name Bishop)
+		(help "Bishop: slides diagonally")
+		(description "Bishop:\A Bishop moves any number of squares on a diagonal. It may not leap over other pieces.")
+		(image Red "images\Chess\RBishop.bmp" Yellow "images\Chess\YBishop.bmp" Green "images\Chess\GBishop.bmp" Blue "images\Chess\BBishop.bmp")
+		(moves
+			(slide ne)
+			(slide nw)
+			(slide se)
+			(slide sw)
+		)
+	)
+
+	(piece
+		(name Rook)
+		(help "Rook: slides orthogonally")
+		(description "Rook:\A Rook moves any number of squares orthogonally on a rank or a file. It may not leap over other pieces.")
+		(image Red "images\Chess\RRook.bmp" Yellow "images\Chess\YRook.bmp" Green "images\Chess\GRook.bmp" Blue "images\Chess\BRook.bmp")
+		(attribute never-moved? true)
+		(moves
+			(rook-slide n)
+			(rook-slide s)
+			(rook-slide e)
+			(rook-slide w)
+		)
+	)
+
+	(piece
+		(name Queen)
+		(help "Queen: moves like Bishop or Rook")
+		(description "Queen:\A Queen moves like a Bishop or a Rook.")
+		(image Red "images\Chess\RQueen.bmp" Yellow "images\Chess\YQueen.bmp" Green "images\Chess\GQueen.bmp" Blue "images\Chess\BQueen.bmp")
+		(moves
+			(slide n)
+			(slide s)
+			(slide e)
+			(slide w)
+			(slide ne)
+			(slide nw)
+			(slide se)
+			(slide sw)
+		)
+	)
+
+	(piece
+		(name King)
+		(help "King: moves one step in any direction, not into check, may castle")
+		(description "King:\A king moves one step in any direction, but never into check. A king that has not moved yet may castle with a rook that has not moved either. The rook moves next to the king and the king leaps over the rook. The king may not castle through or out of check.")
+		(image Red "images\Chess\RKing.bmp" Yellow "images\Chess\YKing.bmp" Green "images\Chess\GKing.bmp" Blue "images\Chess\BKing.bmp")
+		(attribute never-moved? true)
+		(moves
+			(king-shift n)
+			(king-shift s)
+			(king-shift e)
+			(king-shift w)
+			(king-shift ne)
+			(king-shift nw)
+			(king-shift se)
+			(king-shift sw)
+			(O-O-S)
+			(O-O-L)
+			(O-O-O-S)
+			(O-O-O-L)
+		)
+	)
+)
+
+(define Pieces
+	(piece
+		(name Pawn)
+		(Up-Pawn)
+	)
+	(piece
+		(name UpPawn)
+		(Up-Pawn)
+	)
+	(piece
+		(name DownPawn)
+		(Down-Pawn)
+	)
+	(RealPieces)
+)
+
+(define BoardSetup
+	(Red
+		(Pawn a2 b2 c2 d2 e2 f2 g2 h2)
+		(Knight c1 g1)
+		(Bishop b1 f1)
+		(Rook d1 h1)
+		(Queen a1)
+		(King e1)
+	)
+	(Yellow
+		(Pawn e7 f7 g7 h7 i7 j7 k7 l7)
+		(Knight g8 k8)
+		(Bishop f8 j8)
+		(Rook h8 l8)
+		(Queen e8)
+		(King i8)
+	)
+	(Green
+		(Pawn i2 j2 k2 l2 m2 n2 o2 p2)
+		(Knight k1 o1)
+		(Bishop j1 n1)
+		(Rook l1 p1)
+		(Queen i1)
+		(King m1)
+	)
+	(Blue
+		(Pawn m7 n7 o7 p7 a7 b7 c7 d7)
+		(Knight o8 c8)
+		(Bishop n8 b8)
+		(Rook p8 d8)
+		(Queen m8)
+		(King a8)
+	)
+)
+
+(define BoardSetup2
+	(Red
+		(UpPawn a5 b5 c5 d5 e5 f5 g5 h5)
+		(DownPawn a3 b3 c3 d3 e3 f3 g3 h3)
+		(Knight c4 g4)
+		(Bishop b4 f4)
+		(Rook d4 h4)
+		(Queen a4)
+		(King e4)
+	)
+	(Yellow
+		(UpPawn e10 f10 g10 h10 i10 j10 k10 l10)
+		(DownPawn e12 f12 g12 h12 i12 j12 k12 l12)
+		(Knight g11 k11)
+		(Bishop f11 j11)
+		(Rook h11 l11)
+		(Queen e11)
+		(King i11)
+	)
+	(Green
+		(UpPawn i5 j5 k5 l5 m5 n5 o5 p5)
+		(DownPawn i3 j3 k3 l3 m3 n3 o3 p3)
+		(Knight k4 o4)
+		(Bishop j4 n4)
+		(Rook l4 p4)
+		(Queen i4)
+		(King m4)
+	)
+	(Blue
+		(UpPawn m10 n10 o10 p10 a10 b10 c10 d10)
+		(DownPawn m12 n12 o12 p12 a12 b12 c12 d12)
+		(Knight o11 c11)
+		(Bishop n11 b11)
+		(Rook p11 d11)
+		(Queen m11)
+		(King a11)
+	)
+)
+
+(game
+	(title "Tetrachess")
+	(description "Tetrachess contains of four half chess boards. They are glued together around a central point such that each half board is glued to its neighbours. Note that the central point is a singularity because it is not crossed by diagonals.")
+	(history "This variant is based on three-player chess invented by Robert Zubrin in 1971.")
+	(players Red Yellow Green Blue)
+	(turn-order Red Yellow Green Blue)
+	(board
+		(image "images\Chess\Tetrachess.bmp")
+		(tetraboard)
+	)
+	(board-setup (BoardSetup))
+	(Pieces)
+	(win-condition (Red Yellow Green Blue) (and (total-piece-count 3 King) (pieces-remaining 1 King)))
+	(draw-condition (Red Yellow Green Blue) stalemated)
+)
+
+(variant
+	(title "Tetrarankcylinder")
+	(description "In the case of the rank cylinder the four half boards are wrapped around a cylinder before being glued together. The colors indicate how the edges are connected. This board has two singularities, one in the center and one on 'the other side', i.e. where all three colored edges meet.")
+	(board
+		(image "images\Chess\TetraRCyl.bmp")
+		(tetraboard)
+		(links e (d1 h1) (d2 h2) (d3 h3) (d4 h4) (l5 h5) (l6 h6) (l7 h7) (l8 h8)
+			(l1 p1) (l2 p2) (l3 p3) (l4 p4) (d5 p5) (d6 p6) (d7 p7) (d8 p8))
+		(links w (h1 d1) (h2 d2) (h3 d3) (h4 d4) (h5 l5) (h6 l6) (h7 l7) (h8 l8)
+			(p1 l1) (p2 l2) (p3 l3) (p4 l4) (p5 d5) (p6 d6) (p7 d7) (p8 d8))
+		(links se (d2 h1) (d3 h2) (d4 h3) (l6 h5) (l7 h6) (l8 h7) (l2 p1) (l3 p2) (l4 p3) (d6 p5) (d7 p6) (d8 p7))
+		(links nw (h1 d2) (h2 d3) (h3 d4) (h5 l6) (h6 l7) (h7 l8) (p1 l2) (p2 l3) (p3 l4) (p5 d6) (p6 d7) (p7 d8))
+		(links sw (h2 d1) (h3 d2) (h4 d3) (h6 l5) (h7 l6) (h8 l7) (p2 l1) (p3 l2) (p4 l3) (p6 d5) (p7 d6) (p8 d7))
+		(links ne (d1 h2) (d2 h3) (d3 h4) (l5 h6) (l6 h7) (l7 h8) (l1 p2) (l2 p3) (l3 p4) (d5 p6) (d6 p7) (d7 p8))
+	)
+	(board-setup (BoardSetup))
+)
+
+(variant
+	(title "Tetrafilecylinder")
+	(description "The file cylinder consists of four half boards which are extended to a mirror symmetry and glued together on both sides, as the colors indicate. Once again there are two singularities, the obvious one in the center and another one at the other meeting point.")
+	(board
+		(image "images\Chess\TetraFCyl.bmp")
+		(tetraboard2)
+		(links n (a14 a1) (b14 b1) (c14 c1) (d14 d1) (e14 e1) (f14 f1) (g14 g1) (h14 h1)
+			(i14 i1) (j14 j1) (k14 k1) (l14 l1) (m14 m1) (n14 n1) (o14 o1) (p14 p1))
+		(links s (a1 a14) (b1 b14) (c1 c14) (d1 d14) (e1 e14) (f1 f14) (g1 g14) (h1 h14)
+			(i1 i14) (j1 j14) (k1 k14) (l1 l14) (m1 m14) (n1 n14) (o1 o14) (p1 p14))
+		(links se (c1 d14) (b1 c14) (a1 b14) (h1 g14) (g1 f14) (f1 e14)
+			(k1 l14) (j1 k14) (i1 j14) (p1 o14) (o1 n14) (n1 m14))
+		(links nw (d14 c1) (c14 b1) (b14 a1) (g14 h1) (f14 g1) (e14 f1)
+			(l14 k1) (k14 j1) (j14 i1) (o14 p1) (n14 o1) (m14 n1))
+		(links sw (d1 c14) (c1 b14) (b1 a14) (g1 h14) (f1 g14) (e1 f14)
+			(l1 k14) (k1 j14) (j1 i14) (o1 p14) (n1 o14) (m1 n14))
+		(links ne (c14 d1) (b14 c1) (a14 b1) (h14 g1) (g14 f1) (f14 e1)
+			(k14 l1) (j14 k1) (i14 j1) (p14 o1) (o14 n1) (n14 m1))
+	)
+	(board-setup (BoardSetup2))
+)
+
+(variant
+	(title "Tetratorus")
+	(description "The combination of a rank cylinder and a file cylinders yields a torus. The colors show its various connections. There are four singularities which can be seen by looking at the diagonals. Since the torus has no edges, every starting point of a diagonal is adjacent to a singularity.")
+	(board
+		(image "images\Chess\TetraTorus.bmp")
+		(tetraboard2)
+		(links n (a14 a1) (b14 b1) (c14 c1) (d14 d1) (e14 e1) (f14 f1) (g14 g1) (h14 h1)
+			(i14 i1) (j14 j1) (k14 k1) (l14 l1) (m14 m1) (n14 n1) (o14 o1) (p14 p1))
+		(links s (a1 a14) (b1 b14) (c1 c14) (d1 d14) (e1 e14) (f1 f14) (g1 g14) (h1 h14)
+			(i1 i14) (j1 j14) (k1 k14) (l1 l14) (m1 m14) (n1 n14) (o1 o14) (p1 p14))
+		(links e (d1 h1) (d2 h2) (d3 h3) (d4 h4) (d5 h5) (d6 h6) (d7 h7)
+			(l8 h8) (l9 h9) (l10 h10) (l11 h11) (l12 h12) (l13 h13) (l14 h14)
+			(l1 p1) (l2 p2) (l3 p3) (l4 p4) (l5 p5) (l6 p6) (l7 p7)
+			(d8 p8) (d9 p9) (d10 p10) (d11 p11) (d12 p12) (d13 p13) (d14 p14))
+		(links w (h1 d1) (h2 d2) (h3 d3) (h4 d4) (h5 d5) (h6 d6) (h7 d7)
+			(h8 l8) (h9 l9) (h10 l10) (h11 l11) (h12 l12) (h13 l13) (h14 l14)
+			(p1 l1) (p2 l2) (p3 l3) (p4 l4) (p5 l5) (p6 l6) (p7 l7)
+			(p8 d8) (p9 d9) (p10 d10) (p11 d11) (p12 d12) (p13 d13) (p14 d14))
+		(links se (c1 d14) (b1 c14) (a1 b14) (h1 g14) (g1 f14) (f1 e14)
+			(k1 l14) (j1 k14) (i1 j14) (p1 o14) (o1 n14) (n1 m14)
+			(d2 h1) (d3 h2) (d4 h3) (d5 h4) (d6 h5) (d7 h6) (l9 h8) (l10 h9) (l11 h10) (l12 h11) (l13 h12) (l14 h13)
+			(l2 p1) (l3 p2) (l4 p3) (l5 p4) (l6 p5) (l7 p6) (d9 p8) (d10 p9) (d11 p10) (d12 p11) (d13 p12) (d14 p13))
+		(links nw (d14 c1) (c14 b1) (b14 a1) (g14 h1) (f14 g1) (e14 f1)
+			(l14 k1) (k14 j1) (j14 i1) (o14 p1) (n14 o1) (m14 n1)
+			(h1 d2) (h2 d3) (h3 d4) (h4 d5) (h5 d6) (h6 d7) (h8 l9) (h9 l10) (h10 l11) (h11 l12) (h12 l13) (h13 l14)
+			(p1 l2) (p2 l3) (p3 l4) (p4 l5) (p5 l6) (p6 l7) (p8 d9) (p9 d10) (p10 d11) (p11 d12) (p12 d13) (p13 d14))
+		(links sw (d1 c14) (c1 b14) (b1 a14) (g1 h14) (f1 g14) (e1 f14)
+			(l1 k14) (k1 j14) (j1 i14) (o1 p14) (n1 o14) (m1 n14)
+			(h2 d1) (h3 d2) (h4 d3) (h5 d4) (h6 d5) (h7 d6) (h9 l8) (h10 l9) (h11 l10) (h12 l11) (h13 l12) (h14 l13)
+			(p2 l1) (p3 l2) (p4 l3) (p5 l4) (p6 l5) (p7 l6) (p9 d8) (p10 d9) (p11 d10) (p12 d11) (p13 d12) (p14 d13))
+		(links ne (c14 d1) (b14 c1) (a14 b1) (h14 g1) (g14 f1) (f14 e1)
+			(k14 l1) (j14 k1) (i14 j1) (p14 o1) (o14 n1) (n14 m1)
+			(d1 h2) (d2 h3) (d3 h4) (d4 h5) (d5 h6) (d6 h7) (l8 h9) (l9 h10) (l10 h11) (l11 h12) (l12 h13) (l13 h14)
+			(l1 p2) (l2 p3) (l3 p4) (l4 p5) (l5 p6) (l6 p7) (d8 p9) (d9 p10) (d10 p11) (d11 p12) (d12 p13) (d13 p14))
+	)
+	(board-setup (BoardSetup2))
+)
+
+(variant
+	(title "Tetramöbius")
+	(description "The Möbius strip is constructed similar to the file cylinder, except that each extended half board is twisted by 180° before being glued together on both sides. The result is similar to the ordinary Möbius strip, but it is an orientable manifold.")
+	(board
+		(image "images\Chess\TetraMobius.bmp")
+		(tetraboard2)
+		(links n (m14 e1) (n14 f1) (o14 g1) (p14 h1) (e14 m1) (f14 n1) (g14 o1) (h14 p1)
+			(a14 i1) (b14 j1) (c14 k1) (d14 l1) (i14 a1) (j14 b1) (k14 c1) (l14 d1))
+		(links s (e1 m14) (f1 n14) (g1 o14) (h1 p14) (m1 e14) (n1 f14) (o1 g14) (p1 h14)
+			(i1 a14) (j1 b14) (k1 c14) (l1 d14) (a1 i14) (b1 j14) (c1 k14) (d1 l14))
+		(links se (f1 m14) (g1 n14) (h1 o14) (n1 e14) (o1 f14) (p1 g14)
+			(a1 j14) (b1 k14) (c1 l14) (i1 b14) (j1 c14) (k1 d14))
+		(links nw (m14 f1) (n14 g1) (o14 h1) (e14 n1) (f14 o1) (g14 p1)
+			(j14 a1) (k14 b1) (l14 c1) (b14 i1) (c14 j1) (d14 k1))
+		(links sw (m1 f14) (n1 g14) (o1 h14) (e1 n14) (f1 o14) (g1 p14)
+			(j1 a14) (k1 b14) (l1 c14) (b1 i14) (c1 j14) (d1 k14))
+		(links ne (f14 m1) (g14 n1) (h14 o1) (n14 e1) (o14 f1) (p14 g1)
+			(a14 j1) (b14 k1) (c14 l1) (i14 b1) (j14 c1) (k14 d1))
+	)
+	(board-setup (BoardSetup2))
+)
+
+(variant
+	(title "Tetraklein")
+	(description "The combination of a Möbius strip and a rank cylinder yields a Klein bottle. Its properties are similar to the ordinary Klein bottle, but it is orientable.")
+	(board
+		(image "images\Chess\TetraKlein.bmp")
+		(tetraboard2)
+		(links n (m14 e1) (n14 f1) (o14 g1) (p14 h1) (e14 m1) (f14 n1) (g14 o1) (h14 p1)
+			(a14 i1) (b14 j1) (c14 k1) (d14 l1) (i14 a1) (j14 b1) (k14 c1) (l14 d1))
+		(links s (e1 m14) (f1 n14) (g1 o14) (h1 p14) (m1 e14) (n1 f14) (o1 g14) (p1 h14)
+			(i1 a14) (j1 b14) (k1 c14) (l1 d14) (a1 i14) (b1 j14) (c1 k14) (d1 l14))
+		(links e (d1 h1) (d2 h2) (d3 h3) (d4 h4) (d5 h5) (d6 h6) (d7 h7)
+			(l8 h8) (l9 h9) (l10 h10) (l11 h11) (l12 h12) (l13 h13) (l14 h14)
+			(l1 p1) (l2 p2) (l3 p3) (l4 p4) (l5 p5) (l6 p6) (l7 p7)
+			(d8 p8) (d9 p9) (d10 p10) (d11 p11) (d12 p12) (d13 p13) (d14 p14))
+		(links w (h1 d1) (h2 d2) (h3 d3) (h4 d4) (h5 d5) (h6 d6) (h7 d7)
+			(h8 l8) (h9 l9) (h10 l10) (h11 l11) (h12 l12) (h13 l13) (h14 l14)
+			(p1 l1) (p2 l2) (p3 l3) (p4 l4) (p5 l5) (p6 l6) (p7 l7)
+			(p8 d8) (p9 d9) (p10 d10) (p11 d11) (p12 d12) (p13 d13) (p14 d14))
+		(links se (f1 m14) (g1 n14) (h1 o14) (n1 e14) (o1 f14) (p1 g14)
+			(a1 j14) (b1 k14) (c1 l14) (i1 b14) (j1 c14) (k1 d14)
+			(d2 h1) (d3 h2) (d4 h3) (d5 h4) (d6 h5) (d7 h6) (l9 h8) (l10 h9) (l11 h10) (l12 h11) (l13 h12) (l14 h13)
+			(l2 p1) (l3 p2) (l4 p3) (l5 p4) (l6 p5) (l7 p6) (d9 p8) (d10 p9) (d11 p10) (d12 p11) (d13 p12) (d14 p13))
+		(links nw (m14 f1) (n14 g1) (o14 h1) (e14 n1) (f14 o1) (g14 p1)
+			(j14 a1) (k14 b1) (l14 c1) (b14 i1) (c14 j1) (d14 k1)
+			(h1 d2) (h2 d3) (h3 d4) (h4 d5) (h5 d6) (h6 d7) (h8 l9) (h9 l10) (h10 l11) (h11 l12) (h12 l13) (h13 l14)
+			(p1 l2) (p2 l3) (p3 l4) (p4 l5) (p5 l6) (p6 l7) (p8 d9) (p9 d10) (p10 d11) (p11 d12) (p12 d13) (p13 d14))
+		(links sw (m1 f14) (n1 g14) (o1 h14) (e1 n14) (f1 o14) (g1 p14)
+			(j1 a14) (k1 b14) (l1 c14) (b1 i14) (c1 j14) (d1 k14)
+			(h2 d1) (h3 d2) (h4 d3) (h5 d4) (h6 d5) (h7 d6) (h9 l8) (h10 l9) (h11 l10) (h12 l11) (h13 l12) (h14 l13)
+			(p2 l1) (p3 l2) (p4 l3) (p5 l4) (p6 l5) (p7 l6) (p9 d8) (p10 d9) (p11 d10) (p12 d11) (p13 d12) (p14 d13))
+		(links ne (f14 m1) (g14 n1) (h14 o1) (n14 e1) (o14 f1) (p14 g1)
+			(a14 j1) (b14 k1) (c14 l1) (i14 b1) (j14 c1) (k14 d1)
+			(d1 h2) (d2 h3) (d3 h4) (d4 h5) (d5 h6) (d6 h7) (l8 h9) (l9 h10) (l10 h11) (l11 h12) (l12 h13) (l13 h14)
+			(l1 p2) (l2 p3) (l3 p4) (l4 p5) (l5 p6) (l6 p7) (d8 p9) (d9 p10) (d10 p11) (d11 p12) (d12 p13) (d13 p14))
+	)
+	(board-setup (BoardSetup2))
+)
