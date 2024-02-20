@@ -1,5 +1,5 @@
 * {
-	font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
+	font-family: "Liberation Sans", Arial, Helvetica, Symbola, sans-serif;
 	font-size: 10pt;
 	text-align: justify;
 }
@@ -55,3 +55,43 @@ a:link[href="#"] {color:#ff0000}
 a:visited[href="#"] {color:#ff8080}
 a:hover[href="#"] {color:#800000}
 a:active[href="#"] {color:#800000}
+
+table.board {
+	border-collapse: collapse;
+}
+
+table.board td {
+	border: 1px solid gray;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 12pt;
+}
+
+table.board th {
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+div.board {
+	display: grid;
+	grid-auto-rows: 21px;
+	grid-auto-columns: 21px;
+	grid-gap: 1px;
+}
+
+div.board > div {
+	box-shadow: 0 0 0 1px gray;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 12pt;
+}
+
+td.off, div.off {
+	background-color: lightgray;
+}
