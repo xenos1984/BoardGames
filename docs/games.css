@@ -95,3 +95,7 @@ div.board > div {
 td.off, div.off {
 	background-color: lightgray;
 }
+
+svg.board text {
+	font-size: 12pt;
+}
