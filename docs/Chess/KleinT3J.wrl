@@ -1,0 +1,439 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+	title "Klein Bottle Twist 3"
+}
+
+Background {
+	skyColor [0.8 0.8 0.8]
+}
+
+Viewpoint {
+	position 0 0 50
+	description "Top"
+}
+
+Viewpoint {
+	position 0 0 -50
+	orientation 0 1 0 3.14159
+	description "Bottom"
+}
+
+Viewpoint {
+	position 0 -50 0
+	orientation 1 0 0 1.5708
+	description "Bottleneck"
+}
+
+Viewpoint {
+	position 50 0 0
+	orientation 0 1 0 1.5708
+	description "Handle"
+}
+
+Viewpoint {
+	position 0 10 0
+	orientation 1 0 0 -1.5708
+	description "Junction"
+}
+
+Viewpoint {
+	position -6 10 0
+	orientation 1 0 0 -1.5708
+	description "Inside"
+}
+
+Shape {
+	appearance Appearance {
+		texture ImageTexture {
+			url "Pieces.png"
+		}
+	}
+	geometry DEF IFS IndexedFaceSet {
+		coord DEF COORD Coordinate {}
+		texCoord DEF TEX TextureCoordinate {}
+		solid FALSE
+	}
+}
+
+PROTO Line [
+	exposedField SFColor color 0 0 0
+	field SFVec2f start 0 0
+	field SFVec2f stop 1 0
+	field SFInt32 points 4
+]
+{
+	Group {
+		children [
+			DEF SENS TouchSensor {}
+			Shape {
+				appearance Appearance {
+					material DEF MAT Material {
+						diffuseColor IS color
+						transparency 1
+					}
+				}
+				geometry DEF EXTR Extrusion {
+					crossSection [
+						0 0.15,
+						0.106066 0.106066,
+						0.15 0,
+						0.106066 -0.106066,
+						0 -0.15,
+						-0.106066 -0.106066,
+						-0.15 0,
+						-0.106066 0.106066,
+						0 0.15
+					]
+				}
+			}
+		]
+	}
+
+	DEF SCRIPT Script {
+		eventIn SFTime touch
+		eventOut SFFloat trans
+		eventOut MFVec3f set_spine
+
+		field SFBool active FALSE
+		field SFVec2f first IS start
+		field SFVec2f last IS stop
+		field SFInt32 anz IS points
+
+		url "javascript:
+			function klein(s)
+			{
+				u = s.x * Math.PI / 7;
+				v = s.y * Math.PI / 4 + 3 * Math.acos(Math.cos(u / 2)) / 4;
+				bx = 6 * Math.cos(u) * (1 + Math.sin(u));
+				by = 16 * Math.sin(u);
+				rad = 4 * (1 - Math.cos(u) / 2);
+
+				kb = new SFVec3f(bx, by, rad * Math.sin(v));
+
+				switch(Math.floor(s.x / 7) % 4)
+				{
+				case 0:
+					kb.x = kb.x + rad * Math.cos(u) * Math.cos(v);
+					kb.y = kb.y + rad * Math.sin(u) * Math.cos(v);
+					break;
+
+				case 1:
+					kb.x = kb.x - rad * Math.cos(v);
+					break;
+
+				case 2:
+					kb.x = kb.x - rad * Math.cos(u) * Math.cos(v);
+					kb.y = kb.y - rad * Math.sin(u) * Math.cos(v);
+					break;
+
+				case 3:
+					kb.x = kb.x + rad * Math.cos(v);
+					break;
+
+				default:
+					break;
+				}
+
+				return kb;
+			}
+
+			function initialize()
+			{
+				c = new MFVec3f;
+				for(i = 0; i <= anz; i++)
+				{
+					c[i] = klein(last.multiply(i).add(first.multiply(anz - i)).divide(anz));
+				}
+				set_spine = c;
+			}
+
+			function touch(value, time)
+			{
+				trans = active;
+				active = !active;
+			}"
+	}
+
+	ROUTE SENS.touchTime TO SCRIPT.touch
+	ROUTE SCRIPT.trans TO MAT.transparency
+	ROUTE SCRIPT.set_spine TO EXTR.set_spine
+}
+
+Line {
+	color 1 0 0
+	start 0 0
+	stop 56 56
+	points 224
+}
+
+Line {
+	color 1 0 0
+	start 0 1
+	stop 56 57
+	points 224
+}
+
+Line {
+	color 1 0 0
+	start 0 2
+	stop 56 58
+	points 224
+}
+
+Line {
+	color 1 0 0
+	start 0 3
+	stop 56 59
+	points 224
+}
+
+Line {
+	color 0 1 0
+	start 0.5 -4
+	stop 0.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 1.5 -4
+	stop 1.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 2.5 -4
+	stop 2.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 3.5 -4
+	stop 3.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 4.5 -4
+	stop 4.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 5.5 -4
+	stop 5.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 6.5 -4
+	stop 6.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 7.5 -4
+	stop 7.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 8.5 -4
+	stop 8.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 9.5 -4
+	stop 9.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 10.5 -4
+	stop 10.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 11.5 -4
+	stop 11.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 12.5 -4
+	stop 12.5 4
+	points 32
+}
+
+Line {
+	color 0 1 0
+	start 13.5 -4
+	stop 13.5 4
+	points 32
+}
+
+Line {
+	color 0 0 1
+	start 0 -3.5
+	stop 14 -3.5
+	points 56
+}
+
+Line {
+	color 0 0 1
+	start 0 -2.5
+	stop 28 -2.5
+	points 112
+}
+
+Line {
+	color 0 0 1
+	start 0 -1.5
+	stop 28 -1.5
+	points 112
+}
+
+Line {
+	color 0 0 1
+	start 0 -0.5
+	stop 28 -0.5
+	points 112
+}
+
+Line {
+	color 0 0 1
+	start 0 0.5
+	stop 14 0.5
+	points 56
+}
+
+DEF START Script {
+	directOutput TRUE
+
+	eventOut MFVec3f coord
+	eventOut MFVec2f texCoord
+	eventOut MFInt32 coordIndex
+	eventOut MFInt32 texCoordIndex
+
+	field MFVec2f tex [6 15, 1 7, 2 15, 7 7, 8 15, 2 7, 1 15, 6 7,
+		0 7, 0 15, 0 7, 0 15, 0 7, 0 15, 0 7, 0 15,
+		9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7,
+		9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15,
+		9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7,
+		9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15,
+		0 14, 0 6, 0 14, 0 6, 0 14, 0 6, 0 14, 0 6,
+		6 6, 1 14, 2 6, 7 14, 8 6, 2 14, 1 6, 6 14,
+		0 14, 0 6, 0 14, 0 6, 0 14, 0 6, 0 14, 0 6,
+		9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15,
+		9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7,
+		9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15,
+		9 15, 9 7, 9 15, 9 7, 9 15, 9 7, 9 15, 9 7,
+		0 7, 0 15, 0 7, 0 15, 0 7, 0 15, 0 7, 0 15]
+
+	url "javascript:
+		function klein(i, j)
+		{
+			u = i * Math.PI / 7;
+			v = j * Math.PI / 4 + 3 * Math.acos(Math.cos(u / 2)) / 4;
+			bx = 6 * Math.cos(u) * (1 + Math.sin(u));
+			by = 16 * Math.sin(u);
+			rad = 4 * (1 - Math.cos(u) / 2);
+
+			kb = new SFVec3f(bx, by, rad * Math.sin(v));
+
+			switch(Math.floor(i / 7) % 4)
+			{
+			case 0:
+				kb.x = kb.x + rad * Math.cos(u) * Math.cos(v);
+				kb.y = kb.y + rad * Math.sin(u) * Math.cos(v);
+				break;
+
+			case 1:
+				kb.x = kb.x - rad * Math.cos(v);
+				break;
+
+			case 2:
+				kb.x = kb.x - rad * Math.cos(u) * Math.cos(v);
+				kb.y = kb.y - rad * Math.sin(u) * Math.cos(v);
+				break;
+
+			case 3:
+				kb.x = kb.x + rad * Math.cos(v);
+				break;
+
+			default:
+				break;
+			}
+
+			return kb;
+		}
+
+		function texind(i, j)
+		{
+			t = tex[8 * Math.floor(i / 4) + Math.floor(j / 4)].multiply(4).add(new SFVec2f(j % 4, i % 4));
+			return t.x + 41 * t.y;
+		}
+
+		function initialize()
+		{
+			tc = new MFVec2f;
+			for(i = 0; i <= 64; i++)
+			{
+				for(j = 0; j <= 40; j++)
+				{
+					tc[41 * i + j] = new SFVec2f(j / 40, i / 64);
+				}
+			}
+			texCoord = tc;
+
+			c = new MFVec3f;
+			for(i = 0; i <= 56; i++)
+			{
+				for(j = -16; j <= 16; j++)
+				{
+					c[33 * i + j + 16] = klein(i / 4, j / 4);
+				}
+			}
+			coord = c;
+
+			ci = new MFInt32;
+			tci = new MFInt32;
+			for(i = 0; i < 56; i++)
+			{
+				for(j = 0; j < 32; j++)
+				{
+					ci[5 * (32 * i + j)] = 33 * i + j;
+					ci[5 * (32 * i + j) + 1] = 33 * i + j + 1;
+					ci[5 * (32 * i + j) + 2] = 33 * i + j + 34;
+					ci[5 * (32 * i + j) + 3] = 33 * i + j + 33;
+					ci[5 * (32 * i + j) + 4] = -1;
+					tci[5 * (32 * i + j)] = texind(i, j);
+					tci[5 * (32 * i + j) + 1] = texind(i, j) + 1;
+					tci[5 * (32 * i + j) + 2] = texind(i, j) + 42;
+					tci[5 * (32 * i + j) + 3] = texind(i, j) + 41;
+					tci[5 * (32 * i + j) + 4] = -1;
+				}
+			}
+			coordIndex = ci;
+			texCoordIndex = tci;
+		}"
+}
+
+ROUTE START.coord TO COORD.point
+ROUTE START.texCoord TO TEX.point
+ROUTE START.coordIndex TO IFS.set_coordIndex
+ROUTE START.texCoordIndex TO IFS.set_texCoordIndex
