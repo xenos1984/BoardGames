@@ -7,7 +7,8 @@
 	</head>
 	<body>
 		<h1>Three-player chess</h1>
-		<svg version="1.1" height="0px" width="0px" viewBox="-200 -176 400 352" class="board">
+		<h2>Standard variant</h2>
+		<svg version="1.1" height="0px" width="0px" viewBox="0 0 1 1" class="board">
 			<defs>
 				<g id="triboard" stroke="black" fill="none" stroke-width="1">
 					<polygon points="192,0 96,166 -96,166 -192,0 -96,-166 96,-166"/>
@@ -51,31 +52,9 @@
 					<line x1="108" x2="180" y1="-62.25" y2="20.75"/>
 					<line x1="-108" x2="-180" y1="-62.25" y2="20.75"/>
 				</g>
-				<g id="pieces0" fill="currentColor">
-					<text x="-91" y="152">&#x265c;</text>
-					<text x="-65" y="150">&#x265e;</text>
-					<text x="-39" y="148">&#x265d;</text>
-					<text x="-13" y="146">&#x265b;</text>
-					<text x="13" y="146">&#x265a;</text>
-					<text x="39" y="148">&#x265d;</text>
-					<text x="65" y="150">&#x265e;</text>
-					<text x="91" y="152">&#x265c;</text>
-					<text x="-101" y="129">&#x265f;</text>
-					<text x="-72" y="121">&#x265f;</text>
-					<text x="-43" y="113">&#x265f;</text>
-					<text x="-14" y="105">&#x265f;</text>
-					<text x="14" y="105">&#x265f;</text>
-					<text x="43" y="113">&#x265f;</text>
-					<text x="72" y="121">&#x265f;</text>
-					<text x="101" y="129">&#x265f;</text>
-				</g>
-				<g id="pieces" text-anchor="middle" dominant-baseline="central">
-					<use xlink:href="#pieces0" color="red"/>
-					<use xlink:href="#pieces0" color="green" transform="rotate(120)"/>
-					<use xlink:href="#pieces0" color="blue" transform="rotate(-120)"/>
-				</g>
 			</defs>
 		</svg>
+		<p>For the "standard" three-player chess, the positions are labeled as follows.</p>
 		<svg version="1.1" height="352px" width="400px" viewBox="-200 -176 400 352" class="board">
 			<use xlink:href="#triboard"/>
 			<g text-anchor="middle" dominant-baseline="central">
@@ -177,11 +156,35 @@
 				<text x="-133.5" y="62.3538">x4</text>
 			</g>
 		</svg>
+		<p>This is the setup of the pieces.</p>
 		<svg version="1.1" height="352px" width="400px" viewBox="-200 -176 400 352" class="board">
+			<defs>
+				<g id="spieces" fill="currentColor" text-anchor="middle" dominant-baseline="central">
+					<text x="-89.25" y="154.586">&#x265c;</text>
+					<text x="-63.75" y="151.987">&#x265e;</text>
+					<text x="-38.25" y="149.389">&#x265d;</text>
+					<text x="-12.75" y="146.791">&#x265b;</text>
+					<text x="12.75" y="146.791">&#x265a;</text>
+					<text x="38.25" y="149.389">&#x265d;</text>
+					<text x="63.75" y="151.987">&#x265e;</text>
+					<text x="89.25" y="154.586">&#x265c;</text>
+					<text x="-99.75" y="131.203">&#x265f;</text>
+					<text x="-71.25" y="123.409">&#x265f;</text>
+					<text x="-42.75" y="115.614">&#x265f;</text>
+					<text x="-14.25" y="107.82">&#x265f;</text>
+					<text x="14.25" y="107.82">&#x265f;</text>
+					<text x="42.75" y="115.614">&#x265f;</text>
+					<text x="71.25" y="123.409">&#x265f;</text>
+					<text x="99.75" y="131.203">&#x265f;</text>
+				</g>
+			</defs>
 			<use xlink:href="#triboard"/>
-			<use xlink:href="#pieces"/>
+			<use xlink:href="#spieces" color="red"/>
+			<use xlink:href="#spieces" color="green" transform="rotate(-120)"/>
+			<use xlink:href="#spieces" color="blue" transform="rotate(120)"/>
 		</svg>
-		<svg version="1.1" height="600px" width="600px" viewBox="-300 -300 600 600" class="board">
+		<h2>Cylinder - closed ranks</h2>
+		<svg version="1.1" height="0px" width="0px" viewBox="0 0 1 1" class="board">
 			<defs>
 				<g id="rcback" fill="lightgray" stroke="black" stroke-width="1">
 					<polygon points="96,-151.4 0,-206.9 0,-234.6 38.8,-257 44.8,-232.7 116.8,-163.4"/>
@@ -199,149 +202,189 @@
 					<line x1="48" x2="48" y1="-27.7" y2="-179.1"/>
 					<line x1="72" x2="72" y1="-41.6" y2="-165.3"/>
 				</g>
+				<g id="rcglue">
+					<use xlink:href="#rcback"/>
+					<use xlink:href="#rcback" transform="rotate(120)"/>
+					<use xlink:href="#rcback" transform="rotate(240)"/>
+					<use xlink:href="#rcback" transform="scale(-1,1)"/>
+					<use xlink:href="#rcback" transform="scale(-1,1) rotate(120)"/>
+					<use xlink:href="#rcback" transform="scale(-1,1) rotate(240)"/>
+				</g>
+				<g id="rcboard">
+					<use xlink:href="#rcsquare"/>
+					<use xlink:href="#rcsquare" transform="rotate(120)"/>
+					<use xlink:href="#rcsquare" transform="rotate(240)"/>
+					<use xlink:href="#rcsquare" transform="scale(-1,1)"/>
+					<use xlink:href="#rcsquare" transform="scale(-1,1) rotate(120)"/>
+					<use xlink:href="#rcsquare" transform="scale(-1,1) rotate(240)"/>
+				</g>
+				<g id="rclabels" text-anchor="middle" dominant-baseline="central">
+					<text x="-83.2461" y="145.057">a1</text>
+					<text x="-104.246" y="129.469">a2</text>
+					<text x="-125.246" y="113.88">a3</text>
+					<text x="-146.246" y="98.2917">a4</text>
+					<text x="-59.4615" y="131.325">b1</text>
+					<text x="-74.4615" y="112.272">b2</text>
+					<text x="-89.4615" y="93.2199">b3</text>
+					<text x="-104.462" y="74.1673">b4</text>
+					<text x="-35.6769" y="117.593">c1</text>
+					<text x="-44.6769" y="95.0763">c2</text>
+					<text x="-53.6769" y="72.5596">c3</text>
+					<text x="-62.6769" y="50.0429">c4</text>
+					<text x="-11.8923" y="103.861">d1</text>
+					<text x="-14.8923" y="77.8801">d2</text>
+					<text x="-17.8923" y="51.8993">d3</text>
+					<text x="-20.8923" y="25.9186">d4</text>
+					<text x="11.8923" y="103.861">e1</text>
+					<text x="14.8923" y="77.8801">e2</text>
+					<text x="17.8923" y="51.8993">e3</text>
+					<text x="20.8923" y="25.9186">e4</text>
+					<text x="35.6769" y="117.593">f1</text>
+					<text x="44.6769" y="95.0763">f2</text>
+					<text x="53.6769" y="72.5596">f3</text>
+					<text x="62.6769" y="50.0429">f4</text>
+					<text x="59.4615" y="131.325">g1</text>
+					<text x="74.4615" y="112.272">g2</text>
+					<text x="89.4615" y="93.2199">g3</text>
+					<text x="104.462" y="74.1673">g4</text>
+					<text x="83.2461" y="145.057">h1</text>
+					<text x="104.246" y="129.469">h2</text>
+					<text x="125.246" y="113.88">h3</text>
+					<text x="146.246" y="98.2917">h4</text>
+					<text x="167.246" y="-0.435245">i1</text>
+					<text x="164.246" y="25.5455">i2</text>
+					<text x="161.246" y="51.5263">i3</text>
+					<text x="158.246" y="77.507">i4</text>
+					<text x="143.462" y="-14.1673">j1</text>
+					<text x="134.462" y="8.34936">j2</text>
+					<text x="125.462" y="30.866">j3</text>
+					<text x="116.462" y="53.3827">j4</text>
+					<text x="119.677" y="-27.8993">k1</text>
+					<text x="104.677" y="-8.84679">k2</text>
+					<text x="89.6769" y="10.2058">k3</text>
+					<text x="74.6769" y="29.2583">k4</text>
+					<text x="95.8923" y="-41.6314">l1</text>
+					<text x="74.8923" y="-26.0429">l2</text>
+					<text x="53.8923" y="-10.4545">l3</text>
+					<text x="32.8923" y="5.13397">l4</text>
+					<text x="-84" y="-144.622">q1</text>
+					<text x="-60" y="-155.014">q2</text>
+					<text x="-36" y="-165.406">q3</text>
+					<text x="-12" y="-175.799">q4</text>
+					<text x="-84" y="-117.158">r1</text>
+					<text x="-60" y="-120.622">r2</text>
+					<text x="-36" y="-124.086">r3</text>
+					<text x="-12" y="-127.55">r4</text>
+					<text x="-84" y="-89.6936">s1</text>
+					<text x="-60" y="-86.2295">s2</text>
+					<text x="-36" y="-82.7654">s3</text>
+					<text x="-12" y="-79.3013">s4</text>
+					<text x="-84" y="-62.2295">t1</text>
+					<text x="-60" y="-51.8372">t2</text>
+					<text x="-36" y="-41.4449">t3</text>
+					<text x="-12" y="-31.0526">t4</text>
+					<text x="84" y="-62.2295">m1</text>
+					<text x="60" y="-51.8372">m2</text>
+					<text x="36" y="-41.4449">m3</text>
+					<text x="12" y="-31.0526">m4</text>
+					<text x="84" y="-89.6936">n1</text>
+					<text x="60" y="-86.2295">n2</text>
+					<text x="36" y="-82.7654">n3</text>
+					<text x="12" y="-79.3013">n4</text>
+					<text x="84" y="-117.158">o1</text>
+					<text x="60" y="-120.622">o2</text>
+					<text x="36" y="-124.086">o3</text>
+					<text x="12" y="-127.55">o4</text>
+					<text x="84" y="-144.622">p1</text>
+					<text x="60" y="-155.014">p2</text>
+					<text x="36" y="-165.406">p3</text>
+					<text x="12" y="-175.799">p4</text>
+					<text x="-95.8923" y="-41.6314">u1</text>
+					<text x="-74.8923" y="-26.0429">u2</text>
+					<text x="-53.8923" y="-10.4545">u3</text>
+					<text x="-32.8923" y="5.13397">u4</text>
+					<text x="-119.677" y="-27.8993">v1</text>
+					<text x="-104.677" y="-8.84679">v2</text>
+					<text x="-89.6769" y="10.2058">v3</text>
+					<text x="-74.6769" y="29.2583">v4</text>
+					<text x="-143.462" y="-14.1673">w1</text>
+					<text x="-134.462" y="8.34936">w2</text>
+					<text x="-125.462" y="30.866">w3</text>
+					<text x="-116.462" y="53.3827">w4</text>
+					<text x="-167.246" y="-0.435245">x1</text>
+					<text x="-164.246" y="25.5455">x2</text>
+					<text x="-161.246" y="51.5263">x3</text>
+					<text x="-158.246" y="77.507">x4</text>
+				</g>
 			</defs>
-			<use xlink:href="#rcback"/>
-			<use xlink:href="#rcback" transform="rotate(120)"/>
-			<use xlink:href="#rcback" transform="rotate(240)"/>
-			<use xlink:href="#rcback" transform="scale(-1,1)"/>
-			<use xlink:href="#rcback" transform="scale(-1,1) rotate(120)"/>
-			<use xlink:href="#rcback" transform="scale(-1,1) rotate(240)"/>
-			<use xlink:href="#rcsquare"/>
-			<use xlink:href="#rcsquare" transform="rotate(120)"/>
-			<use xlink:href="#rcsquare" transform="rotate(240)"/>
-			<use xlink:href="#rcsquare" transform="scale(-1,1)"/>
-			<use xlink:href="#rcsquare" transform="scale(-1,1) rotate(120)"/>
-			<use xlink:href="#rcsquare" transform="scale(-1,1) rotate(240)"/>
+		</svg>
+		<p>By gluing the left and ride sides of each player's third of the board, one obtains a cylinder-like shape. Note that the positions a4-h4-i4-p4-q4-x4 meet at a common corner point, just like d4-e4-l4-m4-t4-u4. Each rank forms a closed line containing 8 squares. The board has three circular edges.</p>
+		<svg version="1.1" height="480px" width="500px" viewBox="-250 -270 500 480" class="board">
+			<use xlink:href="#rcboard"/>
+			<use xlink:href="#rclabels"/>
+			<use xlink:href="#rcglue"/>
 			<g text-anchor="middle" dominant-baseline="central">
-				<text x="-83.2461" y="145.057">a1</text>
-				<text x="-104.246" y="129.469">a2</text>
-				<text x="-125.246" y="113.88">a3</text>
-				<text x="-146.246" y="98.2917">a4</text>
-				<text x="-59.4615" y="131.325">b1</text>
-				<text x="-74.4615" y="112.272">b2</text>
-				<text x="-89.4615" y="93.2199">b3</text>
-				<text x="-104.462" y="74.1673">b4</text>
-				<text x="-35.6769" y="117.593">c1</text>
-				<text x="-44.6769" y="95.0763">c2</text>
-				<text x="-53.6769" y="72.5596">c3</text>
-				<text x="-62.6769" y="50.0429">c4</text>
-				<text x="-11.8923" y="103.861">d1</text>
-				<text x="-14.8923" y="77.8801">d2</text>
-				<text x="-17.8923" y="51.8993">d3</text>
-				<text x="-20.8923" y="25.9186">d4</text>
-				<text x="11.8923" y="103.861">e1</text>
-				<text x="14.8923" y="77.8801">e2</text>
-				<text x="17.8923" y="51.8993">e3</text>
-				<text x="20.8923" y="25.9186">e4</text>
-				<text x="35.6769" y="117.593">f1</text>
-				<text x="44.6769" y="95.0763">f2</text>
-				<text x="53.6769" y="72.5596">f3</text>
-				<text x="62.6769" y="50.0429">f4</text>
-				<text x="59.4615" y="131.325">g1</text>
-				<text x="74.4615" y="112.272">g2</text>
-				<text x="89.4615" y="93.2199">g3</text>
-				<text x="104.462" y="74.1673">g4</text>
-				<text x="83.2461" y="145.057">h1</text>
-				<text x="104.246" y="129.469">h2</text>
-				<text x="125.246" y="113.88">h3</text>
-				<text x="146.246" y="98.2917">h4</text>
-				<text x="167.246" y="-0.435245">i1</text>
-				<text x="164.246" y="25.5455">i2</text>
-				<text x="161.246" y="51.5263">i3</text>
-				<text x="158.246" y="77.507">i4</text>
-				<text x="143.462" y="-14.1673">j1</text>
-				<text x="134.462" y="8.34936">j2</text>
-				<text x="125.462" y="30.866">j3</text>
-				<text x="116.462" y="53.3827">j4</text>
-				<text x="119.677" y="-27.8993">k1</text>
-				<text x="104.677" y="-8.84679">k2</text>
-				<text x="89.6769" y="10.2058">k3</text>
-				<text x="74.6769" y="29.2583">k4</text>
-				<text x="95.8923" y="-41.6314">l1</text>
-				<text x="74.8923" y="-26.0429">l2</text>
-				<text x="53.8923" y="-10.4545">l3</text>
-				<text x="32.8923" y="5.13397">l4</text>
-				<text x="-84" y="-144.622">q1</text>
-				<text x="-60" y="-155.014">q2</text>
-				<text x="-36" y="-165.406">q3</text>
-				<text x="-12" y="-175.799">q4</text>
-				<text x="-84" y="-117.158">r1</text>
-				<text x="-60" y="-120.622">r2</text>
-				<text x="-36" y="-124.086">r3</text>
-				<text x="-12" y="-127.55">r4</text>
-				<text x="-84" y="-89.6936">s1</text>
-				<text x="-60" y="-86.2295">s2</text>
-				<text x="-36" y="-82.7654">s3</text>
-				<text x="-12" y="-79.3013">s4</text>
-				<text x="-84" y="-62.2295">t1</text>
-				<text x="-60" y="-51.8372">t2</text>
-				<text x="-36" y="-41.4449">t3</text>
-				<text x="-12" y="-31.0526">t4</text>
-				<text x="84" y="-62.2295">m1</text>
-				<text x="60" y="-51.8372">m2</text>
-				<text x="36" y="-41.4449">m3</text>
-				<text x="12" y="-31.0526">m4</text>
-				<text x="84" y="-89.6936">n1</text>
-				<text x="60" y="-86.2295">n2</text>
-				<text x="36" y="-82.7654">n3</text>
-				<text x="12" y="-79.3013">n4</text>
-				<text x="84" y="-117.158">o1</text>
-				<text x="60" y="-120.622">o2</text>
-				<text x="36" y="-124.086">o3</text>
-				<text x="12" y="-127.55">o4</text>
-				<text x="84" y="-144.622">p1</text>
-				<text x="60" y="-155.014">p2</text>
-				<text x="36" y="-165.406">p3</text>
-				<text x="12" y="-175.799">p4</text>
-				<text x="-95.8923" y="-41.6314">u1</text>
-				<text x="-74.8923" y="-26.0429">u2</text>
-				<text x="-53.8923" y="-10.4545">u3</text>
-				<text x="-32.8923" y="5.13397">u4</text>
-				<text x="-119.677" y="-27.8993">v1</text>
-				<text x="-104.677" y="-8.84679">v2</text>
-				<text x="-89.6769" y="10.2058">v3</text>
-				<text x="-74.6769" y="29.2583">v4</text>
-				<text x="-143.462" y="-14.1673">w1</text>
-				<text x="-134.462" y="8.34936">w2</text>
-				<text x="-125.462" y="30.866">w3</text>
-				<text x="-116.462" y="53.3827">w4</text>
-				<text x="-167.246" y="-0.435245">x1</text>
-				<text x="-164.246" y="25.5455">x2</text>
-				<text x="-161.246" y="51.5263">x3</text>
-				<text x="-158.246" y="77.507">x4</text>
-				<text x="-32.8923" y="-211.985">?</text>
-				<text x="-53.8923" y="-196.397">?</text>
-				<text x="-74.8923" y="-180.808">?</text>
-				<text x="-95.8923" y="-165.22">?</text>
-				<text x="-20.8923" y="-232.77">?</text>
-				<text x="32.8923" y="-211.985">?</text>
-				<text x="53.8923" y="-196.397">?</text>
-				<text x="74.8923" y="-180.808">?</text>
-				<text x="95.8923" y="-165.22">?</text>
-				<text x="20.8923" y="-232.77">?</text>
-				<text x="-167.138" y="134.478">?</text>
-				<text x="-143.138" y="144.87">?</text>
-				<text x="-119.138" y="155.263">?</text>
-				<text x="-95.1384" y="165.655">?</text>
-				<text x="-191.138" y="134.478">?</text>
-				<text x="-200.031" y="77.507">?</text>
-				<text x="-197.031" y="51.5263">?</text>
-				<text x="-194.031" y="25.5455">?</text>
-				<text x="-191.031" y="-0.435245">?</text>
-				<text x="-212.031" y="98.2917">?</text>
-				<text x="200.031" y="77.507">?</text>
-				<text x="197.031" y="51.5263">?</text>
-				<text x="194.031" y="25.5455">?</text>
-				<text x="191.031" y="-0.435245">?</text>
-				<text x="212.031" y="98.2917">?</text>
-				<text x="167.138" y="134.478">?</text>
-				<text x="143.138" y="144.87">?</text>
-				<text x="119.138" y="155.263">?</text>
-				<text x="95.1384" y="165.655">?</text>
-				<text x="191.138" y="134.478">?</text>
+				<text x="-32.8923" y="-211.985">x4</text>
+				<text x="-53.8923" y="-196.397">x3</text>
+				<text x="-74.8923" y="-180.808">x2</text>
+				<text x="-95.8923" y="-165.22">x1</text>
+				<text x="-20.8923" y="-232.77">a4</text>
+				<text x="32.8923" y="-211.985">i4</text>
+				<text x="53.8923" y="-196.397">i3</text>
+				<text x="74.8923" y="-180.808">i2</text>
+				<text x="95.8923" y="-165.22">i1</text>
+				<text x="20.8923" y="-232.77">h4</text>
+				<text x="-167.138" y="134.478">h4</text>
+				<text x="-143.138" y="144.87">h3</text>
+				<text x="-119.138" y="155.263">h2</text>
+				<text x="-95.1384" y="165.655">h1</text>
+				<text x="-191.138" y="134.478">i4</text>
+				<text x="-200.031" y="77.507">q4</text>
+				<text x="-197.031" y="51.5263">q3</text>
+				<text x="-194.031" y="25.5455">q2</text>
+				<text x="-191.031" y="-0.435245">q1</text>
+				<text x="-212.031" y="98.2917">p4</text>
+				<text x="200.031" y="77.507">p4</text>
+				<text x="197.031" y="51.5263">p3</text>
+				<text x="194.031" y="25.5455">p2</text>
+				<text x="191.031" y="-0.435245">p1</text>
+				<text x="212.031" y="98.2917">q4</text>
+				<text x="167.138" y="134.478">a4</text>
+				<text x="143.138" y="144.87">a3</text>
+				<text x="119.138" y="155.263">a2</text>
+				<text x="95.1384" y="165.655">a1</text>
+				<text x="191.138" y="134.478">x4</text>
 			</g>
 		</svg>
-		<svg version="1.1" height="660px" width="660px" viewBox="-330 -330 660 660" class="board">
+		<p>The pieces start at the first and second rank as usual. The pieces of each player start along one of the three circular edges.</p>
+		<svg version="1.1" height="386px" width="372px" viewBox="-186 -216 372 386" class="board">
+			<defs>
+				<g id="rcpieces" fill="currentColor" text-anchor="middle" dominant-baseline="central">
+					<text x="-83.2461" y="145.057">&#x265c;</text>
+					<text x="-59.4615" y="131.325">&#x265e;</text>
+					<text x="-35.6769" y="117.593">&#x265d;</text>
+					<text x="-11.8923" y="103.861">&#x265b;</text>
+					<text x="11.8923" y="103.861">&#x265a;</text>
+					<text x="35.6769" y="117.593">&#x265d;</text>
+					<text x="59.4615" y="131.325">&#x265e;</text>
+					<text x="83.2461" y="145.057">&#x265c;</text>
+					<text x="-104.246" y="129.469">&#x265f;</text>
+					<text x="-74.4615" y="112.272">&#x265f;</text>
+					<text x="-44.6769" y="95.0763">&#x265f;</text>
+					<text x="-14.8923" y="77.8801">&#x265f;</text>
+					<text x="14.8923" y="77.8801">&#x265f;</text>
+					<text x="44.6769" y="95.0763">&#x265f;</text>
+					<text x="74.4615" y="112.272">&#x265f;</text>
+					<text x="104.246" y="129.469">&#x265f;</text>
+				</g>
+			</defs>
+			<use xlink:href="#rcboard"/>
+			<use xlink:href="#rcpieces" color="red"/>
+			<use xlink:href="#rcpieces" color="green" transform="rotate(-120)"/>
+			<use xlink:href="#rcpieces" color="blue" transform="rotate(120)"/>
+		</svg>
+		<h2>Cylinder - closed files</h2>
+		<svg version="1.1" height="0px" width="0px" viewBox="0 0 1 1" class="board">
 			<defs>
 				<g id="fcback" fill="lightgray" stroke="black" stroke-width="1">
 					<polygon points="96,223.4 0,278.9 0,306.6 31.1,324.5 34.5,298.8 116.8,235.4"/>
@@ -362,220 +405,306 @@
 					<line x1="48" x2="48" y1="27.7" y2="251.1"/>
 					<line x1="72" x2="72" y1="41.6" y2="237.3"/>
 				</g>
+				<g id="fcglue">
+					<use xlink:href="#fcback"/>
+					<use xlink:href="#fcback" transform="rotate(120)"/>
+					<use xlink:href="#fcback" transform="rotate(240)"/>
+					<use xlink:href="#fcback" transform="scale(-1,1)"/>
+					<use xlink:href="#fcback" transform="scale(-1,1) rotate(120)"/>
+					<use xlink:href="#fcback" transform="scale(-1,1) rotate(240)"/>
+				</g>
+				<g id="fcboard">
+					<use xlink:href="#fcsquare"/>
+					<use xlink:href="#fcsquare" transform="rotate(120)"/>
+					<use xlink:href="#fcsquare" transform="rotate(240)"/>
+					<use xlink:href="#fcsquare" transform="scale(-1,1)"/>
+					<use xlink:href="#fcsquare" transform="scale(-1,1) rotate(120)"/>
+					<use xlink:href="#fcsquare" transform="scale(-1,1) rotate(240)"/>
+				</g>
+				<g id="fclabels" text-anchor="middle" dominant-baseline="central">
+					<text x="-84" y="217.364">a1</text>
+					<text x="-84" y="191.385">a2</text>
+					<text x="-84" y="165.405">a3</text>
+					<text x="-84" y="139.426">a4</text>
+					<text x="-84" y="113.446">a5</text>
+					<text x="-84" y="87.4667">a6</text>
+					<text x="-84" y="61.4872">a7</text>
+					<text x="-60" y="229.241">b1</text>
+					<text x="-60" y="199.303">b2</text>
+					<text x="-60" y="169.364">b3</text>
+					<text x="-60" y="139.426">b4</text>
+					<text x="-60" y="109.487">b5</text>
+					<text x="-60" y="79.5487">b6</text>
+					<text x="-60" y="49.6102">b7</text>
+					<text x="-36" y="241.118">c1</text>
+					<text x="-36" y="207.22">c2</text>
+					<text x="-36" y="173.323">c3</text>
+					<text x="-36" y="139.426">c4</text>
+					<text x="-36" y="105.528">c5</text>
+					<text x="-36" y="71.6308">c6</text>
+					<text x="-36" y="37.7333">c7</text>
+					<text x="-12" y="252.995">d1</text>
+					<text x="-12" y="215.138">d2</text>
+					<text x="-12" y="177.282">d3</text>
+					<text x="-12" y="139.426">d4</text>
+					<text x="-12" y="101.569">d5</text>
+					<text x="-12" y="63.7128">d6</text>
+					<text x="-12" y="25.8564">d7</text>
+					<text x="12" y="252.995">e1</text>
+					<text x="12" y="215.138">e2</text>
+					<text x="12" y="177.282">e3</text>
+					<text x="12" y="139.426">e4</text>
+					<text x="12" y="101.569">e5</text>
+					<text x="12" y="63.7128">e6</text>
+					<text x="12" y="25.8564">e7</text>
+					<text x="36" y="241.118">f1</text>
+					<text x="36" y="207.22">f2</text>
+					<text x="36" y="173.323">f3</text>
+					<text x="36" y="139.426">f4</text>
+					<text x="36" y="105.528">f5</text>
+					<text x="36" y="71.6308">f6</text>
+					<text x="36" y="37.7333">f7</text>
+					<text x="60" y="229.241">g1</text>
+					<text x="60" y="199.303">g2</text>
+					<text x="60" y="169.364">g3</text>
+					<text x="60" y="139.426">g4</text>
+					<text x="60" y="109.487">g5</text>
+					<text x="60" y="79.5487">g6</text>
+					<text x="60" y="49.6102">g7</text>
+					<text x="84" y="217.364">h1</text>
+					<text x="84" y="191.385">h2</text>
+					<text x="84" y="165.405">h3</text>
+					<text x="84" y="139.426">h4</text>
+					<text x="84" y="113.446">h5</text>
+					<text x="84" y="87.4667">h6</text>
+					<text x="84" y="61.4872">h7</text>
+					<text x="230.243" y="-35.9359">i1</text>
+					<text x="207.744" y="-22.9462">i2</text>
+					<text x="185.245" y="-9.95642">i3</text>
+					<text x="162.746" y="3.03332">i4</text>
+					<text x="140.247" y="16.0231">i5</text>
+					<text x="117.748" y="29.0128">i6</text>
+					<text x="95.2494" y="42.0026">i7</text>
+					<text x="228.529" y="-62.659">j1</text>
+					<text x="202.601" y="-47.6897">j2</text>
+					<text x="176.674" y="-32.7205">j3</text>
+					<text x="150.746" y="-17.7513">j4</text>
+					<text x="124.819" y="-2.78206">j5</text>
+					<text x="98.8912" y="12.1872">j6</text>
+					<text x="72.9637" y="27.1564">j7</text>
+					<text x="226.814" y="-89.382">k1</text>
+					<text x="197.458" y="-72.4333">k2</text>
+					<text x="168.102" y="-55.4846">k3</text>
+					<text x="138.746" y="-38.5359">k4</text>
+					<text x="109.39" y="-21.5872">k5</text>
+					<text x="80.0341" y="-4.63847">k6</text>
+					<text x="50.678" y="12.3103">k7</text>
+					<text x="225.1" y="-116.105">l1</text>
+					<text x="192.315" y="-97.1769">l2</text>
+					<text x="159.531" y="-78.2487">l3</text>
+					<text x="126.746" y="-59.3205">l4</text>
+					<text x="93.9615" y="-40.3923">l5</text>
+					<text x="61.1769" y="-21.4641">l6</text>
+					<text x="28.3923" y="-2.5359">l7</text>
+					<text x="213.1" y="-136.89">m1</text>
+					<text x="180.315" y="-117.962">m2</text>
+					<text x="147.531" y="-99.0333">m3</text>
+					<text x="114.746" y="-80.1051">m4</text>
+					<text x="81.9615" y="-61.1769">m5</text>
+					<text x="49.1769" y="-42.2487">m6</text>
+					<text x="16.3923" y="-23.3205">m7</text>
+					<text x="190.814" y="-151.736">n1</text>
+					<text x="161.458" y="-134.787">n2</text>
+					<text x="132.102" y="-117.838">n3</text>
+					<text x="102.746" y="-100.89">n4</text>
+					<text x="73.3901" y="-83.941">n5</text>
+					<text x="44.0341" y="-66.9923">n6</text>
+					<text x="14.678" y="-50.0436">n7</text>
+					<text x="168.529" y="-166.582">o1</text>
+					<text x="142.601" y="-151.613">o2</text>
+					<text x="116.674" y="-136.644">o3</text>
+					<text x="90.7461" y="-121.674">o4</text>
+					<text x="64.8187" y="-106.705">o5</text>
+					<text x="38.8912" y="-91.7359">o6</text>
+					<text x="12.9637" y="-76.7666">o7</text>
+					<text x="146.243" y="-181.428">p1</text>
+					<text x="123.744" y="-168.438">p2</text>
+					<text x="101.245" y="-155.449">p3</text>
+					<text x="78.7461" y="-142.459">p4</text>
+					<text x="56.2472" y="-129.469">p5</text>
+					<text x="33.7483" y="-116.479">p6</text>
+					<text x="11.2494" y="-103.49">p7</text>
+					<text x="-146.243" y="-181.428">q1</text>
+					<text x="-123.744" y="-168.438">q2</text>
+					<text x="-101.245" y="-155.449">q3</text>
+					<text x="-78.7461" y="-142.459">q4</text>
+					<text x="-56.2472" y="-129.469">q5</text>
+					<text x="-33.7483" y="-116.479">q6</text>
+					<text x="-11.2494" y="-103.49">q7</text>
+					<text x="-168.529" y="-166.582">r1</text>
+					<text x="-142.601" y="-151.613">r2</text>
+					<text x="-116.674" y="-136.644">r3</text>
+					<text x="-90.7461" y="-121.674">r4</text>
+					<text x="-64.8187" y="-106.705">r5</text>
+					<text x="-38.8912" y="-91.7359">r6</text>
+					<text x="-12.9637" y="-76.7666">r7</text>
+					<text x="-190.814" y="-151.736">s1</text>
+					<text x="-161.458" y="-134.787">s2</text>
+					<text x="-132.102" y="-117.838">s3</text>
+					<text x="-102.746" y="-100.89">s4</text>
+					<text x="-73.3901" y="-83.941">s5</text>
+					<text x="-44.0341" y="-66.9923">s6</text>
+					<text x="-14.678" y="-50.0436">s7</text>
+					<text x="-213.1" y="-136.89">t1</text>
+					<text x="-180.315" y="-117.962">t2</text>
+					<text x="-147.531" y="-99.0333">t3</text>
+					<text x="-114.746" y="-80.1051">t4</text>
+					<text x="-81.9615" y="-61.1769">t5</text>
+					<text x="-49.1769" y="-42.2487">t6</text>
+					<text x="-16.3923" y="-23.3205">t7</text>
+					<text x="-225.1" y="-116.105">u1</text>
+					<text x="-192.315" y="-97.1769">u2</text>
+					<text x="-159.531" y="-78.2487">u3</text>
+					<text x="-126.746" y="-59.3205">u4</text>
+					<text x="-93.9615" y="-40.3923">u5</text>
+					<text x="-61.1769" y="-21.4641">u6</text>
+					<text x="-28.3923" y="-2.5359">u7</text>
+					<text x="-226.814" y="-89.382">v1</text>
+					<text x="-197.458" y="-72.4333">v2</text>
+					<text x="-168.102" y="-55.4846">v3</text>
+					<text x="-138.746" y="-38.5359">v4</text>
+					<text x="-109.39" y="-21.5872">v5</text>
+					<text x="-80.0341" y="-4.63847">v6</text>
+					<text x="-50.678" y="12.3103">v7</text>
+					<text x="-228.529" y="-62.659">w1</text>
+					<text x="-202.601" y="-47.6897">w2</text>
+					<text x="-176.674" y="-32.7205">w3</text>
+					<text x="-150.746" y="-17.7513">w4</text>
+					<text x="-124.819" y="-2.78206">w5</text>
+					<text x="-98.8912" y="12.1872">w6</text>
+					<text x="-72.9637" y="27.1564">w7</text>
+					<text x="-230.243" y="-35.9359">x1</text>
+					<text x="-207.744" y="-22.9462">x2</text>
+					<text x="-185.245" y="-9.95642">x3</text>
+					<text x="-162.746" y="3.03332">x4</text>
+					<text x="-140.247" y="16.0231">x5</text>
+					<text x="-117.748" y="29.0128">x6</text>
+					<text x="-95.2494" y="42.0026">x7</text>
+				</g>
 			</defs>
-			<use xlink:href="#fcback"/>
-			<use xlink:href="#fcback" transform="rotate(120)"/>
-			<use xlink:href="#fcback" transform="rotate(240)"/>
-			<use xlink:href="#fcback" transform="scale(-1,1)"/>
-			<use xlink:href="#fcback" transform="scale(-1,1) rotate(120)"/>
-			<use xlink:href="#fcback" transform="scale(-1,1) rotate(240)"/>
-			<use xlink:href="#fcsquare"/>
-			<use xlink:href="#fcsquare" transform="rotate(120)"/>
-			<use xlink:href="#fcsquare" transform="rotate(240)"/>
-			<use xlink:href="#fcsquare" transform="scale(-1,1)"/>
-			<use xlink:href="#fcsquare" transform="scale(-1,1) rotate(120)"/>
-			<use xlink:href="#fcsquare" transform="scale(-1,1) rotate(240)"/>
+		</svg>
+		<p>In order to close the files instead of the ranks, the inner squares are doubled. Also this board has three edges, along the files h-i, p-q and x-a.</p>
+		<svg version="1.1" height="560px" width="610px" viewBox="-305 -230 610 560" class="board">
+			<use xlink:href="#fcboard"/>
+			<use xlink:href="#fclabels"/>
+			<use xlink:href="#fcglue"/>
 			<g text-anchor="middle" dominant-baseline="central">
-				<text x="-84" y="217.364">a1</text>
-				<text x="-84" y="191.385">a2</text>
-				<text x="-84" y="165.405">a3</text>
-				<text x="-84" y="139.426">a4</text>
-				<text x="-84" y="113.446">a5</text>
-				<text x="-84" y="87.4667">a6</text>
-				<text x="-84" y="61.4872">a7</text>
-				<text x="-60" y="229.241">b1</text>
-				<text x="-60" y="199.303">b2</text>
-				<text x="-60" y="169.364">b3</text>
-				<text x="-60" y="139.426">b4</text>
-				<text x="-60" y="109.487">b5</text>
-				<text x="-60" y="79.5487">b6</text>
-				<text x="-60" y="49.6102">b7</text>
-				<text x="-36" y="241.118">c1</text>
-				<text x="-36" y="207.22">c2</text>
-				<text x="-36" y="173.323">c3</text>
-				<text x="-36" y="139.426">c4</text>
-				<text x="-36" y="105.528">c5</text>
-				<text x="-36" y="71.6308">c6</text>
-				<text x="-36" y="37.7333">c7</text>
-				<text x="-12" y="252.995">d1</text>
-				<text x="-12" y="215.138">d2</text>
-				<text x="-12" y="177.282">d3</text>
-				<text x="-12" y="139.426">d4</text>
-				<text x="-12" y="101.569">d5</text>
-				<text x="-12" y="63.7128">d6</text>
-				<text x="-12" y="25.8564">d7</text>
-				<text x="12" y="252.995">e1</text>
-				<text x="12" y="215.138">e2</text>
-				<text x="12" y="177.282">e3</text>
-				<text x="12" y="139.426">e4</text>
-				<text x="12" y="101.569">e5</text>
-				<text x="12" y="63.7128">e6</text>
-				<text x="12" y="25.8564">e7</text>
-				<text x="36" y="241.118">f1</text>
-				<text x="36" y="207.22">f2</text>
-				<text x="36" y="173.323">f3</text>
-				<text x="36" y="139.426">f4</text>
-				<text x="36" y="105.528">f5</text>
-				<text x="36" y="71.6308">f6</text>
-				<text x="36" y="37.7333">f7</text>
-				<text x="60" y="229.241">g1</text>
-				<text x="60" y="199.303">g2</text>
-				<text x="60" y="169.364">g3</text>
-				<text x="60" y="139.426">g4</text>
-				<text x="60" y="109.487">g5</text>
-				<text x="60" y="79.5487">g6</text>
-				<text x="60" y="49.6102">g7</text>
-				<text x="84" y="217.364">h1</text>
-				<text x="84" y="191.385">h2</text>
-				<text x="84" y="165.405">h3</text>
-				<text x="84" y="139.426">h4</text>
-				<text x="84" y="113.446">h5</text>
-				<text x="84" y="87.4667">h6</text>
-				<text x="84" y="61.4872">h7</text>
-				<text x="230.243" y="-35.9359">i1</text>
-				<text x="207.744" y="-22.9462">i2</text>
-				<text x="185.245" y="-9.95642">i3</text>
-				<text x="162.746" y="3.03332">i4</text>
-				<text x="140.247" y="16.0231">i5</text>
-				<text x="117.748" y="29.0128">i6</text>
-				<text x="95.2494" y="42.0026">i7</text>
-				<text x="228.529" y="-62.659">j1</text>
-				<text x="202.601" y="-47.6897">j2</text>
-				<text x="176.674" y="-32.7205">j3</text>
-				<text x="150.746" y="-17.7513">j4</text>
-				<text x="124.819" y="-2.78206">j5</text>
-				<text x="98.8912" y="12.1872">j6</text>
-				<text x="72.9637" y="27.1564">j7</text>
-				<text x="226.814" y="-89.382">k1</text>
-				<text x="197.458" y="-72.4333">k2</text>
-				<text x="168.102" y="-55.4846">k3</text>
-				<text x="138.746" y="-38.5359">k4</text>
-				<text x="109.39" y="-21.5872">k5</text>
-				<text x="80.0341" y="-4.63847">k6</text>
-				<text x="50.678" y="12.3103">k7</text>
-				<text x="225.1" y="-116.105">l1</text>
-				<text x="192.315" y="-97.1769">l2</text>
-				<text x="159.531" y="-78.2487">l3</text>
-				<text x="126.746" y="-59.3205">l4</text>
-				<text x="93.9615" y="-40.3923">l5</text>
-				<text x="61.1769" y="-21.4641">l6</text>
-				<text x="28.3923" y="-2.5359">l7</text>
-				<text x="213.1" y="-136.89">m1</text>
-				<text x="180.315" y="-117.962">m2</text>
-				<text x="147.531" y="-99.0333">m3</text>
-				<text x="114.746" y="-80.1051">m4</text>
-				<text x="81.9615" y="-61.1769">m5</text>
-				<text x="49.1769" y="-42.2487">m6</text>
-				<text x="16.3923" y="-23.3205">m7</text>
-				<text x="190.814" y="-151.736">n1</text>
-				<text x="161.458" y="-134.787">n2</text>
-				<text x="132.102" y="-117.838">n3</text>
-				<text x="102.746" y="-100.89">n4</text>
-				<text x="73.3901" y="-83.941">n5</text>
-				<text x="44.0341" y="-66.9923">n6</text>
-				<text x="14.678" y="-50.0436">n7</text>
-				<text x="168.529" y="-166.582">o1</text>
-				<text x="142.601" y="-151.613">o2</text>
-				<text x="116.674" y="-136.644">o3</text>
-				<text x="90.7461" y="-121.674">o4</text>
-				<text x="64.8187" y="-106.705">o5</text>
-				<text x="38.8912" y="-91.7359">o6</text>
-				<text x="12.9637" y="-76.7666">o7</text>
-				<text x="146.243" y="-181.428">p1</text>
-				<text x="123.744" y="-168.438">p2</text>
-				<text x="101.245" y="-155.449">p3</text>
-				<text x="78.7461" y="-142.459">p4</text>
-				<text x="56.2472" y="-129.469">p5</text>
-				<text x="33.7483" y="-116.479">p6</text>
-				<text x="11.2494" y="-103.49">p7</text>
-				<text x="-146.243" y="-181.428">q1</text>
-				<text x="-123.744" y="-168.438">q2</text>
-				<text x="-101.245" y="-155.449">q3</text>
-				<text x="-78.7461" y="-142.459">q4</text>
-				<text x="-56.2472" y="-129.469">q5</text>
-				<text x="-33.7483" y="-116.479">q6</text>
-				<text x="-11.2494" y="-103.49">q7</text>
-				<text x="-168.529" y="-166.582">r1</text>
-				<text x="-142.601" y="-151.613">r2</text>
-				<text x="-116.674" y="-136.644">r3</text>
-				<text x="-90.7461" y="-121.674">r4</text>
-				<text x="-64.8187" y="-106.705">r5</text>
-				<text x="-38.8912" y="-91.7359">r6</text>
-				<text x="-12.9637" y="-76.7666">r7</text>
-				<text x="-190.814" y="-151.736">s1</text>
-				<text x="-161.458" y="-134.787">s2</text>
-				<text x="-132.102" y="-117.838">s3</text>
-				<text x="-102.746" y="-100.89">s4</text>
-				<text x="-73.3901" y="-83.941">s5</text>
-				<text x="-44.0341" y="-66.9923">s6</text>
-				<text x="-14.678" y="-50.0436">s7</text>
-				<text x="-213.1" y="-136.89">t1</text>
-				<text x="-180.315" y="-117.962">t2</text>
-				<text x="-147.531" y="-99.0333">t3</text>
-				<text x="-114.746" y="-80.1051">t4</text>
-				<text x="-81.9615" y="-61.1769">t5</text>
-				<text x="-49.1769" y="-42.2487">t6</text>
-				<text x="-16.3923" y="-23.3205">t7</text>
-				<text x="-225.1" y="-116.105">u1</text>
-				<text x="-192.315" y="-97.1769">u2</text>
-				<text x="-159.531" y="-78.2487">u3</text>
-				<text x="-126.746" y="-59.3205">u4</text>
-				<text x="-93.9615" y="-40.3923">u5</text>
-				<text x="-61.1769" y="-21.4641">u6</text>
-				<text x="-28.3923" y="-2.5359">u7</text>
-				<text x="-226.814" y="-89.382">v1</text>
-				<text x="-197.458" y="-72.4333">v2</text>
-				<text x="-168.102" y="-55.4846">v3</text>
-				<text x="-138.746" y="-38.5359">v4</text>
-				<text x="-109.39" y="-21.5872">v5</text>
-				<text x="-80.0341" y="-4.63847">v6</text>
-				<text x="-50.678" y="12.3103">v7</text>
-				<text x="-228.529" y="-62.659">w1</text>
-				<text x="-202.601" y="-47.6897">w2</text>
-				<text x="-176.674" y="-32.7205">w3</text>
-				<text x="-150.746" y="-17.7513">w4</text>
-				<text x="-124.819" y="-2.78206">w5</text>
-				<text x="-98.8912" y="12.1872">w6</text>
-				<text x="-72.9637" y="27.1564">w7</text>
-				<text x="-230.243" y="-35.9359">x1</text>
-				<text x="-207.744" y="-22.9462">x2</text>
-				<text x="-185.245" y="-9.95642">x3</text>
-				<text x="-162.746" y="3.03332">x4</text>
-				<text x="-140.247" y="16.0231">x5</text>
-				<text x="-117.748" y="29.0128">x6</text>
-				<text x="-95.2494" y="42.0026">x7</text>
-				<text x="-28.3923" y="281.387">?</text>
-				<text x="-50.678" y="266.541">?</text>
-				<text x="-72.9637" y="251.695">?</text>
-				<text x="-95.2494" y="236.849">?</text>
-				<text x="-16.3923" y="302.172">?</text>
-				<text x="28.3923" y="281.387">?</text>
-				<text x="50.678" y="266.541">?</text>
-				<text x="72.9637" y="251.695">?</text>
-				<text x="95.2494" y="236.849">?</text>
-				<text x="16.3923" y="302.172">?</text>
-				<text x="-229.492" y="-165.282">?</text>
-				<text x="-205.492" y="-177.159">?</text>
-				<text x="-181.492" y="-189.036">?</text>
-				<text x="-157.492" y="-200.913">?</text>
-				<text x="-253.492" y="-165.282">?</text>
-				<text x="-257.885" y="-116.105">?</text>
-				<text x="-256.17" y="-89.382">?</text>
-				<text x="-254.456" y="-62.659">?</text>
-				<text x="-252.742" y="-35.9359">?</text>
-				<text x="-269.885" y="-136.89">?</text>
-				<text x="257.885" y="-116.105">?</text>
-				<text x="256.17" y="-89.382">?</text>
-				<text x="254.456" y="-62.659">?</text>
-				<text x="252.742" y="-35.9359">?</text>
-				<text x="269.885" y="-136.89">?</text>
-				<text x="229.492" y="-165.282">?</text>
-				<text x="205.492" y="-177.159">?</text>
-				<text x="181.492" y="-189.036">?</text>
-				<text x="157.492" y="-200.913">?</text>
-				<text x="253.492" y="-165.282">?</text>
+				<text x="-28.3923" y="281.387">u1</text>
+				<text x="-50.678" y="266.541">v1</text>
+				<text x="-72.9637" y="251.695">w1</text>
+				<text x="-95.2494" y="236.849">x1</text>
+				<text x="-16.3923" y="302.172">t1</text>
+				<text x="28.3923" y="281.387">l1</text>
+				<text x="50.678" y="266.541">k1</text>
+				<text x="72.9637" y="251.695">j1</text>
+				<text x="95.2494" y="236.849">i1</text>
+				<text x="16.3923" y="302.172">m1</text>
+				<text x="-229.492" y="-165.282">m1</text>
+				<text x="-205.492" y="-177.159">n1</text>
+				<text x="-181.492" y="-189.036">o1</text>
+				<text x="-157.492" y="-200.913">p1</text>
+				<text x="-253.492" y="-165.282">l1</text>
+				<text x="-257.885" y="-116.105">d1</text>
+				<text x="-256.17" y="-89.382">c1</text>
+				<text x="-254.456" y="-62.659">b1</text>
+				<text x="-252.742" y="-35.9359">a1</text>
+				<text x="-269.885" y="-136.89">e1</text>
+				<text x="257.885" y="-116.105">e1</text>
+				<text x="256.17" y="-89.382">f1</text>
+				<text x="254.456" y="-62.659">g1</text>
+				<text x="252.742" y="-35.9359">h1</text>
+				<text x="269.885" y="-136.89">d1</text>
+				<text x="229.492" y="-165.282">t1</text>
+				<text x="205.492" y="-177.159">s1</text>
+				<text x="181.492" y="-189.036">r1</text>
+				<text x="157.492" y="-200.913">q1</text>
+				<text x="253.492" y="-165.282">u1</text>
 			</g>
 		</svg>
+		<p>One may also twist each third-board before gluing the files together. Now the new board has only a single circular edge, similarly to a Möbius strip, but in contrast to the latter it is orientable.</p>
+		<svg version="1.1" height="560px" width="610px" viewBox="-305 -230 610 560" class="board">
+			<use xlink:href="#fcboard"/>
+			<use xlink:href="#fclabels"/>
+			<use xlink:href="#fcglue"/>
+			<g text-anchor="middle" dominant-baseline="central">
+				<text x="-28.3923" y="281.387">m1</text>
+				<text x="-50.678" y="266.541">n1</text>
+				<text x="-72.9637" y="251.695">o1</text>
+				<text x="-95.2494" y="236.849">p1</text>
+				<text x="-16.3923" y="302.172">l1</text>
+				<text x="28.3923" y="281.387">t1</text>
+				<text x="50.678" y="266.541">s1</text>
+				<text x="72.9637" y="251.695">r1</text>
+				<text x="95.2494" y="236.849">q1</text>
+				<text x="16.3923" y="302.172">u1</text>
+				<text x="-229.492" y="-165.282">e1</text>
+				<text x="-205.492" y="-177.159">f1</text>
+				<text x="-181.492" y="-189.036">g1</text>
+				<text x="-157.492" y="-200.913">h1</text>
+				<text x="-253.492" y="-165.282">d1</text>
+				<text x="-257.885" y="-116.105">l1</text>
+				<text x="-256.17" y="-89.382">k1</text>
+				<text x="-254.456" y="-62.659">j1</text>
+				<text x="-252.742" y="-35.9359">i1</text>
+				<text x="-269.885" y="-136.89">m1</text>
+				<text x="257.885" y="-116.105">u1</text>
+				<text x="256.17" y="-89.382">v1</text>
+				<text x="254.456" y="-62.659">w1</text>
+				<text x="252.742" y="-35.9359">x1</text>
+				<text x="269.885" y="-136.89">t1</text>
+				<text x="229.492" y="-165.282">d1</text>
+				<text x="205.492" y="-177.159">c1</text>
+				<text x="181.492" y="-189.036">b1</text>
+				<text x="157.492" y="-200.913">a1</text>
+				<text x="253.492" y="-165.282">e1</text>
+			</g>
+		</svg>
+		<p>For both geometries, the initial setup of the pieces is the same. The main pieces start on the fourth ranks, guarded by pawns on the third and fifth ranks.</p>
+		<svg version="1.1" height="485px" width="490px" viewBox="-245 -200 490 485" class="board">
+			<defs>
+				<g id="fcpieces" fill="currentColor" text-anchor="middle" dominant-baseline="central">
+					<text x="-84" y="139.426">&#x265c;</text>
+					<text x="-60" y="139.426">&#x265e;</text>
+					<text x="-36" y="139.426">&#x265d;</text>
+					<text x="-12" y="139.426">&#x265b;</text>
+					<text x="12" y="139.426">&#x265a;</text>
+					<text x="36" y="139.426">&#x265d;</text>
+					<text x="60" y="139.426">&#x265e;</text>
+					<text x="84" y="139.426">&#x265c;</text>
+					<text x="-84" y="165.405">&#x265f;</text>
+					<text x="-84" y="113.446">&#x265f;</text>
+					<text x="-60" y="169.364">&#x265f;</text>
+					<text x="-60" y="109.487">&#x265f;</text>
+					<text x="-36" y="173.323">&#x265f;</text>
+					<text x="-36" y="105.528">&#x265f;</text>
+					<text x="-12" y="177.282">&#x265f;</text>
+					<text x="-12" y="101.569">&#x265f;</text>
+					<text x="12" y="177.282">&#x265f;</text>
+					<text x="12" y="101.569">&#x265f;</text>
+					<text x="36" y="173.323">&#x265f;</text>
+					<text x="36" y="105.528">&#x265f;</text>
+					<text x="60" y="169.364">&#x265f;</text>
+					<text x="60" y="109.487">&#x265f;</text>
+					<text x="84" y="165.405">&#x265f;</text>
+					<text x="84" y="113.446">&#x265f;</text>
+				</g>
+			</defs>
+			<use xlink:href="#fcboard"/>
+			<use xlink:href="#fcpieces" color="red"/>
+			<use xlink:href="#fcpieces" color="green" transform="rotate(-120)"/>
+			<use xlink:href="#fcpieces" color="blue" transform="rotate(120)"/>
+		</svg>
+		<h2>Torus and Klein bottle type boards</h2>
 		<svg version="1.1" height="1500px" width="1500px" viewBox="-750 -750 1500 1500" class="board">
 			<defs>
 				<path id="tritbg" d="M 664.7,-8.1 A 171.2,171.2 0 0,0 637.9,13.2 A 121.9,121.9 0 0,0 641.6,51 A 784.7,784.7 0 0,1 621.7,52.2 A 217.7,217.7 0 0,0 528.3,236 A 340.6,340.6 0 0,0 542.8,258.3 A 218.5,218.5 0 0,0 496.7,286.8 L 459.3,265.2 A 306.2,306.2 0 0,1 612.4,0 A 306.2,306.3 0 0,1 459.3,-265.2 L 520.3,-300.4 A 173.4,173.4 0 0,0 538.7,-284.3 A 631.6,631.6 0 0,0 499.7,-245.5 A 253.5,253.5 0 0,0 615.5,-31 A 1280.7,1280.7 0 0,1 654.1,-36.9 A 102.3,102.3 0 0,0 654.6,-20.3 A 123.2,123.2 0 0,0 664.7,-8.1" fill="lightgray"/>
