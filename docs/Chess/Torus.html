@@ -7,7 +7,460 @@
 	</head>
 	<body>
 		<h1>Chess on a torus</h1>
+		<h2>8 &times 8 variant (standard pieces)</h2>
 		<p>For a torus, opposing edges of the board are glued to each other.</p>
+		<table class="board">
+			<tr>
+				<td class="off">h1</td>
+				<td class="off">a1</td>
+				<td class="off">b1</td>
+				<td class="off">c1</td>
+				<td class="off">d1</td>
+				<td class="off">e1</td>
+				<td class="off">f1</td>
+				<td class="off">g1</td>
+				<td class="off">h1</td>
+				<td class="off">a1</td>
+			</tr>
+			<tr>
+				<td class="off">h8</td>
+				<td>a8</td>
+				<td>b8</td>
+				<td>c8</td>
+				<td>d8</td>
+				<td>e8</td>
+				<td>f8</td>
+				<td>g8</td>
+				<td>h8</td>
+				<td class="off">a8</td>
+			</tr>
+			<tr>
+				<td class="off">h7</td>
+				<td>a7</td>
+				<td>b7</td>
+				<td>c7</td>
+				<td>d7</td>
+				<td>e7</td>
+				<td>f7</td>
+				<td>g7</td>
+				<td>h7</td>
+				<td class="off">a7</td>
+			</tr>
+			<tr>
+				<td class="off">h6</td>
+				<td>a6</td>
+				<td>b6</td>
+				<td>c6</td>
+				<td>d6</td>
+				<td>e6</td>
+				<td>f6</td>
+				<td>g6</td>
+				<td>h6</td>
+				<td class="off">a6</td>
+			</tr>
+			<tr>
+				<td class="off">h5</td>
+				<td>a5</td>
+				<td>b5</td>
+				<td>c5</td>
+				<td>d5</td>
+				<td>e5</td>
+				<td>f5</td>
+				<td>g5</td>
+				<td>h5</td>
+				<td class="off">a5</td>
+			</tr>
+			<tr>
+				<td class="off">h4</td>
+				<td>a4</td>
+				<td>b4</td>
+				<td>c4</td>
+				<td>d4</td>
+				<td>e4</td>
+				<td>f4</td>
+				<td>g4</td>
+				<td>h4</td>
+				<td class="off">a4</td>
+			</tr>
+			<tr>
+				<td class="off">h3</td>
+				<td>a3</td>
+				<td>b3</td>
+				<td>c3</td>
+				<td>d3</td>
+				<td>e3</td>
+				<td>f3</td>
+				<td>g3</td>
+				<td>h3</td>
+				<td class="off">a3</td>
+			</tr>
+			<tr>
+				<td class="off">h2</td>
+				<td>a2</td>
+				<td>b2</td>
+				<td>c2</td>
+				<td>d2</td>
+				<td>e2</td>
+				<td>f2</td>
+				<td>g2</td>
+				<td>h2</td>
+				<td class="off">a2</td>
+			</tr>
+			<tr>
+				<td class="off">h1</td>
+				<td>a1</td>
+				<td>b1</td>
+				<td>c1</td>
+				<td>d1</td>
+				<td>e1</td>
+				<td>f1</td>
+				<td>g1</td>
+				<td>h1</td>
+				<td class="off">a1</td>
+			</tr>
+			<tr>
+				<td class="off">h8</td>
+				<td class="off">a8</td>
+				<td class="off">b8</td>
+				<td class="off">c8</td>
+				<td class="off">d8</td>
+				<td class="off">e8</td>
+				<td class="off">f8</td>
+				<td class="off">g8</td>
+				<td class="off">h8</td>
+				<td class="off">a8</td>
+			</tr>
+		</table>
+		<p>In order to avoid putting both kings in check in the initial position, <a href="http://www.chessvariants.com/shape.dir/torus_standard_board.html">a different starting position</a> has been suggested.</p>
+		<table class="board">
+			<tr>
+				<th></th>
+				<th>a</th>
+				<th>b</th>
+				<th>c</th>
+				<th>d</th>
+				<th>e</th>
+				<th>f</th>
+				<th>g</th>
+				<th>h</th>
+			</tr>
+			<tr>
+				<th>8</th>
+				<td>&#x265c;</td>
+				<td></td>
+				<td>&#x265d;</td>
+				<td></td>
+				<td></td>
+				<td>&#x265d;</td>
+				<td></td>
+				<td>&#x265c;</td>
+			</tr>
+			<tr>
+				<th>7</th>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+			</tr>
+			<tr>
+				<th>6</th>
+				<td>&#x265e;</td>
+				<td></td>
+				<td>&#x265f;</td>
+				<td>&#x265b;</td>
+				<td>&#x265a;</td>
+				<td>&#x265f;</td>
+				<td></td>
+				<td>&#x265e;</td>
+			</tr>
+			<tr>
+				<th>5</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>4</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>3</th>
+				<td>&#x2658;</td>
+				<td></td>
+				<td>&#x2659;</td>
+				<td>&#x2655;</td>
+				<td>&#x2654;</td>
+				<td>&#x2659;</td>
+				<td></td>
+				<td>&#x2658;</td>
+			</tr>
+			<tr>
+				<th>2</th>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+			</tr>
+			<tr>
+				<th>1</th>
+				<td>&#x2656;</td>
+				<td></td>
+				<td>&#x2657;</td>
+				<td></td>
+				<td></td>
+				<td>&#x2657;</td>
+				<td></td>
+				<td>&#x2656;</td>
+			</tr>
+		</table>
+		<h2>8 &times 8 variant (modified pawns)</h2>
+		<p>Also here the board is the same as for the previous variant.</p>
+		<table class="board">
+			<tr>
+				<td class="off">h1</td>
+				<td class="off">a1</td>
+				<td class="off">b1</td>
+				<td class="off">c1</td>
+				<td class="off">d1</td>
+				<td class="off">e1</td>
+				<td class="off">f1</td>
+				<td class="off">g1</td>
+				<td class="off">h1</td>
+				<td class="off">a1</td>
+			</tr>
+			<tr>
+				<td class="off">h8</td>
+				<td>a8</td>
+				<td>b8</td>
+				<td>c8</td>
+				<td>d8</td>
+				<td>e8</td>
+				<td>f8</td>
+				<td>g8</td>
+				<td>h8</td>
+				<td class="off">a8</td>
+			</tr>
+			<tr>
+				<td class="off">h7</td>
+				<td>a7</td>
+				<td>b7</td>
+				<td>c7</td>
+				<td>d7</td>
+				<td>e7</td>
+				<td>f7</td>
+				<td>g7</td>
+				<td>h7</td>
+				<td class="off">a7</td>
+			</tr>
+			<tr>
+				<td class="off">h6</td>
+				<td>a6</td>
+				<td>b6</td>
+				<td>c6</td>
+				<td>d6</td>
+				<td>e6</td>
+				<td>f6</td>
+				<td>g6</td>
+				<td>h6</td>
+				<td class="off">a6</td>
+			</tr>
+			<tr>
+				<td class="off">h5</td>
+				<td>a5</td>
+				<td>b5</td>
+				<td>c5</td>
+				<td>d5</td>
+				<td>e5</td>
+				<td>f5</td>
+				<td>g5</td>
+				<td>h5</td>
+				<td class="off">a5</td>
+			</tr>
+			<tr>
+				<td class="off">h4</td>
+				<td>a4</td>
+				<td>b4</td>
+				<td>c4</td>
+				<td>d4</td>
+				<td>e4</td>
+				<td>f4</td>
+				<td>g4</td>
+				<td>h4</td>
+				<td class="off">a4</td>
+			</tr>
+			<tr>
+				<td class="off">h3</td>
+				<td>a3</td>
+				<td>b3</td>
+				<td>c3</td>
+				<td>d3</td>
+				<td>e3</td>
+				<td>f3</td>
+				<td>g3</td>
+				<td>h3</td>
+				<td class="off">a3</td>
+			</tr>
+			<tr>
+				<td class="off">h2</td>
+				<td>a2</td>
+				<td>b2</td>
+				<td>c2</td>
+				<td>d2</td>
+				<td>e2</td>
+				<td>f2</td>
+				<td>g2</td>
+				<td>h2</td>
+				<td class="off">a2</td>
+			</tr>
+			<tr>
+				<td class="off">h1</td>
+				<td>a1</td>
+				<td>b1</td>
+				<td>c1</td>
+				<td>d1</td>
+				<td>e1</td>
+				<td>f1</td>
+				<td>g1</td>
+				<td>h1</td>
+				<td class="off">a1</td>
+			</tr>
+			<tr>
+				<td class="off">h8</td>
+				<td class="off">a8</td>
+				<td class="off">b8</td>
+				<td class="off">c8</td>
+				<td class="off">d8</td>
+				<td class="off">e8</td>
+				<td class="off">f8</td>
+				<td class="off">g8</td>
+				<td class="off">h8</td>
+				<td class="off">a8</td>
+			</tr>
+		</table>
+		<p><a href="http://www.geometrygames.org/TorusGames/">This version</a> uses a different starting position, there is no castling, pawns step orthogonally in any direction or capture diagonally in any direction and are not promoted.</p>
+		<table class="board">
+			<tr>
+				<th></th>
+				<th>a</th>
+				<th>b</th>
+				<th>c</th>
+				<th>d</th>
+				<th>e</th>
+				<th>f</th>
+				<th>g</th>
+				<th>h</th>
+			</tr>
+			<tr>
+				<th>8</th>
+				<td>&#x265e;</td>
+				<td>&#x265b;</td>
+				<td>&#x265c;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>7</th>
+				<td>&#x265f;</td>
+				<td>&#x265a;</td>
+				<td>&#x265f;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>6</th>
+				<td>&#x265c;</td>
+				<td>&#x265d;</td>
+				<td>&#x265e;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>5</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>4</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x2656;</td>
+				<td>&#x2657;</td>
+				<td>&#x2658;</td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>3</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x2659;</td>
+				<td>&#x2654;</td>
+				<td>&#x2659;</td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>2</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>&#x2658;</td>
+				<td>&#x2655;</td>
+				<td>&#x2656;</td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>1</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+		<h2>8 &times; 14 variant</h2>
+		<p><a href="http://www.chessvariants.com/shape.dir/x_torus.html">This variant</a> uses a larger board with a more standard starting position.</p>
 		<table class="board">
 			<tr>
 				<td class="off">h12</td>
@@ -205,6 +658,18 @@
 		<p>Here the pieces of each player are flanked by a line of pawns on either side. Pawns always move away from their friendly pieces towards the opponent, where they are promoted.</p>
 		<table class="board">
 			<tr>
+				<th></th>
+				<th>a</th>
+				<th>b</th>
+				<th>c</th>
+				<th>d</th>
+				<th>e</th>
+				<th>f</th>
+				<th>g</th>
+				<th>h</th>
+			</tr>
+			<tr>
+				<th>11</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -215,6 +680,7 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>10</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -225,6 +691,7 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>9</th>
 				<td>&#x265f;</td>
 				<td>&#x265f;</td>
 				<td>&#x265f;</td>
@@ -235,6 +702,7 @@
 				<td>&#x265f;</td>
 			</tr>
 			<tr>
+				<th>8</th>
 				<td>&#x265c;</td>
 				<td>&#x265e;</td>
 				<td>&#x265d;</td>
@@ -245,6 +713,7 @@
 				<td>&#x265c;</td>
 			</tr>
 			<tr>
+				<th>7</th>
 				<td>&#x265f;</td>
 				<td>&#x265f;</td>
 				<td>&#x265f;</td>
@@ -255,6 +724,7 @@
 				<td>&#x265f;</td>
 			</tr>
 			<tr>
+				<th>6</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -265,6 +735,7 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>5</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -275,6 +746,7 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>4</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -285,6 +757,7 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>3</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -295,6 +768,7 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>2</th>
 				<td>&#x2659;</td>
 				<td>&#x2659;</td>
 				<td>&#x2659;</td>
@@ -305,6 +779,7 @@
 				<td>&#x2659;</td>
 			</tr>
 			<tr>
+				<th>1</th>
 				<td>&#x2656;</td>
 				<td>&#x2658;</td>
 				<td>&#x2657;</td>
@@ -315,6 +790,7 @@
 				<td>&#x2656;</td>
 			</tr>
 			<tr>
+				<th>14</th>
 				<td>&#x2659;</td>
 				<td>&#x2659;</td>
 				<td>&#x2659;</td>
@@ -325,6 +801,7 @@
 				<td>&#x2659;</td>
 			</tr>
 			<tr>
+				<th>13</th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -335,6 +812,393 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th>12</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+		<h2>8 &times; 16 variant</h2>
+		<p><a href="http://www.chessvariants.com/shape.dir/toruschess.html">This variant</a> uses an even larger board.</p>
+		<table class="board">
+			<tr>
+				<td class="off">h12</td>
+				<td class="off">a12</td>
+				<td class="off">b12</td>
+				<td class="off">c12</td>
+				<td class="off">d12</td>
+				<td class="off">e12</td>
+				<td class="off">f12</td>
+				<td class="off">g12</td>
+				<td class="off">h12</td>
+				<td class="off">a12</td>
+			</tr>
+			<tr>
+				<td class="off">h11</td>
+				<td>a11</td>
+				<td>b11</td>
+				<td>c11</td>
+				<td>d11</td>
+				<td>e11</td>
+				<td>f11</td>
+				<td>g11</td>
+				<td>h11</td>
+				<td class="off">a11</td>
+			</tr>
+			<tr>
+				<td class="off">h10</td>
+				<td>a10</td>
+				<td>b10</td>
+				<td>c10</td>
+				<td>d10</td>
+				<td>e10</td>
+				<td>f10</td>
+				<td>g10</td>
+				<td>h10</td>
+				<td class="off">a10</td>
+			</tr>
+			<tr>
+				<td class="off">h9</td>
+				<td>a9</td>
+				<td>b9</td>
+				<td>c9</td>
+				<td>d9</td>
+				<td>e9</td>
+				<td>f9</td>
+				<td>g9</td>
+				<td>h9</td>
+				<td class="off">a9</td>
+			</tr>
+			<tr>
+				<td class="off">h8</td>
+				<td>a8</td>
+				<td>b8</td>
+				<td>c8</td>
+				<td>d8</td>
+				<td>e8</td>
+				<td>f8</td>
+				<td>g8</td>
+				<td>h8</td>
+				<td class="off">a8</td>
+			</tr>
+			<tr>
+				<td class="off">h7</td>
+				<td>a7</td>
+				<td>b7</td>
+				<td>c7</td>
+				<td>d7</td>
+				<td>e7</td>
+				<td>f7</td>
+				<td>g7</td>
+				<td>h7</td>
+				<td class="off">a7</td>
+			</tr>
+			<tr>
+				<td class="off">h6</td>
+				<td>a6</td>
+				<td>b6</td>
+				<td>c6</td>
+				<td>d6</td>
+				<td>e6</td>
+				<td>f6</td>
+				<td>g6</td>
+				<td>h6</td>
+				<td class="off">a6</td>
+			</tr>
+			<tr>
+				<td class="off">h5</td>
+				<td>a5</td>
+				<td>b5</td>
+				<td>c5</td>
+				<td>d5</td>
+				<td>e5</td>
+				<td>f5</td>
+				<td>g5</td>
+				<td>h5</td>
+				<td class="off">a5</td>
+			</tr>
+			<tr>
+				<td class="off">h4</td>
+				<td>a4</td>
+				<td>b4</td>
+				<td>c4</td>
+				<td>d4</td>
+				<td>e4</td>
+				<td>f4</td>
+				<td>g4</td>
+				<td>h4</td>
+				<td class="off">a4</td>
+			</tr>
+			<tr>
+				<td class="off">h3</td>
+				<td>a3</td>
+				<td>b3</td>
+				<td>c3</td>
+				<td>d3</td>
+				<td>e3</td>
+				<td>f3</td>
+				<td>g3</td>
+				<td>h3</td>
+				<td class="off">a3</td>
+			</tr>
+			<tr>
+				<td class="off">h2</td>
+				<td>a2</td>
+				<td>b2</td>
+				<td>c2</td>
+				<td>d2</td>
+				<td>e2</td>
+				<td>f2</td>
+				<td>g2</td>
+				<td>h2</td>
+				<td class="off">a2</td>
+			</tr>
+			<tr>
+				<td class="off">h1</td>
+				<td>a1</td>
+				<td>b1</td>
+				<td>c1</td>
+				<td>d1</td>
+				<td>e1</td>
+				<td>f1</td>
+				<td>g1</td>
+				<td>h1</td>
+				<td class="off">a1</td>
+			</tr>
+			<tr>
+				<td class="off">h14</td>
+				<td>a14</td>
+				<td>b14</td>
+				<td>c14</td>
+				<td>d14</td>
+				<td>e14</td>
+				<td>f14</td>
+				<td>g14</td>
+				<td>h14</td>
+				<td class="off">a14</td>
+			</tr>
+			<tr>
+				<td class="off">h13</td>
+				<td>a13</td>
+				<td>b13</td>
+				<td>c13</td>
+				<td>d13</td>
+				<td>e13</td>
+				<td>f13</td>
+				<td>g13</td>
+				<td>h13</td>
+				<td class="off">a13</td>
+			</tr>
+			<tr>
+				<td class="off">h12</td>
+				<td>a12</td>
+				<td>b12</td>
+				<td>c12</td>
+				<td>d12</td>
+				<td>e12</td>
+				<td>f12</td>
+				<td>g12</td>
+				<td>h12</td>
+				<td class="off">a12</td>
+			</tr>
+			<tr>
+				<td class="off">h11</td>
+				<td class="off">a11</td>
+				<td class="off">b11</td>
+				<td class="off">c11</td>
+				<td class="off">d11</td>
+				<td class="off">e11</td>
+				<td class="off">f11</td>
+				<td class="off">g11</td>
+				<td class="off">h11</td>
+				<td class="off">a11</td>
+			</tr>
+		</table>
+		<p>Here not only pawns are doubled, but also other pieces, except for the king. As an extra piece, the general (knight + queen) is introduced. Pawns always move away from their friendly pieces towards the opponent, where they are promoted.</p>
+		<table class="board">
+			<tr>
+				<th></th>
+				<th>a</th>
+				<th>b</th>
+				<th>c</th>
+				<th>d</th>
+				<th>e</th>
+				<th>f</th>
+				<th>g</th>
+				<th>h</th>
+			</tr>
+			<tr>
+				<th>12</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>11</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>10</th>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+			</tr>
+			<tr>
+				<th>9</th>
+				<td>&#x265c;</td>
+				<td>&#x265e;</td>
+				<td>&#x265d;</td>
+				<td>&#x265b;</td>
+				<td>&#x265b;</td>
+				<td>&#x265d;</td>
+				<td>&#x265e;</td>
+				<td>&#x265c;</td>
+			</tr>
+			<tr>
+				<th>8</th>
+				<td>&#x265c;</td>
+				<td>&#x265e;</td>
+				<td>&#x265d;</td>
+				<td>&#x1fa51;</td>
+				<td>&#x265a;</td>
+				<td>&#x265d;</td>
+				<td>&#x265e;</td>
+				<td>&#x265c;</td>
+			</tr>
+			<tr>
+				<th>7</th>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+				<td>&#x265f;</td>
+			</tr>
+			<tr>
+				<th>6</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>5</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>4</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>3</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>2</th>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+			</tr>
+			<tr>
+				<th>1</th>
+				<td>&#x2656;</td>
+				<td>&#x2658;</td>
+				<td>&#x2657;</td>
+				<td>&#x1fa4e;</td>
+				<td>&#x2654;</td>
+				<td>&#x2657;</td>
+				<td>&#x2658;</td>
+				<td>&#x2656;</td>
+			</tr>
+			<tr>
+				<th>16</th>
+				<td>&#x2656;</td>
+				<td>&#x2658;</td>
+				<td>&#x2657;</td>
+				<td>&#x2655;</td>
+				<td>&#x2655;</td>
+				<td>&#x2657;</td>
+				<td>&#x2658;</td>
+				<td>&#x2656;</td>
+			</tr>
+			<tr>
+				<th>15</th>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+				<td>&#x2659;</td>
+			</tr>
+			<tr>
+				<th>14</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>13</th>
 				<td></td>
 				<td></td>
 				<td></td>
