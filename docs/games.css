@@ -92,7 +92,52 @@ div.board > div {
 	font-size: 12pt;
 }
 
-td.off, div.off {
+div.board-hex-vert, div.board-hex-horz {
+	display: grid;
+	grid-gap: 2px;
+	filter:
+		drop-shadow(1px 0px 0px gray)
+		drop-shadow(-1px 0px 0px gray)
+		drop-shadow(0px 1px 0px gray)
+		drop-shadow(0px -1px 0px gray)
+		drop-shadow(1px 1px 0px gray)
+		drop-shadow(-1px -1px 0px gray)
+		drop-shadow(-1px 1px 0px gray)
+		drop-shadow(1px -1px 0px gray);
+	margin: 8px;
+}
+
+div.board-hex-vert {
+	grid-auto-rows: 8px 16px;
+	grid-auto-columns: 14px;
+}
+
+div.board-hex-horz {
+	grid-auto-rows: 14px;
+	grid-auto-columns: 8px 16px;
+}
+
+div.board-hex-vert > div, div.board-hex-horz > div {
+	background-color: white;
+	text-align: center;
+	font-size: 12pt;
+}
+
+div.board-hex-vert > div {
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+	line-height: 32px;
+	grid-row-end: span 3;
+	grid-column-end: span 2;
+}
+
+div.board-hex-horz > div {
+	clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+	line-height: 28px;
+	grid-row-end: span 2;
+	grid-column-end: span 3;
+}
+
+table.board > div.off, div.board > div.off, div.board-hex-vert > div.off, div.board-hex-horz > div.off {
 	background-color: lightgray;
 }
 
