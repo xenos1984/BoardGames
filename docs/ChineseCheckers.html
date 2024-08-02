@@ -16,7 +16,7 @@
 .gray {color: #808080}
 .rainbow {background: radial-gradient(closest-side, red 0, yellow, lime, cyan, blue, magenta, red 100%); background-clip: text; color: rgb(0 0 0 / 20%); font: 900 1.2em sans-serif;}
 
-div.board-vert, div.board-horz {
+div.board-hex-vert, div.board-hex-horz {
 	display: grid;
 	grid-gap: 2px;
 	filter:
@@ -31,37 +31,37 @@ div.board-vert, div.board-horz {
 	margin: 8px;
 }
 
-div.board-vert {
+div.board-hex-vert {
 	grid-auto-rows: 8px 16px;
 	grid-auto-columns: 14px;
 }
 
-div.board-horz {
+div.board-hex-horz {
 	grid-auto-rows: 14px;
 	grid-auto-columns: 8px 16px;
 }
 
-div.board-vert > div, div.board-horz > div {
+div.board-hex-vert > div, div.board-hex-horz > div {
 	background-color: white;
 	text-align: center;
 	font-size: 12pt;
 }
 
-div.board-vert > div {
+div.board-hex-vert > div {
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 	line-height: 32px;
 	grid-row-end: span 3;
 	grid-column-end: span 2;
 }
 
-div.board-horz > div {
+div.board-hex-horz > div {
 	clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 	line-height: 28px;
 	grid-row-end: span 2;
 	grid-column-end: span 3;
 }
 
-div.board-vert > div.off, div.board-horz > div.off {
+div.board-hex-vert > div.off, div.board-hex-horz > div.off {
 	background-color: lightgray;
 }
 </style>
@@ -69,7 +69,7 @@ div.board-vert > div.off, div.board-horz > div.off {
 	<body>
 		<h1>Chinese checkers on manifolds</h1>
 		<h2>Small torus</h2>
-		<div class="board-horz">
+		<div class="board-hex-horz">
 			<div style="grid-row-start: 12; grid-column-start: 1" class="off">K1</div>
 			<div style="grid-row-start: 14; grid-column-start: 1" class="off">A11</div>
 			<div style="grid-row-start: 11; grid-column-start: 3" class="off">K2</div>
@@ -238,7 +238,7 @@ div.board-vert > div.off, div.board-horz > div.off {
 			<div style="grid-row-start: 12; grid-column-start: 45" class="off">K1</div>
 			<div style="grid-row-start: 14; grid-column-start: 45" class="off">A11</div>
 		</div>
-		<div class="board-horz">
+		<div class="board-hex-horz">
 			<div style="grid-row-start: 11; grid-column-start: 1">&#x25ef;</div>
 			<div style="grid-row-start: 10; grid-column-start: 3">&#x25ef;</div>
 			<div style="grid-row-start: 12; grid-column-start: 3">&#x25ef;</div>
@@ -362,7 +362,7 @@ div.board-vert > div.off, div.board-horz > div.off {
 			<div style="grid-row-start: 11; grid-column-start: 41">&#x2b24;</div>
 		</div>
 		<h2>Large torus</h2>
-		<div class="board-horz">
+		<div class="board-hex-horz">
 			<div style="grid-row-start: 19; grid-column-start: 1" class="off">R1</div>
 			<div style="grid-row-start: 21; grid-column-start: 1" class="off">A18</div>
 			<div style="grid-row-start: 18; grid-column-start: 3" class="off">R2</div>
@@ -762,7 +762,7 @@ div.board-vert > div.off, div.board-horz > div.off {
 			<div style="grid-row-start: 19; grid-column-start: 73" class="off">R1</div>
 			<div style="grid-row-start: 21; grid-column-start: 73" class="off">A18</div>
 		</div>
-		<div class="board-horz">
+		<div class="board-hex-horz">
 			<div style="grid-row-start: 18; grid-column-start: 1">&#x25ef;</div>
 			<div style="grid-row-start: 17; grid-column-start: 3">&#x25ef;</div>
 			<div style="grid-row-start: 19; grid-column-start: 3">&#x25ef;</div>
@@ -1089,7 +1089,7 @@ div.board-vert > div.off, div.board-horz > div.off {
 			<div style="grid-row-start: 18; grid-column-start: 69" class="blue">&#x2b24;</div>
 		</div>
 		<h2>Small Klein bottle</h2>
-		<div class="board-horz">
+		<div class="board-hex-horz">
 			<div style="grid-row-start: 12; grid-column-start: 1" class="off">K6</div>
 			<div style="grid-row-start: 14; grid-column-start: 1" class="off">A11</div>
 			<div style="grid-row-start: 11; grid-column-start: 3" class="off">K5</div>
@@ -1258,7 +1258,7 @@ div.board-vert > div.off, div.board-horz > div.off {
 			<div style="grid-row-start: 12; grid-column-start: 45" class="off">K1</div>
 			<div style="grid-row-start: 14; grid-column-start: 45" class="off">A6</div>
 		</div>
-		<div class="board-horz">
+		<div class="board-hex-horz">
 			<div style="grid-row-start: 11; grid-column-start: 1">&#x25ef;</div>
 			<div style="grid-row-start: 10; grid-column-start: 3">&#x25ef;</div>
 			<div style="grid-row-start: 12; grid-column-start: 3">&#x25ef;</div>
