@@ -147,10 +147,12 @@ table#content td input[type="text"], datalist option {
 						var tdy = document.createElement("td");
 						var tdt = document.createElement("td");
 						var tdc = document.createElement("td");
+						var tdb = document.createElement("td");
 						var tdr = document.createElement("td");
 						var tdm = document.createElement("td");
 						var it = document.createElement("input");
 						var ic = document.createElement("input");
+						var ib = document.createElement("input");
 						var ir = document.createElement("input");
 						var im = document.createElement("input");
 
@@ -165,9 +167,16 @@ table#content td input[type="text"], datalist option {
 						it.dataset.c = c;
 
 						ic.type = "color";
+						ic.value = "#000000";
 						ic.onchange = function(e) { setcolor(e.target.dataset.r, e.target.dataset.c, e.target.value) };
 						ic.dataset.r = r;
 						ic.dataset.c = c;
+
+						ib.type = "color";
+						ib.value = "#ffffff";
+						ib.onchange = function(e) { setback(e.target.dataset.r, e.target.dataset.c, e.target.value) };
+						ib.dataset.r = r;
+						ib.dataset.c = c;
 
 						ir.type = "number";
 						ir.min = 0;
@@ -185,6 +194,7 @@ table#content td input[type="text"], datalist option {
 
 						tdt.appendChild(it);
 						tdc.appendChild(ic);
+						tdb.appendChild(ib);
 						tdr.appendChild(ir);
 						tdm.appendChild(im);
 
@@ -192,6 +202,7 @@ table#content td input[type="text"], datalist option {
 						tr.appendChild(tdy);
 						tr.appendChild(tdt);
 						tr.appendChild(tdc);
+						tr.appendChild(tdb);
 						tr.appendChild(tdr);
 						tr.appendChild(tdm);
 
@@ -234,6 +245,16 @@ table#content td input[type="text"], datalist option {
 				{
 					if(cell.dataset.r == r && cell.dataset.c == c)
 						cell.style.color = v;
+				}
+			}
+
+			function setback(r, c, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('td');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c)
+						cell.style.backgroundColor = v;
 				}
 			}
 
@@ -330,7 +351,8 @@ table#content td input[type="text"], datalist option {
 				<th>x</th>
 				<th>y</th>
 				<th>content</th>
-				<th>color</th>
+				<th>foreground</th>
+				<th>background</th>
 				<th>rotation</th>
 				<th>mirror</th>
 			</tr>
