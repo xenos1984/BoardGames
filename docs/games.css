@@ -85,7 +85,7 @@ div.board.square {
 	grid-gap: 1px;
 }
 
-div.board.hex {
+div.board.hex, div.board.tri {
 	display: grid;
 	grid-gap: 2px;
 	filter:
@@ -108,6 +108,16 @@ div.board.hex.vert {
 div.board.hex.horz {
 	grid-auto-rows: 14px;
 	grid-auto-columns: 8px 16px;
+}
+
+div.board.tri.vert {
+	grid-auto-rows: 16px;
+	grid-auto-columns: 28px;
+}
+
+div.board.tri.horz {
+	grid-auto-rows: 28px;
+	grid-auto-columns: 16px;
 }
 
 div.board > div {
@@ -137,6 +147,34 @@ div.board.hex.horz > div {
 	line-height: 28px;
 	grid-row-end: span 2;
 	grid-column-end: span 3;
+}
+
+div.board.tri.horz > div {
+	line-height: 28px;
+	grid-row-end: span 1;
+	grid-column-end: span 2;
+}
+
+div.board.tri.vert > div {
+	line-height: 32px;
+	grid-row-end: span 2;
+	grid-column-end: span 1;
+}
+
+div.board.tri.horz > div.up {
+	clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+div.board.tri.horz > div.down {
+	clip-path: polygon(50% 100%, 100% 0%, 0% 0%);
+}
+
+div.board.tri.vert > div.right {
+	clip-path: polygon(0% 50%, 100% 100%, 100% 0%);
+}
+
+div.board.tri.vert > div.left {
+	clip-path: polygon(100% 50%, 0% 100%, 0% 0%);
 }
 
 text {
