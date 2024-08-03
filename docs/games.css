@@ -78,21 +78,14 @@ table.board th {
 	font-weight: bold;
 }
 
-div.board {
+div.board.square {
 	display: grid;
 	grid-auto-rows: 21px;
 	grid-auto-columns: 21px;
 	grid-gap: 1px;
 }
 
-div.board > div {
-	box-shadow: 0 0 0 1px gray;
-	text-align: center;
-	vertical-align: middle;
-	font-size: 12pt;
-}
-
-div.board-hex-vert, div.board-hex-horz {
+div.board.hex {
 	display: grid;
 	grid-gap: 2px;
 	filter:
@@ -107,38 +100,43 @@ div.board-hex-vert, div.board-hex-horz {
 	margin: 8px;
 }
 
-div.board-hex-vert {
+div.board.hex.vert {
 	grid-auto-rows: 8px 16px;
 	grid-auto-columns: 14px;
 }
 
-div.board-hex-horz {
+div.board.hex.horz {
 	grid-auto-rows: 14px;
 	grid-auto-columns: 8px 16px;
 }
 
-div.board-hex-vert > div, div.board-hex-horz > div {
+div.board > div {
 	background-color: white;
 	text-align: center;
 	font-size: 12pt;
 }
 
-div.board-hex-vert > div {
+table.board td.off, div.board > div.off {
+	background-color: lightgray;
+}
+
+div.board.square > div {
+	box-shadow: 0 0 0 1px gray;
+	vertical-align: middle;
+}
+
+div.board.hex.vert > div {
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 	line-height: 32px;
 	grid-row-end: span 3;
 	grid-column-end: span 2;
 }
 
-div.board-hex-horz > div {
+div.board.hex.horz > div {
 	clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 	line-height: 28px;
 	grid-row-end: span 2;
 	grid-column-end: span 3;
-}
-
-table.board > div.off, div.board > div.off, div.board-hex-vert > div.off, div.board-hex-horz > div.off {
-	background-color: lightgray;
 }
 
 text {
