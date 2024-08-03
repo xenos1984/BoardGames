@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Triangular grid on a torus</title>
+		<link rel="stylesheet" type="text/css" href="../games.css">
+<style>
+table#content td input[type="text"], datalist option {
+	font-size: 16pt;
+}
+</style>
+		<script type="text/javascript" src="geometry.js"></script>
+		<script type="text/javascript">
+			function calculate()
+			{
+				var ax = document.getElementById('ax').value;
+				var ay = document.getElementById('ay').value;
+				var bx = document.getElementById('bx').value;
+				var by = document.getElementById('by').value;
+
+				if(ax * by == bx * ay)
+				{
+					document.getElementById('error').style.display = 'block';
+					document.getElementById('error').innerHTML = "Translations are collinear.";
+					return;
+				}
+
+				document.getElementById('error').style.display = 'none';
+
+				var cx0 = 0;
+				var cx1 = 0;
+				var cy1 = 0;
+
+				if(ay == 0)
+				{
+					cx0 = Math.abs(ax);
+					cy1 = Math.abs(by);
+					cx1 = (((bx * Math.sign(by)) % cx0) + cx0) % cx0;
+				}
+				else if(by == 0)
+				{
+					cx0 = Math.abs(bx);
+					cy1 = Math.abs(ay);
+					cx1 = (((ax * Math.sign(ay)) % cx0) + cx0) % cx0;
+				}
+				else
+				{
+					var aa = 1;
+					var ab = 0;
+					var ba = 0;
+					var bb = 1;
+					var ca = 0;
+					var cb = 0;
+
+					var a = Math.max(Math.abs(ay), Math.abs(by));
+					var b = Math.min(Math.abs(ay), Math.abs(by));
+					var gcd = 0;
+
+					while(true)
+					{
+						if(b == 0)
+						{
+							ca = aa;
+							cb = ab;
+							gcd = a;
+							break;
+						}
+						aa -= Math.floor(a / b) * ba;
+						ab -= Math.floor(a / b) * bb;
+						a %= b;
+						if(a == 0)
+						{
+							ca = ba;
+							cb = bb;
+							gcd = b;
+							break;
+						}
+						ba -= Math.floor(b / a) * aa;
+						bb -= Math.floor(b / a) * ab;
+						b %= a;
+					}
+
+					var lcm = Math.abs(ay * by / gcd);
+
+					if(Math.abs(by) > Math.abs(ay))
+						[ca, cb] = [cb, ca];
+
+					cx0 = Math.abs(ax * lcm / ay - bx * lcm / by);
+					cx1 = (((ax * ca * Math.sign(ay) + bx * cb * Math.sign(by)) % cx0) + cx0) % cx0;
+					cy1 = gcd;
+				}
+
+				var au = ay / cy1;
+				var bu = by / cy1;
+				var ar = (ax - au * cx1) / cx0;
+				var br = (bx - bu * cx1) / cx0;
+
+				var det = ar * bu - br * au;
+
+				var ra = bu / det;
+				var ua = -br / det;
+				var rb = -au / det;
+				var ub = ar / det;
+
+				document.getElementById('rx').innerHTML = cx0;
+				document.getElementById('ry').innerHTML = 0;
+				document.getElementById('ux').innerHTML = cx1;
+				document.getElementById('uy').innerHTML = cy1;
+
+				document.getElementById('ra').innerHTML = ra;
+				document.getElementById('rb').innerHTML = rb;
+				document.getElementById('ua').innerHTML = ua;
+				document.getElementById('ub').innerHTML = ub;
+
+				document.getElementById('ar').innerHTML = ar;
+				document.getElementById('br').innerHTML = br;
+				document.getElementById('au').innerHTML = au;
+				document.getElementById('bu').innerHTML = bu;
+
+				document.getElementById('npos').innerHTML = cx0 * cy1;
+
+				document.getElementById('unit').innerHTML = "";
+				for(r = cy1; r >= -1; r--)
+				{
+					r0 = ((r % cy1) + cy1) % cy1;
+					for(c = -1; c <= cx0; c++)
+					{
+						c0 = (((c - cx1 * (r - r0) / cy1) % cx0) + cx0) % cx0;
+
+						for(d = 0; d <= 1; d++)
+						{
+							var div = document.createElement("div");
+							div.className = (d ? "down" : "up");
+							div.style.gridColumnStart = c + r + 3;
+							div.style.gridRowStart = c - r + d + cy1 + 2;
+							div.innerHTML = r0 + "/" + c0 + "/" + d;
+							if(c0 != c || r0 != r)
+								div.className += " off";
+							document.getElementById('unit').appendChild(div);
+						}
+					}
+				}
+
+				while(document.getElementById('content').children.length > 1)
+					document.getElementById('content').lastChild.remove();
+
+				for(r = 0; r < cy1; r++)
+				{
+					for(c = 0; c < cx0; c++)
+					{
+						for(d = 0; d <= 1; d++)
+						{
+							var tr = document.createElement("tr");
+							var tdx = document.createElement("td");
+							var tdy = document.createElement("td");
+							var tdd = document.createElement("td");
+							var tdt = document.createElement("td");
+							var tdc = document.createElement("td");
+							var tdr = document.createElement("td");
+							var tdm = document.createElement("td");
+							var it = document.createElement("input");
+							var ic = document.createElement("input");
+							var ir = document.createElement("input");
+							var im = document.createElement("input");
+
+							tdx.innerHTML = r;
+							tdy.innerHTML = c;
+							tdd.innerHTML = d;
+
+							it.type = "text";
+							it.setAttribute('list', "symbols");
+							it.setAttribute('maxlength', 1);
+							it.onchange = function(e) { settext(e.target.dataset.r, e.target.dataset.c, e.target.dataset.d, e.target.value) };
+							it.dataset.r = r;
+							it.dataset.c = c;
+							it.dataset.d = d;
+
+							ic.type = "color";
+							ic.onchange = function(e) { setcolor(e.target.dataset.r, e.target.dataset.c, e.target.dataset.d, e.target.value) };
+							ic.dataset.r = r;
+							ic.dataset.c = c;
+							ic.dataset.d = d;
+
+							ir.type = "number";
+							ir.min = 0;
+							ir.max = 345;
+							ir.step = 15;
+							ir.value = 0;
+							ir.onchange = function(e) { setrotate(e.target.dataset.r, e.target.dataset.c, e.target.dataset.d, e.target.value) };
+							ir.dataset.r = r;
+							ir.dataset.c = c;
+							ir.dataset.d = d;
+
+							im.type = "checkbox";
+							im.onchange = function(e) { setmirror(e.target.dataset.r, e.target.dataset.c, e.target.dataset.d, e.target.checked) };
+							im.dataset.r = r;
+							im.dataset.c = c;
+							im.dataset.d = d;
+
+							tdt.appendChild(it);
+							tdc.appendChild(ic);
+							tdr.appendChild(ir);
+							tdm.appendChild(im);
+
+							tr.appendChild(tdx);
+							tr.appendChild(tdy);
+							tr.appendChild(tdd);
+							tr.appendChild(tdt);
+							tr.appendChild(tdc);
+							tr.appendChild(tdr);
+							tr.appendChild(tdm);
+
+							document.getElementById('content').appendChild(tr);
+						}
+					}
+				}
+
+				document.getElementById('infinite').innerHTML = "";
+				for(r = 4 * cy1 - 1; r >= 0; r--)
+				{
+					for(c = 0; c < 4 * cx0; c++)
+					{
+						for(d = 0; d <= 1; d++)
+						{
+							var div = document.createElement("div");
+							div.className = (d ? "down" : "up");
+							div.style.gridColumnStart = c + r + 1;
+							div.style.gridRowStart = c - r + d + 4 * cy1;
+							div.dataset.x = r;
+							div.dataset.y = c;
+							div.dataset.d = d;
+							div.dataset.r = ((r % cy1) + cy1) % cy1;
+							div.dataset.c = (((c - cx1 * (r - div.dataset.r) / cy1) % cx0) + cx0) % cx0;
+
+							document.getElementById('infinite').appendChild(div);
+						}
+					}
+				}
+			}
+
+			function settext(r, c, d, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('div');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c && cell.dataset.d == d)
+						cell.innerHTML = v;
+				}
+			}
+
+			function setcolor(r, c, d, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('div');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c && cell.dataset.d == d)
+						cell.style.color = v;
+				}
+			}
+
+			function setrotate(r, c, d, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('div');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c && cell.dataset.d == d)
+						cell.style.rotate = v + "deg";
+				}
+			}
+
+			function setmirror(r, c, d, v)
+			{
+				var cells = document.getElementById('infinite').getElementsByTagName('div');
+				for(cell of cells)
+				{
+					if(cell.dataset.r == r && cell.dataset.c == c && cell.dataset.d == d)
+						cell.style.scale = (v ? "-1 1" : "1 1");
+				}
+			}
+		</script>
+	</head>
+	<body onload="symbollist();calculate()">
+		<h1>Triangular grid on a torus</h1>
+		<h2>Translation generators</h2>
+		<table>
+			<tr>
+				<th>Generator</th>
+				<th>x</th>
+				<th>y</th>
+			</tr>
+			<tr>
+				<td>A</td>
+				<td><input type="number" id="ax" value="1" step="1" onchange="calculate()"/></td>
+				<td><input type="number" id="ay" value="0" step="1" onchange="calculate()"/></td>
+			</tr>
+			<tr>
+				<td>B</td>
+				<td><input type="number" id="bx" value="0" step="1" onchange="calculate()"/></td>
+				<td><input type="number" id="by" value="1" step="1" onchange="calculate()"/></td>
+			</tr>
+		</table>
+		<p id="error"></p>
+		<h2>Canonical form</h2>
+		<table>
+			<tr>
+				<th>Generator</th>
+				<th>x</th>
+				<th>y</th>
+				<th>A</th>
+				<th>B</th>
+			</tr>
+			<tr>
+				<td>R</td>
+				<td id="rx">0</td>
+				<td id="ry">0</td>
+				<td id="ra">0</td>
+				<td id="rb">0</td>
+			</tr>
+			<tr>
+				<td>U</td>
+				<td id="ux">0</td>
+				<td id="uy">0</td>
+				<td id="ua">0</td>
+				<td id="ub">0</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<th>Generator</th>
+				<th>R</th>
+				<th>U</th>
+			</tr>
+			<tr>
+				<td>A</td>
+				<td id="ar">0</td>
+				<td id="au">0</td>
+			</tr>
+			<tr>
+				<td>B</td>
+				<td id="br">0</td>
+				<td id="bu">0</td>
+			</tr>
+		</table>
+		<h2>Unit cell</h2>
+		<p>Number of positions: <span id="npos"></span>.</p>
+		<div id="unit" class="board tri horz">
+		</div>
+		<h2>Infinite grid of cells</h2>
+		<table id="content">
+			<tr>
+				<th>x</th>
+				<th>y</th>
+				<th>d</th>
+				<th>content</th>
+				<th>color</th>
+				<th>rotation</th>
+				<th>mirror</th>
+			</tr>
+		</table>
+		<div id="infinite" class="board tri horz">
+		</div>
+		<datalist id="symbols"/>
+	</body>
+</html>
